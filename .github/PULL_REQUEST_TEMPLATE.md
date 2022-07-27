@@ -1,10 +1,3 @@
----
-name: Fixing a bug
-about: Create a pull request to fix an issue.
-title: ''
-labels: ''
----
-
 > 🦮 **Thank you in advance for helping us to improve this repository!** Please read through the template below and answer all relevant questions. Your additional work here is greatly appreciated and will help us respond as quickly as possible. For general support or usage questions, use the official [Discord Server](https://discord.gg/NpxrDGYDwV). Finally, to avoid duplicates, please search existing pull requests before submitting one here.
 
 > 🦮 By submitting a pull request (PR) to this repository, you agree to the terms within the [Code of Conduct](../CODE_OF_CONDUCT.md). Also make sure you visit our [Contributing Guidelines](../CONTRIBUTING.md) so you learn how to create and submit a high-quality pull requests for this repository. Please don't forget to delete the guide texts marked with this guide dog emoji 🦮  before submitting the issue in order to keep everything clean.
@@ -51,7 +44,7 @@ labels: ''
 - [ ] All active GitHub checks for tests, formatting and security are passing (CI Pipeline)
 - [ ] The correct base branch is being used.
 - [ ] Documentation for new / changed functionality is added or updated (if documentation is present)
-- [ ] Test reproducing the bug are implemented
+- [ ] Test for reproducing the bug / new business logic (e.g. viewmodels, services and so on) are implemented
 - [ ] Errors are handled and/or least logged
 - [ ] Log messages and comments are written in english
 - [ ] There are no (debug) console logs or _useless_ / _trivial_ comments
