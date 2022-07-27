@@ -16,7 +16,7 @@ We take our open source community seriously and hold ourselves and other contrib
 
 ## Getting Started
 
-Contributions are made to this repo via Issues and Pull Requests (PRs). You can read more about this in our [Fork & Pull Request Workflow](https://github.com/TrophyApp/TrophyApp/wiki/3-Fork-&-Pull-Request-Workflow) wiki page. A few general guidelines that cover both:
+Contributions are made to this repo via Issues and Pull Requests (PRs). You can read more about this in our [Fork & Pull Request Workflow](https://github.com/DevTobias/achiever/wiki/3-Fork-&-Pull-Request-Workflow) wiki page. A few general guidelines that cover both:
 - Search for existing Issues and PRs before creating your own.
 - We work hard to makes sure issues are handled in a timely manner but, depending on the impact, it could take a while to investigate the root cause. A friendly ping in the comment thread to the submitter or a contributor can help draw attention if your issue is blocking.
 
@@ -37,11 +37,11 @@ PRs to our projects are always welcome and can be a quick way to get your fix or
 - Include documentation in the repo.
 - Be accompanied by a complete Pull Request template (loaded automatically when a PR is created).
 
-Please keep in mind that we use ESLint and Flutter Analyze to enforce a consistent coding style, so having that set up in your editor of choice is a great boon to your development process. If you want to learn, how we set up our development environment, you can read our [Development setup](https://github.com/TrophyApp/TrophyApp/wiki/2-Development-setup) wiki page.
+Please keep in mind that we use ESLint and Flutter Analyze to enforce a consistent coding style, so having that set up in your editor of choice is a great boon to your development process. If you want to learn, how we set up our development environment, you can read our [Development setup](https://github.com/DevTobias/achiever/wiki/2-Development-setup) wiki page.
 
-If you want to learn more about the technologies we use and how we structure our projects, to reduce the review comments, please visit the [Repository Technologies](https://github.com/TrophyApp/TrophyApp/wiki/1-Repository-Technologies) wiki page.
+If you want to learn more about the technologies we use and how we structure our projects, to reduce the review comments, please visit the [Repository Technologies](https://github.com/DevTobias/achiever/wiki/1-Repository-Technologies) wiki page.
 
-At last, keep an eye on the [Contribution Checklist](https://github.com/TrophyApp/TrophyApp/wiki/4-Contribution-checklist) which summarizes this document with additional code style checklists, to enforce the code quality. THis checklist is also included in the templates.
+At last, keep an eye on the [Contribution Checklist](https://github.com/DevTobias/achiever/wiki/4-Contribution-checklist) which summarizes this document with additional code style checklists, to enforce the code quality. THis checklist is also included in the templates.
 
 ## Getting Help
 

@@ -64,11 +64,11 @@ To create a new beanch and start working on it:
 # Checkout the main branch - you want your new branch to come from production main 
 git checkout main
 
-# Create a new branch named feature/TrophyApp-187
-git branch feature/TrophyApp-187
+# Create a new branch named feature/AC-187
+git branch feature/AC-187
 
 # Switch to your newly created branch
-git checkout feature/TrophyApp-187
+git checkout feature/AC-187
 ```
 
 ### Make changes to the codebase

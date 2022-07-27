@@ -10,6 +10,7 @@ This sections lists all release versions of the application, which are currently
 
 ## Reporting a Vulnerability
 
-If you found a vulnerability in this codebase, don't hesitate to open a issue as quickly as possible. If you want to discuss it before publishing it, you can always join our discord server or write us an email:
-- // TODO: ADD DISCORD URL
-- // TODO: ADD EMAIL
+If you found a vulnerability in this codebase, don't hesitate to open a issue as quickly as possible. If you want to discuss it before publishing it, you can always write us an email:
+- [infotition discord](https://discord.gg/NpxrDGYDwV)
+- [achiever@gmail.com](mailto:achiever@gmail.com)
+
