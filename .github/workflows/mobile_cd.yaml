@@ -1,0 +1,36 @@
+name: Mobile Release
+
+on:
+  push:
+    tags:
+      - '*'
+    paths:
+      - "mobile/**"
+
+jobs:
+  releases:
+    name: release apk
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.4'
+          channel: 'stable'
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build apk --release
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "frontend/build/app/outputs/flutter-apk/*.apk"
+          token: ${{ secrets.GITHUB_TOKEN }}
