@@ -1,22 +1,22 @@
 Every project has a main development branch where the developers push commits on a day-to-day basis. The project would get really messy really fast, if every developer could directly change files in the repository on the main branch without others knowing (especially beginners who are new to the project). The following tutorial will give you a brief introduction on how professional open source projects handle code contributions.
 
-While contributing to open source projects, knowing how to properly fork and create pull requests is essential. Unfortunatly, it's quite easy to make mistakes or not know what you should do when you're initially learning the process (in other words: getting lost). This wiki will guide you through a standard procedure for creating a fork, doing your work, issuing a pull request, and merging that pull request back into the original project.
+While contributing to open source projects, knowing how to properly fork and create pull requests is essential. Unfortunately, it's quite easy to make mistakes or not know what you should do when you're initially learning the process (in other words: getting lost). This wiki will guide you through a standard procedure for creating a fork, doing your work, issuing a pull request, and merging that pull request back into the original project.
 
 ## Creating a Fork
 
-Head over to the GitHub page of the repository you want to develop on and click the `Fork` button. This copies the repository to your own account. Once finished, you need to download the fork in order to devlop features. You can use your favorite git client to clone the forked repo or just head straight to the command line:
+Head over to the GitHub page of the repository you want to develop on and click the `Fork` button. This copies the repository to your own account. Once finished, you need to download the fork in order to develop features. You can use your favorite git client to clone the forked repo or just head straight to the command line:
 
 ```bash
 # Clones your fork to your local machine
 git clone git@github.com:USERNAME/FORKED_PROJECT_NAME.git
 ```
 
-Now you have a fully functional copy of the repository on your machine, where you can devlop the desired feature.
+Now you have a fully functional copy of the repository on your machine, where you can develop the desired feature.
 
 
 ## Keeping your Fork Up to Date
 
-If you plan on doing anything more than just a tiny quick fix, you'll want to make sure you keep your fork up to date by tracking the original (`upstream`) repo that you forked. To do this, you'll simly need to add a remote (repository to track branches in):
+If you plan on doing anything more than just a tiny quick fix, you'll want to make sure you keep your fork up to date by tracking the original (`upstream`) repo that you forked. To do this, you'll simply need to add a remote (repository to track branches in):
 
 ```bash
 # Add 'upstream' repo to list of remotes
@@ -53,12 +53,12 @@ There are two types of branches you should create. You name of the branch should
 - `feature`: If you want to implement a function which adds content to the repository.
 - `bugfix`: If you want to fix an existing feature which has some bugs in it.
 
-The name of the branch is already defined in the issue or project task, so add this behind your type prefix. If you want to implement something entierely new, please create an issue before creating a pull request. You can read more about this in another article.
+The name of the branch is already defined in the issue or project task, so add this behind your type prefix. If you want to implement something entirely new, please create an issue before creating a pull request. You can read more about this in another article.
 
 Always check, that your branch names follow this structure:
 - `{type}/{name}` while type is either `feature` or `bugfix` and the name as defined in the issue or task
 
-To create a new beanch and start working on it:
+To create a new branch and start working on it:
 
 ```bash
 # Checkout the main branch - you want your new branch to come from production main 

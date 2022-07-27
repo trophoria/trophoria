@@ -41,7 +41,7 @@ Please keep in mind that we use ESLint and Flutter Analyze to enforce a consiste
 
 If you want to learn more about the technologies we use and how we structure our projects, to reduce the review comments, please visit the [Repository Technologies](https://github.com/DevTobias/achiever/wiki/1-Repository-Technologies) wiki page.
 
-At last, keep an eye on the [Contribution Checklist](https://github.com/DevTobias/achiever/wiki/4-Contribution-checklist) which summarizes this document with additional code style checklists, to enforce the code quality. THis checklist is also included in the templates.
+At last, keep an eye on the [Contribution Checklist](https://github.com/DevTobias/achiever/wiki/4-Contribution-checklist) which summarizes this document with additional code style checklists, to enforce the code quality. This checklist is also included in the templates.
 
 ## Getting Help
 
