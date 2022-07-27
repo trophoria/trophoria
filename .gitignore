@@ -1,0 +1,28 @@
+# --------- backend  ---------
+
+# dependencies
+backend/**/node_modules
+
+# generated
+backend/**/dist
+backend/**/*.dbml
+backend/prisma/**/migrations
+backend/config/graphql/schema.gql
+backend/coverage/
+
+# environment files
+backend/**/.env
+backend/**/.production.env
+
+# ----------- misc  ----------
+.DS_Store
+.atom
+**/logs
+**/*.log
+
+# ---------- editor  ---------
+*.iml
+*.ipr
+*.iws
+.idea
+.vscode

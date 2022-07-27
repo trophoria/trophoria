@@ -1,0 +1,19 @@
+version: "3"
+
+includes:
+  lib: ../../../lib/config/tasks/Taskfile.lib.yml
+
+tasks:
+  setup-dev-env:
+    deps: [lib:validate-backend-dev-tools]
+    desc: Setups up dev environment including redis, postgres and the .env file
+    cmds:
+      - yarn install
+      - cp config/env/.example.env config/env/.env
+      - docker compose -f deploy/docker-compose.dev.yml --env-file config/env/.env -p trophy-api-dev up -d
+
+  deploy-service:
+    deps: [lib:validate-deploy-tools]
+    desc: Deploys the service including setting up the .env file
+    cmds:
+      - docker compose -f deploy/docker-compose.yml --env-file config/env/.production.env -p trophy-api up --build --force-recreate

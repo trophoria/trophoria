@@ -1,0 +1,37 @@
+version: "3"
+
+tasks:
+  validate-installation:
+    desc: validates wether a given tool is installed
+    cmds:
+      - |
+        if ! [ -x "$(command -v {{.COMMAND}})" ]; then
+          echo -e "${red}Error: {{.COMMAND}} is not installed on your machine." >&2
+          exit 127
+        fi
+    silent: true
+
+  validate-tools:
+    desc: iterates on an array of arguments and validates that each tool is installed
+    cmds:
+      - |
+        for i in {{.COMMAND}}
+          do
+            if ! [ -x $(command -v $i) ]; then
+              echo -e "${red}Error: $i is not installed on your machine." >&2
+              exit 127
+            fi
+          done
+    silent: true
+
+  validate-deploy-tools:
+    desc: validate that tools necessary for the deployment of the necessary containers are present
+    cmds:
+      - task: validate-tools
+        vars: { COMMAND: "docker docker-compose" }
+
+  validate-backend-dev-tools:
+    desc: validate that the tools solely necessary for the development of the backend are present
+    cmds:
+      - task: validate-tools
+        vars: { COMMAND: "git npm node yarn" }
