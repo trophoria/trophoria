@@ -1,7 +1,7 @@
 # --------- backend  ---------
 
 # dependencies
-backend/**/node_modules
+backend/**/node_modules/
 
 # generated
 backend/**/dist
