@@ -12,7 +12,7 @@ RUN yarn add pm2
 # Build the nest backend
 COPY deploy/api/ecosystem-config.json tsconfig.json tsconfig.build.json ./
 COPY src/ ./src/
-COPY config/env/.production.env ./config/env/.env
+#COPY config/env/.production.env ./config/env/.env
 COPY config/prisma/schema.prisma ./prisma/schema.prisma
 ENV NODE_ENV=production
 RUN yarn build
@@ -27,7 +27,7 @@ FROM node:alpine
 WORKDIR /api
 
 COPY --from=builder /build/node_modules ./node_modules/
-COPY --from=builder /build/config/env/.env ./config/env/.env
+#COPY --from=builder /build/config/env/.env ./config/env/.env
 COPY --from=builder /build/dist ./dist/
 COPY --from=builder /build/ecosystem-config.json ./
 
