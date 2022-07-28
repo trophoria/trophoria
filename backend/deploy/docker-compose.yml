@@ -28,9 +28,7 @@ services:
       - redis:/data/redis
 
   api:
-    build:
-      context: ../
-      dockerfile: deploy/api/Dockerfile
+    image: infotition/psn-api-backend:latest
     env_file:
       - ../config/env/.production.env
     ports:
