@@ -19,6 +19,7 @@ backend/**/.production.env
 .atom
 **/logs
 **/*.log
+.todo
 
 # ---------- editor  ---------
 *.iml
