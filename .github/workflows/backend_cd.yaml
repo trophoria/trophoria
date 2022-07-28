@@ -33,6 +33,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: backend
-          file: deploy/api/Dockerfile
+          file: backend/deploy/api/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/psn-api-backend:latest
