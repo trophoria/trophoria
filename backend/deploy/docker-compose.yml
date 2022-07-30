@@ -16,7 +16,7 @@ services:
       - postgres:/data/postgres
 
   cache:
-    build: redis
+    image: trophoria/trophoria-cache:latest
     restart: unless-stopped
     privileged: true
     command: sh init-redis.sh ${REDIS_PASSWORD}
@@ -28,16 +28,22 @@ services:
       - redis:/data/redis
 
   api:
-    image: infotition/psn-api-backend:latest
-    env_file:
-      - ../config/env/.production.env
+    image: trophoria/trophoria-api:latest
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_TTL: ${REDIS_TTL}
+      REDIS_HOST: ${REDIS_HOST}
+      PORT: ${PORT}
     ports:
       - "${API_PORT}:${API_PORT}"
     networks:
       - trophy-service
     depends_on:
-      - postgres
       - cache
+      - postgres
 
 volumes:
   postgres:

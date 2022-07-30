@@ -2,27 +2,27 @@
 
 <br />
 <div align="center">
-  <a href="https://achiever.de">
-    <img src="./.github/assets/logo.png" width="500" alt="achiever logo" />
+  <a href="https://github.com/trophoria">
+    <img src="https://github.com/trophoria/.github/blob/main/brand/brand.png" width="500" alt="trophoria logo" />
   </a>
 
   <br />
   <br />
 
   <p align="center">
-    Achiever is an open source playstation trophy platform with modern design with the goal to fit the needs of a passionate trophy hunter.
+    Open source playstation trophy platform with modern design wich aims to fit the needs of every passionate trophy hunter.
     <br />
-    <a href="https://DevTobias.github.io/achiever/"><strong>« Explore the docs »</strong></a>
+    <a href="https://trophoria.github.io/trophoria/"><strong>« Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/DevTobias/achiever/issues/newtemplate=bug_report.md">Report Bug</a>
+    <a href="https://github.com/trophoria/trophoria/issues/newtemplate=bug_report.md">Report Bug</a>
     ·
-    <a href="https://github.com/DevTobias/achiever/issues/newtemplate=feature_request.md">Request Feature</a>
+    <a href="https://github.com/trophoria/trophoria/issues/newtemplate=feature_request.md">Request Feature</a>
   </p>
 
   <p align="center">
-  	<a href="https://github.com/DevTobias/achiever/blob/main/LICENSE" title="license">
-			<img src="https://img.shields.io/github/license/DevTobias/achiever?style=for-the-badge" alt="license" />
+  	<a href="https://github.com/trophoria/trophoria/blob/main/LICENSE" title="license">
+			<img src="https://img.shields.io/github/license/trophoria/trophoria?style=for-the-badge" alt="license" />
 		</a>
   </p>
 </div>

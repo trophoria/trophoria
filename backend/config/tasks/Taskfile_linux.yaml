@@ -1,11 +1,7 @@
 version: "3"
 
-includes:
-  lib: ../../../lib/config/tasks/Taskfile.lib.yml
-
 tasks:
   setup-dev-env:
-    deps: [lib:validate-backend-dev-tools]
     desc: Setups up dev environment including redis, postgres and the .env file
     cmds:
       - yarn install

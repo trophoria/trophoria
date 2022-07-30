@@ -5,7 +5,7 @@ title: ''
 labels: ''
 ---
 
-> 🦮 **Thank you in advance for helping us to improve this repository!** Please read through the template below and answer all relevant questions. Your additional work here is greatly appreciated and will help us respond as quickly as possible. For general support or usage questions, use the official [Discord Server](https://discord.gg/NpxrDGYDwV). Finally, to avoid duplicates, please search existing Issues before submitting one here.
+> 🦮 **Thank you in advance for helping us to improve this repository!** Please read through the template below and answer all relevant questions. Your additional work here is greatly appreciated and will help us respond as quickly as possible. For general support or usage questions, use the official [Discord Server](https://discord.gg/qWPyFWkff6). Finally, to avoid duplicates, please search existing Issues before submitting one here.
 
 > 🦮 By submitting an Issue to this repository, you agree to the terms within the [Code of Conduct](../CODE_OF_CONDUCT.md). Please don't forget to delete the guide texts marked with this guide dog emoji 🦮  before submitting the issue in order to keep everything clean.
 

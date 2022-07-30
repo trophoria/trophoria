@@ -34,7 +34,7 @@ jobs:
           context: backend
           file: backend/deploy/api/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/psn-api-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/trophoria-api:latest
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -42,4 +42,4 @@ jobs:
           context: backend/deploy/redis
           file: backend/deploy/redis/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/psn-api-cache:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/trophoria-cache:latest
