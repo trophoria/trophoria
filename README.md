@@ -85,8 +85,6 @@ All of our software is distributed under the MIT License. See the [LICENSE](./LI
 
 ## 💌 Contact
 
-TODO: ADD CONTACT INFORMATION
-
 If you are interested in connecting with us, don't hesitate to do so. Either write us an email to [trophoria@gmail.com](mailto:trophoria@gmail.com) or join our [community discord ](https://discord.gg/qWPyFWkff6).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
