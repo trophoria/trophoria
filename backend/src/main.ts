@@ -11,28 +11,22 @@ import { AppModule } from '@trophoria/app.module';
 import { ThrottlerExceptionFilter } from '@trophoria/core/filters/throttler-exception.filter';
 
 const bootstrap = async () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const apiPort = process.env.PORT ?? 3000;
+  const cookieSecret = process.env.COOKIE_SECRET;
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
 
-  await app.register(helmet, {
-    contentSecurityPolicy: process.env.NODE_ENV === 'production',
-  });
-
-  await app.register(fastifyCookie, {
-    secret: process.env.COOKIE_SECRET,
-  });
-
-  await app.register(fastifyCsrf, {
-    cookieOpts: { signed: true },
-  });
+  await app.register(helmet, { contentSecurityPolicy: isProduction });
+  await app.register(fastifyCookie, { secret: cookieSecret });
+  await app.register(fastifyCsrf, { cookieOpts: { signed: true } });
 
   app.useGlobalFilters(new ThrottlerExceptionFilter());
 
-  app.listen(process.env.PORT ?? 3000, '0.0.0.0', async () =>
-    console.log(`Application is running on: ${await app.getUrl()}`),
-  );
+  app.listen(apiPort, '0.0.0.0');
 };
 
 bootstrap();

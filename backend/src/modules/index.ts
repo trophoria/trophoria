@@ -4,5 +4,4 @@ import { SetupModules } from '@trophoria/modules/setup';
 import { PrismaService } from '@trophoria/modules/setup/prisma/prisma.service';
 
 export const Modules = [...SetupModules, PersonModule];
-
 export const Providers = [PrismaService, globalGraphQlThrottlerGuard];

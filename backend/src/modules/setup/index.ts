@@ -1,7 +1,7 @@
-import { ApiConfigModule } from './config/api-config.module';
-import { MercuriusGraphQLModule } from './graphql/mercurius-graphql.module';
-import { RedisCacheModule } from './redis/redis-cache.module';
-import { GraphQLThrottlerModule } from './throttler/graphql-throttler.module';
+import { ApiConfigModule } from '@trophoria/modules/setup/config/api-config.module';
+import { MercuriusGraphQLModule } from '@trophoria/modules/setup/graphql/mercurius-graphql.module';
+import { RedisCacheModule } from '@trophoria/modules/setup/redis/redis-cache.module';
+import { GraphQLThrottlerModule } from '@trophoria/modules/setup/throttler/graphql-throttler.module';
 
 export const SetupModules = [
   ApiConfigModule,
