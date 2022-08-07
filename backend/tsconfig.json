@@ -11,6 +11,13 @@
     "incremental": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "baseUrl": "./"
-  }
+    "baseUrl": "./",
+    "paths": {
+      "@trophoria/*": ["src/*"],
+      "@trophoria/core/*": ["src/core/*"],
+      "@trophoria/modules": ["src/modules"],
+      "@trophoria/modules/*": ["src/modules/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
 }
