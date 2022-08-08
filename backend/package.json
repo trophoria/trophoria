@@ -29,6 +29,9 @@
     "fastify": "^4.0.0",
     "graphql": "^16.5.0",
     "mercurius": "^10.1.0",
+    "nestjs-pino": "^3.1.1",
+    "pino-http": "^8.2.0",
+    "pino-pretty": "^8.1.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "zod": "^3.17.10"
