@@ -24,6 +24,9 @@
   	<a href="https://github.com/trophoria/trophoria/blob/main/LICENSE" title="license">
 			<img src="https://img.shields.io/github/license/trophoria/trophoria?style=for-the-badge" alt="license" />
 		</a>
+    <a href="https://sonarcloud.io/project/overview?id=trophoria_trophoria" title="static code analysis">
+      <img src="https://img.shields.io/sonar/violations/trophoria_trophoria/main?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge" alt="static code analysis"/>
+    </a>
   </p>
 </div>
 
