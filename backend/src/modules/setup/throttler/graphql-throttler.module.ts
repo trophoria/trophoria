@@ -14,4 +14,4 @@ import { ThrottlerModule } from '@nestjs/throttler';
     }),
   ],
 })
-export class GraphQLThrottlerModule {}
+export class ApiThrottlerModule {}

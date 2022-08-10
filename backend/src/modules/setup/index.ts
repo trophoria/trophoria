@@ -3,13 +3,13 @@ import { MercuriusGraphQLModule } from '@trophoria/modules/setup/graphql/mercuri
 import { PinoLoggerModule } from '@trophoria/modules/setup/logger/pino-logger.module';
 import { PrismaModule } from '@trophoria/modules/setup/prisma/prisma.module';
 import { RedisCacheModule } from '@trophoria/modules/setup/redis/redis-cache.module';
-import { GraphQLThrottlerModule } from '@trophoria/modules/setup/throttler/graphql-throttler.module';
+import { ApiThrottlerModule } from '@trophoria/modules/setup/throttler/graphql-throttler.module';
 
 export const SetupModules = [
   ApiConfigModule,
   RedisCacheModule,
   MercuriusGraphQLModule,
-  GraphQLThrottlerModule,
+  ApiThrottlerModule,
   PinoLoggerModule,
   PrismaModule,
 ];

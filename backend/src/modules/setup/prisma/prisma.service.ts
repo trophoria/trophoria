@@ -5,12 +5,17 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
 
 @Injectable()
 export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
+  constructor(private config: ApiConfigService) {
+    super({ datasources: { db: { url: config.databaseUrl } } });
+  }
+
   async onModuleInit() {
     this.$connect();
   }
@@ -24,7 +29,7 @@ export class PrismaService
   }
 
   async cleanDatabase() {
-    if (process.env.NODE_ENV === 'production') return;
+    if (this.config.isProduction) return;
 
     // TODO: ADD REMAINING DATABASE TABLES
     return Promise.all([this.account.deleteMany()]);
