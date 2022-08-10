@@ -1,0 +1,132 @@
+_type: export
+__export_format: 4
+__export_date: 2022-08-10T19:48:56.935Z
+__export_source: insomnia.desktop.app:v2022.5.0
+resources:
+  - _id: req_f6712a3928224fbd82f75df37e614666
+    parentId: fld_b6bcc3c547914f679ca330546e1b0d58
+    modified: 1660160875266
+    created: 1660159725696
+    url: "{{ _.base_url }}/graphql"
+    name: Ping (GQL)
+    description: ""
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"{\n\tping\n}\n"}'
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_8470de62185d4d9f9d306e1930b72442
+    authentication: {}
+    metaSortKey: -1660159725696
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_b6bcc3c547914f679ca330546e1b0d58
+    parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
+    modified: 1660160861604
+    created: 1660159623142
+    name: Health Check
+    description: Endpoints to ping the rest and graphql endpoint and check if all
+      services are healthy.
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1660159609139
+    _type: request_group
+  - _id: wrk_e7db9950d6ac4aca97f8149caaffe534
+    parentId: null
+    modified: 1660160760141
+    created: 1654989373395
+    name: New Document
+    description: >-
+      
+      # Trophoria Backend
+
+
+      Open source playstation trophy platform with modern design wich aims to fit the needs of every passionate trophy hunter.
+    scope: design
+    _type: workspace
+  - _id: req_c66fae83f3d440859c643baaf2e78239
+    parentId: fld_b6bcc3c547914f679ca330546e1b0d58
+    modified: 1660159816237
+    created: 1660159610933
+    url: "{{ _.base_url }}/health/ping"
+    name: Ping (REST)
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1660159610933
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_5adccea6790945cca15040570df2af61
+    parentId: fld_b6bcc3c547914f679ca330546e1b0d58
+    modified: 1660159819996
+    created: 1660159783258
+    url: "{{ _.base_url }}/health/check"
+    name: Health (REST)
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1660159610883
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_d93aaf3f520905f45b459ec26da158089591b813
+    parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
+    modified: 1660160816832
+    created: 1654989373405
+    name: Base Environment
+    data:
+      base_url: http://localhost:3000
+    dataPropertyOrder:
+      "&":
+        - base_url
+    color: null
+    isPrivate: false
+    metaSortKey: 1654989373405
+    _type: environment
+  - _id: jar_d93aaf3f520905f45b459ec26da158089591b813
+    parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
+    modified: 1654989373406
+    created: 1654989373406
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_a89e9f48531345869be5e81c814fed63
+    parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
+    modified: 1660160727643
+    created: 1654989373402
+    fileName: Trophoria
+    contents: ""
+    contentType: yaml
+    _type: api_spec
+  - _id: uts_c93cbe268bb543e6a80a7f671a6df602
+    parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
+    modified: 1654989373408
+    created: 1654989373408
+    name: Example Test Suite
+    _type: unit_test_suite
