@@ -9,7 +9,7 @@ import {
 
 import { Logger } from 'nestjs-pino';
 import { AppModule } from '@trophoria/app.module';
-import { ThrottlerExceptionFilter } from '@trophoria/core/filters/throttler-exception.filter';
+import { ThrottlerExceptionFilter } from '@trophoria/libs/common';
 
 const bootstrapApp = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(

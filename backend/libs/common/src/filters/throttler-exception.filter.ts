@@ -2,7 +2,7 @@ import { Catch } from '@nestjs/common';
 import { GqlExceptionFilter } from '@nestjs/graphql';
 import { ThrottlerException } from '@nestjs/throttler';
 
-import { RequestLimitExceededException } from '@trophoria/core/errors/request_limit_exceeded.error';
+import { RequestLimitExceededException } from '@trophoria/libs/common';
 
 @Catch(ThrottlerException)
 export class ThrottlerExceptionFilter implements GqlExceptionFilter {

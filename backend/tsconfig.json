@@ -14,9 +14,10 @@
     "baseUrl": "./",
     "paths": {
       "@trophoria/*": ["src/*"],
-      "@trophoria/core/*": ["src/core/*"],
       "@trophoria/modules": ["src/modules"],
-      "@trophoria/modules/*": ["src/modules/*"]
+      "@trophoria/modules/*": ["src/modules/*"],
+      "@trophoria/libs/common": ["libs/common/src"],
+      "@trophoria/libs/core": ["libs/core/src"]
     }
   },
   "exclude": ["node_modules", "dist"]

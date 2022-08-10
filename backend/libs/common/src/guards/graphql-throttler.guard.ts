@@ -1,5 +1,5 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { APP_GUARD, Reflector } from '@nestjs/core';
+import { ExecutionContext, Injectable } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
@@ -11,6 +11,10 @@ export class GraphQLThrottlerGuard extends ThrottlerGuard {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log(
+      this.reflector.get<boolean>('disableThrottler', context.getHandler()),
+    );
+
     return !this.reflector.get<boolean>(
       'disableThrottler',
       context.getHandler(),

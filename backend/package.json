@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist&&nest build",
     "start": "node dist/main",
-    "start:dev": "nest start --watch",
+    "start:dev": "rimraf dist&&nest start --watch",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "prisma:generate": "prisma generate --schema=./config/prisma/schema.prisma"
   },

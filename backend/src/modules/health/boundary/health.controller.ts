@@ -7,8 +7,10 @@ import {
   MemoryHealthIndicator,
 } from '@nestjs/terminus';
 
-import { DisableThrottler } from '@trophoria/core/guards/disable-throttler.guard';
-import { PrismaHealthIndicator } from '@trophoria/core/misc/prisma-health-indicator';
+import {
+  PrismaHealthIndicator,
+  DisableThrottler,
+} from '@trophoria/libs/common';
 
 @Controller('')
 @DisableThrottler()

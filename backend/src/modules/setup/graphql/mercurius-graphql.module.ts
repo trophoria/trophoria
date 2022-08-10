@@ -3,16 +3,17 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 
-import { errorFormatter } from '@trophoria/modules/setup/graphql/mercurius-graphql.service';
+import { GraphQLErrorFormatter } from '@trophoria/libs/common';
+import { TrophoriaConfig } from '@trophoria/libs/core';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
-      autoSchemaFile: join(process.cwd(), 'config/graphql/schema.gql'),
+      autoSchemaFile: join(process.cwd(), TrophoriaConfig.graphqlSchemaPath),
       sortSchema: true,
       graphiql: true,
-      errorFormatter: errorFormatter,
+      errorFormatter: GraphQLErrorFormatter.formatError,
     }),
   ],
 })

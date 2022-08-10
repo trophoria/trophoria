@@ -3,8 +3,9 @@
   "baseUrl": "./",
   "paths": {
     "@trophoria/*": ["backend/src/*"],
-    "@trophoria/core/*": ["backend/src/core/*"],
     "@trophoria/modules": ["backend/src/modules"],
-    "@trophoria/modules/*": ["backend/src/modules/*"]
+    "@trophoria/modules/*": ["backend/src/modules/*"],
+    "@trophoria/libs/common": ["backend/libs/common/src"],
+    "@trophoria/libs/core": ["backend/libs/core/src"]
   }
 }
