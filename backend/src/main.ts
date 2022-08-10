@@ -1,7 +1,6 @@
 import { fastifyCookie } from '@fastify/cookie';
 import fastifyCsrf from '@fastify/csrf-protection';
 import helmet from '@fastify/helmet';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
