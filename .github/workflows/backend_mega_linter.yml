@@ -16,8 +16,7 @@ env:
   APPLY_FIXES: none
   SHOW_ELAPSED_TIME: true
   FILEIO_REPORTER: false
-  DISABLE:
-    - SPELL
+  DISABLE: SPELL
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
