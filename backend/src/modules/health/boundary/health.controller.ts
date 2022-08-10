@@ -15,11 +15,13 @@ import {
 import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { PrismaHealthIndicator } from '@trophoria/libs/common';
+import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
 
 @UseGuards(ThrottlerGuard)
-@Controller('')
+@Controller('health')
 export class HealthController {
   constructor(
+    private readonly config: ApiConfigService,
     private readonly health: HealthCheckService,
     private readonly http: HttpHealthIndicator,
     private readonly memory: MemoryHealthIndicator,
@@ -36,7 +38,11 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.http.pingCheck('endpoint', 'http://127.0.0.1:3000/ping'),
+      () =>
+        this.http.pingCheck(
+          'endpoint',
+          `http://127.0.0.1:${this.config.get('API_PORT')}/health/ping`,
+        ),
       () => this.db.isHealthy('database'),
       () => this.memory.checkHeap('backend_memory', 150 * 1024 * 1024),
       () =>
