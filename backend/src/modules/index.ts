@@ -1,5 +1,5 @@
 import { HealthModule } from '@trophoria/modules/health/health.module';
-import { SetupModules } from '@trophoria/modules/setup';
+import { SetupModule } from '@trophoria/modules/setup/setup.module';
 
-export const Modules = [...SetupModules, HealthModule];
+export const Modules = [SetupModule, HealthModule];
 export const Providers = [];
