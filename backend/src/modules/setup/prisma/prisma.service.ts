@@ -30,8 +30,6 @@ export class PrismaService
 
   async cleanDatabase() {
     if (this.config.isProduction) return;
-
-    // TODO: ADD REMAINING DATABASE TABLES
     return Promise.all([this.account.deleteMany()]);
   }
 }

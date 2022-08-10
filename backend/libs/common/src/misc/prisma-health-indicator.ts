@@ -4,7 +4,6 @@ import {
   HealthIndicator,
   HealthIndicatorResult,
 } from '@nestjs/terminus';
-import { PrismaClient } from '@prisma/client';
 
 import { PrismaService } from '@trophoria/modules/setup/prisma/prisma.service';
 
