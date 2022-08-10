@@ -7,10 +7,12 @@ type Execution = ExecutionResult<ObjMap<unknown>, ObjMap<unknown>>;
 
 export class GraphQLErrorFormatter {
   static formatError(execution: Execution) {
+    if (!execution.errors) return;
+
     let status = 500;
 
     const errors = execution.errors.map((error) => {
-      const cleaned = this.cleanError(error.originalError);
+      const cleaned = GraphQLErrorFormatter.cleanError(error.originalError);
       if (cleaned) {
         error.message = cleaned.response;
         status = status === 500 ? cleaned.code : 207;

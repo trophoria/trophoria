@@ -7,9 +7,9 @@ import { ApiThrottlerModule } from '@trophoria/modules/setup/throttler/graphql-t
 
 export const SetupModules = [
   ApiConfigModule,
+  PinoLoggerModule,
   RedisCacheModule,
+  PrismaModule,
   MercuriusGraphQLModule,
   ApiThrottlerModule,
-  PinoLoggerModule,
-  PrismaModule,
 ];

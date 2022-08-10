@@ -10,7 +10,7 @@ export class ThrottlerExceptionFilter implements GqlExceptionFilter {
   constructor(private config: ApiConfigService) {}
 
   catch() {
-    return new RequestLimitExceededException(
+    throw new RequestLimitExceededException(
       parseInt(this.config.get('THROTTLE_LIMIT')),
       parseInt(this.config.get('THROTTLE_TTL')),
     );

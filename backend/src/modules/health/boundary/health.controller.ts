@@ -1,4 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import {
   DiskHealthIndicator,
   HealthCheck,
@@ -6,14 +12,12 @@ import {
   HttpHealthIndicator,
   MemoryHealthIndicator,
 } from '@nestjs/terminus';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
-import {
-  PrismaHealthIndicator,
-  DisableThrottler,
-} from '@trophoria/libs/common';
+import { PrismaHealthIndicator } from '@trophoria/libs/common';
 
+@UseGuards(ThrottlerGuard)
 @Controller('')
-@DisableThrottler()
 export class HealthController {
   constructor(
     private readonly health: HealthCheckService,

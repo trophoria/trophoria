@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
+
+import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
 
 @Module({
   imports: [
     LoggerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => {
-        const isProduction = config.get('NODE_ENV') === 'production';
-
+      inject: [ApiConfigService],
+      useFactory: async (config: ApiConfigService) => {
         const pinoPrettyTransport = {
           target: 'pino-pretty',
           options: {
@@ -22,8 +20,8 @@ import { LoggerModule } from 'nestjs-pino';
 
         return {
           pinoHttp: {
-            level: isProduction ? 'info' : 'debug',
-            transport: !isProduction ? pinoPrettyTransport : undefined,
+            level: !config.isProduction ? 'debug' : 'info',
+            transport: !config.isProduction ? pinoPrettyTransport : undefined,
           },
         };
       },
