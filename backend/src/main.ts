@@ -1,6 +1,7 @@
 import { fastifyCookie } from '@fastify/cookie';
 import fastifyCsrf from '@fastify/csrf-protection';
 import helmet from '@fastify/helmet';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -28,6 +29,8 @@ const initializeApp = async (app: App, config: ApiConfigService) => {
   await app.register(helmet, { contentSecurityPolicy: config.isProduction });
   await app.register(fastifyCookie, { secret: config.get('COOKIE_SECRET') });
   await app.register(fastifyCsrf, { cookieOpts: { signed: true } });
+
+  app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
 
   app.useGlobalFilters(new ThrottlerExceptionFilter(config));
 };

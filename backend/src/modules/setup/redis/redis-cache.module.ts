@@ -5,6 +5,7 @@ import * as Redis from 'cache-manager-redis-store';
 @Module({
   imports: [
     CacheModule.registerAsync({
+      isGlobal: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({

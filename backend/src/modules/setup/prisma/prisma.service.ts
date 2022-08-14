@@ -30,6 +30,6 @@ export class PrismaService
 
   async cleanDatabase() {
     if (this.config.isProduction) return;
-    return Promise.all([this.account.deleteMany()]);
+    return Promise.all([this.user.deleteMany()]);
   }
 }

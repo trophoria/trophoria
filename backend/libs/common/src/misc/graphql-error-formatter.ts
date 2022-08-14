@@ -1,8 +1,8 @@
 import { HttpException } from '@nestjs/common';
-import { ExecutionResult } from 'graphql';
+import { ExecutionResult, GraphQLError } from 'graphql';
 import { ObjMap } from 'graphql/jsutils/ObjMap';
 
-type CleanedError = { code: number; response: string };
+type CleanedError = { statusCode: number; response: string };
 type Execution = ExecutionResult<ObjMap<unknown>, ObjMap<unknown>>;
 
 export class GraphQLErrorFormatter {
@@ -11,18 +11,28 @@ export class GraphQLErrorFormatter {
 
     let status = 500;
 
-    const errors = execution.errors.map((error) => {
+    execution.errors = execution.errors.map((error) => {
+      if (!error.originalError) return error;
+
       const cleaned = GraphQLErrorFormatter.cleanError(error.originalError);
-      if (cleaned) {
-        error.message = cleaned.response;
-        status = status === 500 ? cleaned.code : 207;
-      }
-      return error;
+      status = status === 500 ? cleaned.statusCode : 207;
+      return GraphQLErrorFormatter.mergeGraphQLError(cleaned, error);
     });
 
-    execution.errors = errors;
-
     return { statusCode: status, response: execution };
+  }
+
+  private static mergeGraphQLError(clean: CleanedError, err: GraphQLError) {
+    return new GraphQLError(clean.response, {
+      source: err.source,
+      positions: err.positions,
+      path: err.path,
+      originalError: err.originalError,
+      nodes: err.nodes,
+      extensions: {
+        status_code: clean.statusCode,
+      },
+    });
   }
 
   private static cleanError(err: Error): CleanedError | undefined {
@@ -30,10 +40,14 @@ export class GraphQLErrorFormatter {
       const res = err.getResponse();
 
       return {
-        code: err.getStatus(),
-        response:
-          typeof res === 'string' ? res : JSON.stringify(err.getResponse()),
+        statusCode: err.getStatus(),
+        response: typeof res === 'string' ? res : res['message'],
       };
     }
+
+    return {
+      statusCode: 500,
+      response: err.message,
+    };
   }
 }
