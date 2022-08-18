@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { Modules, Providers } from '@trophoria/modules';
+import { HealthModule } from '@trophoria/modules/health/health.module';
+import { SetupModule } from '@trophoria/modules/setup/setup.module';
+import { UserModule } from '@trophoria/modules/user/user.module';
 
-@Module({ imports: Modules, providers: Providers })
+@Module({
+  imports: [SetupModule, HealthModule, UserModule],
+})
 export class AppModule {}

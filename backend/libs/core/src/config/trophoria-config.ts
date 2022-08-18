@@ -2,7 +2,9 @@ import { z } from 'zod';
 
 export class TrophoriaConfig {
   static envValidationSchema = z.object({
-    NODE_ENV: z.enum(['development', 'production']).default('development'),
+    NODE_ENV: z
+      .enum(['development', 'production', 'test'])
+      .default('development'),
 
     DATABASE_HOST: z.string().default('localhost'),
     DATABASE_USER: z.string().default('postgres'),

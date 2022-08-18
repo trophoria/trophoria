@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "target": "es2017",
     "sourceMap": true,
     "incremental": true,
@@ -14,7 +15,6 @@
     "baseUrl": "./",
     "paths": {
       "@trophoria/*": ["src/*"],
-      "@trophoria/modules": ["src/modules"],
       "@trophoria/modules/*": ["src/modules/*"],
       "@trophoria/libs/common": ["libs/common/src"],
       "@trophoria/libs/core": ["libs/core/src"]

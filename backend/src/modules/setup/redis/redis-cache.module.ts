@@ -1,20 +1,25 @@
 import { CacheModule, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import * as Redis from 'cache-manager-redis-store';
+
+import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
 
 @Module({
   imports: [
     CacheModule.registerAsync({
       isGlobal: true,
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        store: Redis,
-        host: configService.get('CACHE_HOST'),
-        port: configService.get('CACHE_PORT'),
-        ttl: configService.get('CACHE_TTL'),
-        auth_pass: configService.get('CACHE_PASSWORD'),
-      }),
+      inject: [ApiConfigService],
+      useFactory: async (configService: ApiConfigService) => {
+        if (configService.isTest) return;
+
+        return {
+          store: Redis,
+          host: configService.get('CACHE_HOST'),
+          port: configService.get('CACHE_PORT'),
+          ttl: configService.get('CACHE_TTL'),
+          auth_pass: configService.get('CACHE_PASSWORD'),
+        };
+      },
     }),
   ],
 })

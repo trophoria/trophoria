@@ -13,6 +13,10 @@ export class ApiConfigService {
     return this.configService.get('NODE_ENV') === 'production';
   }
 
+  get isTest() {
+    return this.configService.get('NODE_ENV') === 'test';
+  }
+
   get databaseUrl() {
     const user = this.configService.get('DATABASE_USER');
     const password = this.configService.get('DATABASE_PASSWORD');

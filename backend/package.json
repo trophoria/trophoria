@@ -8,6 +8,7 @@
     "start": "node dist/main",
     "start:dev": "rimraf dist&&nest start --watch",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "jest",
     "prisma:generate": "prisma generate --schema=./config/prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema=./config/prisma/schema.prisma",
     "prisma:studio": "prisma studio --schema=./config/prisma/schema.prisma"
@@ -50,15 +51,45 @@
     "@infotition/eslint-config": "^2.2.0",
     "@infotition/prettier-config": "^1.0.0",
     "@nestjs/cli": "^9.0.0",
+    "@nestjs/testing": "^9.0.9",
     "@types/bcrypt": "^5.0.0",
     "@types/cache-manager": "^4.0.1",
     "@types/cache-manager-redis-store": "^2.0.1",
+    "@types/jest": "^28.1.6",
     "@types/node": "18.0.6",
     "@types/passport-jwt": "^3.0.6",
+    "jest": "^28.1.3",
     "prisma": "4.1.0",
     "prisma-nestjs-graphql": "^17.0.0",
     "rimraf": "^3.0.2",
+    "supertest": "^6.2.4",
+    "ts-jest": "^28.0.8",
+    "ts-loader": "^9.3.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.3.5"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@trophoria/libs/common": "<rootDir>/libs/common/src",
+      "@trophoria/libs/core": "<rootDir>/libs/core/src",
+      "@trophoria/modules/(.*)": "<rootDir>/src/modules/$1",
+      "@trophoria/(.*)": "<rootDir>/src/$1"
+    }
   },
   "prettier": "@infotition/prettier-config",
   "eslintConfig": {
