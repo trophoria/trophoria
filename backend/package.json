@@ -48,10 +48,10 @@
     "zod": "^3.17.10"
   },
   "devDependencies": {
-    "@infotition/eslint-config": "^2.2.0",
-    "@infotition/prettier-config": "^1.0.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/testing": "^9.0.9",
+    "@trophoria/eslint-config": "^1.0.0",
+    "@trophoria/prettier-config": "^1.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cache-manager": "^4.0.1",
     "@types/cache-manager-redis-store": "^2.0.1",
@@ -91,10 +91,10 @@
       "@trophoria/(.*)": "<rootDir>/src/$1"
     }
   },
-  "prettier": "@infotition/prettier-config",
+  "prettier": "@trophoria/prettier-config",
   "eslintConfig": {
     "extends": [
-      "@infotition/eslint-config"
+      "@trophoria/eslint-config"
     ],
     "ignorePatterns": [
       "**/@generated/*"
