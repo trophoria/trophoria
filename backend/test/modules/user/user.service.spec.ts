@@ -18,7 +18,7 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
-  /*it('should create a new user', () => {
+  it('should create a new user', () => {
     service.create({ email: 'tobi.kaerst@gmx.de', password: '1234' });
-  });*/
+  });
 });

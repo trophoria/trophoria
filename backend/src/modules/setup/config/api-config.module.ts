@@ -10,7 +10,12 @@ import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.ser
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      envFilePath: TrophoriaConfig.envFilePath,
+      envFilePath: (() => {
+        if (process.env.NODE_ENV) {
+          return TrophoriaConfig.testEnvFilePath;
+        }
+        return TrophoriaConfig.envFilePath;
+      })(),
       validate: TrophoriaConfig.envValidationSchema.parse,
     }),
   ],

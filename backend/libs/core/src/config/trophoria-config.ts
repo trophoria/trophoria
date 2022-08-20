@@ -26,5 +26,6 @@ export class TrophoriaConfig {
   });
 
   static envFilePath = 'config/env/.env';
+  static testEnvFilePath = 'config/env/.test.env';
   static graphqlSchemaPath = 'config/graphql/schema.gql';
 }

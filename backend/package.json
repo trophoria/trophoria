@@ -11,6 +11,7 @@
     "test": "jest",
     "prisma:generate": "prisma generate --schema=./config/prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema=./config/prisma/schema.prisma",
+    "prisma:migrate:test": "prisma migrate dev --schema=./config/prisma/test.schema.prisma",
     "prisma:studio": "prisma studio --schema=./config/prisma/schema.prisma"
   },
   "dependencies": {
@@ -80,9 +81,14 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "setup",
+      "health",
+      "main.ts"
+    ],
     "testEnvironment": "node",
     "moduleNameMapper": {
       "@trophoria/libs/common": "<rootDir>/libs/common/src",
