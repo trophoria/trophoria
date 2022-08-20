@@ -10,6 +10,7 @@ backend/prisma/**/migrations
 backend/config/graphql/schema.gql
 backend/coverage/
 backend/**/@generated
+backend/coverage
 
 # environment files
 backend/**/.env
