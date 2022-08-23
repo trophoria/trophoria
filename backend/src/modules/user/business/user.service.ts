@@ -100,27 +100,30 @@ export class UserService {
    * @returns             The freshly created user
    */
   async create(user: UserCreateInput, hashPassword = true): Promise<User> {
-    const usernameExists = async (username: string) =>
-      (await this.db.user.count({ where: { username } })) > 0;
+    const usernameExists = async (name: string) =>
+      (await this.db.user.count({ where: { username: name } })) > 0;
 
-    if (!user.username) {
-      let username = generateNameFromEmail(user.email, 5);
+    let { username, password } = user;
+    const { email } = user;
+
+    if (!username) {
+      username = generateNameFromEmail(email, 5);
       let rerolls = 0;
 
       while (usernameExists(username) && rerolls++ < 5) {
-        username = generateNameFromEmail(user.email, 5);
+        username = generateNameFromEmail(email, 5);
       }
-
-      user.username = username;
     }
 
     if (hashPassword) {
-      user.password = await hash(user.password, 10);
+      password = await hash(user.password, 10);
     }
 
-    return this.db.user.create({ data: user }).catch(() => {
-      throw new HttpException('user already exists', HttpStatus.CONFLICT);
-    });
+    return this.db.user
+      .create({ data: { ...user, password, username } })
+      .catch(() => {
+        throw new HttpException('user already exists', HttpStatus.CONFLICT);
+      });
   }
 
   /**
@@ -151,6 +154,14 @@ export class UserService {
    * @returns       The user instance with no refresh tokens
    */
   async persistTokens(id: string, tokens: string[]): Promise<User> {
+    const alreadyAssigned = await this.db.user.findFirst({
+      where: { tokens: { hasSome: tokens } },
+    });
+
+    if (alreadyAssigned) {
+      throw new HttpException('token already assigned', HttpStatus.CONFLICT);
+    }
+
     return this.db.user.update({ where: { id }, data: { tokens } });
   }
 }

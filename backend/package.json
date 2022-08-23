@@ -94,6 +94,7 @@
       "@trophoria/libs/common": "<rootDir>/libs/common/src",
       "@trophoria/libs/core": "<rootDir>/libs/core/src",
       "@trophoria/modules/(.*)": "<rootDir>/src/modules/$1",
+      "@trophoria/test/(.*)": "<rootDir>/test/$1",
       "@trophoria/(.*)": "<rootDir>/src/$1"
     }
   },
