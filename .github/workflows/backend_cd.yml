@@ -10,10 +10,44 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker:
+  test:
+    name: build and test backend
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     steps:
-      - name: Checkout
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Setup node environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          cache-dependency-path: backend/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate prisma graphql types
+        run: yarn prisma:generate
+
+      - name: Lint the repository
+        run: yarn lint
+
+      - name: Build the backend
+        run: yarn build
+
+      - name: Run all integration/e2e tests
+        run: yarn test --coverage
+
+  docker:
+    name: deploy docker images
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout source code
         uses: actions/checkout@v3
 
       - name: Set up QEMU
@@ -28,7 +62,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push trophoria api
         uses: docker/build-push-action@v3
         with:
           context: backend
@@ -36,7 +70,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/trophoria-api:latest
 
-      - name: Build and push
+      - name: Build and push trophoria cache
         uses: docker/build-push-action@v3
         with:
           context: backend/deploy/redis
