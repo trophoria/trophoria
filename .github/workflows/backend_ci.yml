@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: backend
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -28,6 +28,7 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
+          working-directory: backend
 
       - name: Install dependencies
         run: yarn install
