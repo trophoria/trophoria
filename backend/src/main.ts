@@ -26,9 +26,13 @@ const bootstrapApp = async () => {
 const initializeApp = async (app: App, config: ApiConfigService) => {
   app.useLogger(app.get(Logger));
 
-  await app.register(helmet, { contentSecurityPolicy: config.isProduction });
-  await app.register(fastifyCookie, { secret: config.get('COOKIE_SECRET') });
-  await app.register(fastifyCsrf, { cookieOpts: { signed: true } });
+  await app.register(helmet as never, {
+    contentSecurityPolicy: config.isProduction,
+  });
+  await app.register(fastifyCookie as never, {
+    secret: config.get('COOKIE_SECRET'),
+  });
+  await app.register(fastifyCsrf as never, { cookieOpts: { signed: true } });
 
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
 
