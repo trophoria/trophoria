@@ -1,5 +1,4 @@
 import { CacheModule, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import * as Redis from 'cache-manager-redis-store';
 
 import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
