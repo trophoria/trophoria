@@ -9,5 +9,6 @@ import { UserDatabaseService } from '@trophoria/modules/user/business/user.datab
 @Module({ providers: [UserDatabaseService], exports: [UserDatabaseService] })
 export class UserModule {}
 
+//* Global module exports */
 export * from './business/user.database.service';
 export * from './business/user.service';
