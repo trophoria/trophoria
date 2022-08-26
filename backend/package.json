@@ -51,7 +51,7 @@
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
     "@nestjs/testing": "^9.0.11",
-    "@trophoria/eslint-config": "^1.0.0",
+    "@trophoria/eslint-config": "^1.0.1",
     "@trophoria/prettier-config": "^1.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cache-manager": "^4.0.1",

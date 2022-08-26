@@ -1,5 +1,6 @@
-import { HttpException } from '@nestjs/common';
+import { CACHE_MANAGER, HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Cache } from 'cache-manager';
 
 import { AppModule } from '@trophoria/app.module';
 import { PrismaService } from '@trophoria/modules/setup/prisma/prisma.service';
@@ -13,6 +14,7 @@ import { User } from 'config/graphql/@generated/user/user.model';
 describe('UsersService', () => {
   let service: UserService;
   let db: PrismaService;
+  let cache: Cache;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,10 +23,13 @@ describe('UsersService', () => {
 
     service = module.get<UserService>(UserDatabaseService);
     db = module.get<PrismaService>(PrismaService);
+    cache = module.get<Cache>(CACHE_MANAGER);
   });
 
-  it('should be defined', () => {
+  it('services should be defined', () => {
     expect(service).toBeDefined();
+    expect(db).toBeDefined();
+    expect(cache).toBeDefined();
   });
 
   describe('should create new users', () => {
@@ -35,6 +40,9 @@ describe('UsersService', () => {
     it('should create a new user', async () => {
       createdUser = await service.create(UserMock.mockUsers[0]);
       expect(createdUser.email).toBe(UserMock.mockUsers[0].email);
+      expect(await cache.get(`user-${createdUser.id}`)).toStrictEqual(
+        createdUser,
+      );
     });
 
     it('should automatically hash the password with salt', async () => {
@@ -73,11 +81,17 @@ describe('UsersService', () => {
     it('should be set on false by default', async () => {
       createdUser = await service.create(UserMock.mockUsers[0]);
       expect(createdUser.isVerified).toBeFalsy();
+      expect(await cache.get(`user-${createdUser.id}`)).toStrictEqual(
+        createdUser,
+      );
     });
 
     it('should be able to set to true', async () => {
       const verifiedUser = await service.markAsVerified(createdUser.email);
       expect(verifiedUser.isVerified).toBeTruthy();
+      expect(await cache.get(`user-${createdUser.id}`)).toStrictEqual(
+        verifiedUser,
+      );
     });
   });
 
@@ -96,11 +110,13 @@ describe('UsersService', () => {
     it('should find all users', async () => {
       const allUsers = await service.findAll();
       expect(allUsers.length).toBe(3);
+      expect(await cache.get('user-all')).toStrictEqual(allUsers);
     });
 
     it('should find a user by its unique id', async () => {
       const userById = await service.findById(createdUsers[0].id);
       expect(userById).toStrictEqual(createdUsers[0]);
+      expect(await cache.get(`user-${userById.id}`)).toStrictEqual(userById);
     });
 
     it('should throw error if wrong id was provided', async () => {
@@ -115,11 +131,13 @@ describe('UsersService', () => {
     it('should find a user by term in username (insensitive)', async () => {
       const users = await service.findByTerm('user');
       expect(users.length).toBe(2);
+      expect(await cache.get(`users-term-user`)).toStrictEqual(users);
     });
 
     it('should find a user by term in email (insensitive)', async () => {
       const users = await service.findByTerm('world');
       expect(users.length).toBe(1);
+      expect(await cache.get(`users-term-world`)).toStrictEqual(users);
     });
   });
 
@@ -139,6 +157,9 @@ describe('UsersService', () => {
         UserMock.mockTokens,
       );
       expect(changedUser.tokens).toStrictEqual(UserMock.mockTokens);
+      expect(await cache.get(`user-${changedUser.id}`)).toStrictEqual(
+        changedUser,
+      );
     });
 
     it('should throw an error if an token was assigned to multiple user', async () => {
