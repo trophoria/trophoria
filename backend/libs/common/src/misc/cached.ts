@@ -1,5 +1,21 @@
 import { Cache } from 'cache-manager';
 
+export function ToCache(key: string, options?: ICacheUtilsOptions) {
+  return function (_: unknown, __: string, descriptor: PropertyDescriptor) {
+    const { value } = descriptor;
+
+    descriptor.value = async function (...args: unknown[]) {
+      const returnValue = await value.apply(this, args);
+      this.cache.set(
+        `${key}${generateKeyConcat(options, args, returnValue)}`,
+        returnValue,
+      );
+
+      return returnValue;
+    };
+  };
+}
+
 /**
  * Decorator that marks a function as cached. This means, that the returned value gets
  * cached with the provided key value.

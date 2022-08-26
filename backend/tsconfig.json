@@ -18,7 +18,8 @@
       "@trophoria/modules/*": ["src/modules/*"],
       "@trophoria/libs/common": ["libs/common/src"],
       "@trophoria/libs/core": ["libs/core/src"],
-      "@trophoria/test/*": ["test/*"]
+      "@trophoria/test/*": ["test/*"],
+      "@trophoria/config/*": ["config/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
