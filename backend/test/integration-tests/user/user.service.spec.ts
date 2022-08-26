@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@trophoria/app.module';
 import { PrismaService } from '@trophoria/modules/setup/prisma/prisma.service';
 import { UserService } from '@trophoria/modules/user/business/user.service';
-import { UserMock } from '@trophoria/test/modules/user/mocks/user.mock';
+import { UserMock } from '@trophoria/test/integration-tests/user/mocks/user.mock';
 import { User } from 'config/graphql/@generated/user/user.model';
 
 describe('UsersService', () => {
