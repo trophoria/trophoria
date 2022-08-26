@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Cache } from 'cache-manager';
 
 import { AppModule } from '@trophoria/app.module';
-import { PrismaService } from '@trophoria/modules/setup/prisma/prisma.service';
+import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import {
   UserService,
   UserDatabaseService,

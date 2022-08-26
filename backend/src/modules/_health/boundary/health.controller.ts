@@ -9,7 +9,7 @@ import {
 import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { PrismaHealthIndicator } from '@trophoria/libs/common';
-import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
+import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 
 @UseGuards(ThrottlerGuard)
 @Controller('health')

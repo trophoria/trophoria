@@ -11,7 +11,7 @@ import {
 import { Logger } from 'nestjs-pino';
 import { AppModule } from '@trophoria/app.module';
 import { ThrottlerExceptionFilter } from '@trophoria/libs/common';
-import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
+import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 
 const bootstrapApp = async () => {
   const app: App = await NestFactory.create(AppModule, new FastifyAdapter(), {

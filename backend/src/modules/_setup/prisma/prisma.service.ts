@@ -5,7 +5,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
+import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 
 @Injectable()
 export class PrismaService

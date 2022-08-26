@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { TrophoriaConfig } from '@trophoria/libs/core';
-import { ApiConfigService } from '@trophoria/modules/setup/config/api-config.service';
+import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 
 @Global()
 @Module({

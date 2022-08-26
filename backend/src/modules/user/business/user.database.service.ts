@@ -12,7 +12,7 @@ import { StringNullableFilter } from '@trophoria/config/graphql/@generated/prism
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
 import { Cached, generateNameFromEmail, ToCache } from '@trophoria/libs/common';
-import { PrismaService } from '@trophoria/modules/setup/prisma/prisma.service';
+import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import { UserService } from '@trophoria/modules/user/business/user.service';
 
 @Injectable()
