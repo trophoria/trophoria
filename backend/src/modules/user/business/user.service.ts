@@ -1,6 +1,8 @@
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
 
+export const UserServiceSymbol = Symbol('UserService');
+
 export interface UserService {
   /**
    * Find all persisted {@link User} instances.
@@ -44,15 +46,13 @@ export interface UserService {
    * Saves a new {@link User} in the database. If no username was
    * provided, a name based on the email gets randomly generated. If
    * the email or username already exists, a {@link HttpException} gets
-   * thrown. By default, the password gets already hashed, this however
-   * can be turned off to hash the password somewhere else.
+   * thrown.
    *
    * @param user          The user dto which should get persisted
-   * @param hashPassword  (true) Whether the password should get hashed or not
    * @throws              {@link HttpException} if username or email already exists
    * @returns             The freshly created user
    */
-  create(user: UserCreateInput, hashPassword?: boolean): Promise<User>;
+  create(user: UserCreateInput): Promise<User>;
 
   /**
    * Mark the {@link User} with the provided email as verified. If the

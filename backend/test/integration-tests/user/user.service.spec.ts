@@ -6,7 +6,7 @@ import { AppModule } from '@trophoria/app.module';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import {
   UserService,
-  UserDatabaseService,
+  UserServiceSymbol,
 } from '@trophoria/modules/user/user.module';
 import { UserMock } from '@trophoria/test/integration-tests/user/mocks/user.mock';
 import { User } from 'config/graphql/@generated/user/user.model';
@@ -21,7 +21,7 @@ describe('UsersService', () => {
       imports: [AppModule],
     }).compile();
 
-    service = module.get<UserService>(UserDatabaseService);
+    service = module.get<UserService>(UserServiceSymbol);
     db = module.get<PrismaService>(PrismaService);
     cache = module.get<Cache>(CACHE_MANAGER);
   });
@@ -45,12 +45,6 @@ describe('UsersService', () => {
       );
     });
 
-    it('should automatically hash the password with salt', async () => {
-      expect(
-        createdUser.password !== UserMock.mockUsers[0].password,
-      ).toBeTruthy();
-    });
-
     it('should throw on duplicated email/username', async () => {
       try {
         await service.create(UserMock.mockUsers[0]);
@@ -63,13 +57,6 @@ describe('UsersService', () => {
     it('should create unique username if not provided', async () => {
       const user = await service.create(UserMock.userWithoutUsername);
       expect(user.username).toBeTruthy();
-    });
-
-    it('should not hash password if flag is set', async () => {
-      const hashLessUser = await service.create(UserMock.mockUsers[1], false);
-      expect(
-        hashLessUser.password === UserMock.mockUsers[1].password,
-      ).toBeTruthy();
     });
   });
 

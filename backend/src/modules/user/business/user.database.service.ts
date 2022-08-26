@@ -5,7 +5,6 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
-import { hash } from 'bcrypt';
 import { Cache } from 'cache-manager';
 
 import { StringNullableFilter } from '@trophoria/config/graphql/@generated/prisma/string-nullable-filter.input';
@@ -62,12 +61,12 @@ export class UserDatabaseService implements UserService {
   }
 
   @ToCache('user', { withReturnField: 'id' })
-  async create(user: UserCreateInput, hashPassword = true): Promise<User> {
+  async create(user: UserCreateInput): Promise<User> {
     const usernameExists = async (name: string) =>
       (await this.db.user.count({ where: { username: name } })) > 0;
 
-    let { username, password } = user;
-    const { email } = user;
+    let { username } = user;
+    const { email, password } = user;
 
     if (!username) {
       username = generateNameFromEmail(email, 5);
@@ -76,10 +75,6 @@ export class UserDatabaseService implements UserService {
       while (usernameExists(username) && rerolls++ < 5) {
         username = generateNameFromEmail(email, 5);
       }
-    }
-
-    if (hashPassword) {
-      password = await hash(user.password, 10);
     }
 
     return this.db.user
