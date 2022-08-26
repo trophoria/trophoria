@@ -8,7 +8,11 @@ import {
 import { hash } from 'bcrypt';
 import { Cache } from 'cache-manager';
 
-import { generateNameFromEmail } from '@trophoria/libs/common';
+import {
+  Cached,
+  generateNameFromEmail,
+  Invalidate,
+} from '@trophoria/libs/common';
 import { PrismaService } from '@trophoria/modules/setup/prisma/prisma.service';
 import { StringNullableFilter } from 'config/graphql/@generated/prisma/string-nullable-filter.input';
 import { UserCreateInput } from 'config/graphql/@generated/user/user-create.input';
@@ -26,6 +30,7 @@ export class UserService {
    *
    * @returns All persisted users or empty list.
    */
+  @Cached('user-all')
   async findAll(): Promise<User[]> {
     return this.db.user.findMany();
   }
@@ -38,6 +43,7 @@ export class UserService {
    * @throws    {@link HttpException} if no user was found
    * @returns   The user with the provided id
    */
+  @Cached('user', { withAttribute: 0 })
   async findById(id: string): Promise<User> {
     return this.db.user.findUniqueOrThrow({ where: { id } }).catch(() => {
       throw new HttpException(
@@ -55,6 +61,7 @@ export class UserService {
    * @param searchTerm  The term to match username/email against
    * @returns           All matching persons or an empty list
    */
+  @Cached('users-term', { withAttribute: 0 })
   async findByTerm(searchTerm: string): Promise<User[]> {
     const containsQuery: StringNullableFilter = {
       contains: searchTerm,
@@ -134,6 +141,7 @@ export class UserService {
    * @param email The email of the user to set the verified flag
    * @returns     The updated user instance
    */
+  @Invalidate('user', { withReturnField: 'id' })
   async markAsVerified(email: string): Promise<User> {
     return this.db.user.update({
       where: { email },
@@ -153,6 +161,7 @@ export class UserService {
    * @param tokens  The token list to associate to the user
    * @returns       The user instance with no refresh tokens
    */
+  @Invalidate('user')
   async persistTokens(id: string, tokens: string[]): Promise<User> {
     const alreadyAssigned = await this.db.user.findFirst({
       where: { tokens: { hasSome: tokens } },
