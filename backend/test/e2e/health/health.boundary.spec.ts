@@ -1,7 +1,7 @@
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
 
-import { data, graphql, setupE2eTest } from '@trophoria/test/e2e/e2e-utils';
+import { gqlData, graphql, setupE2eTest } from '@trophoria/test/e2e/e2e-utils';
 import { pingQuery } from '@trophoria/test/e2e/health/health.queries';
 
 describe('HealthBoundary (e2e)', () => {
@@ -11,7 +11,7 @@ describe('HealthBoundary (e2e)', () => {
   afterAll(() => app.close());
 
   it('/graphql (POST)', async () => {
-    const pong = data(await graphql(app, pingQuery).expect(200), 'ping');
+    const pong = gqlData(await graphql(app, pingQuery).expect(200), 'ping');
     expect(pong).toBe('pong');
   });
 

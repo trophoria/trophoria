@@ -8,6 +8,7 @@ export const signUpQuery = gql`
       payload
       updatedAt
       username
+      isVerified
     }
   }
 `;

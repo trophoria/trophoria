@@ -61,5 +61,13 @@ export const gql = String.raw;
  * @param name  The name of the query.
  * @returns     The returned data.
  */
-export const data = (res: request.Response, name: string) =>
+export const gqlData = (res: request.Response, name: string) =>
   res.body.data[name];
+
+/**
+ * Extract the graphql errors out of the supertest response object.
+ *
+ * @param res   The supertest response object.
+ * @returns     The returned errors.
+ */
+export const gqlErrors = (res: request.Response) => res.body.errors;
