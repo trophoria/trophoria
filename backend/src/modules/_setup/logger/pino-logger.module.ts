@@ -18,9 +18,14 @@ import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.se
           },
         };
 
+        const getLevel = () => {
+          if (config.isTest) return 'silent';
+          return config.isProduction ? 'info' : 'debug';
+        };
+
         return {
           pinoHttp: {
-            level: !config.isProduction ? 'debug' : 'info',
+            level: getLevel(),
             transport: !config.isProduction ? pinoPrettyTransport : undefined,
           },
         };

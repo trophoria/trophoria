@@ -8,7 +8,7 @@ import {
   UserService,
   UserServiceSymbol,
 } from '@trophoria/modules/user/user.module';
-import { UserMock } from '@trophoria/test/integration-tests/user/mocks/user.mock';
+import { UserMock } from '@trophoria/test/mocks/user.mock';
 import { User } from 'config/graphql/@generated/user/user.model';
 
 describe('UsersService', () => {
