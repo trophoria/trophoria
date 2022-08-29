@@ -19,13 +19,13 @@ export interface AuthService {
 
   /**
    * Signs in the provided user. This means generating a new
-   * access and refresh token. The refresh token gets saved to database, to
-   * be able to detect token reuse in the future.
+   * access and refresh token. The id of the refresh token gets
+   * saved to database, to be able to detect token reuse in the future.
    *
    * @param user          The user which should get signed in
-   * @param refreshCookie The cookie if refresh token if exists
+   * @param refreshId     The id of the existing refresh cookie
    */
-  signIn(user: User, refreshCookie?: string): Promise<TokenPayload>;
+  signIn(user: User, refreshId?: string): Promise<TokenPayload>;
 
   /**
    * Returns the user in database with the provided email if the plain password

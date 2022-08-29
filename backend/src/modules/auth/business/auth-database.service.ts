@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync, hash } from 'bcrypt';
@@ -22,8 +23,10 @@ export class AuthDatabaseService implements AuthService {
     return this.usersService.create({ ...user, password });
   }
 
-  async signIn(user: User, refreshCookie?: string): Promise<TokenPayload> {
+  async signIn(user: User, refreshId?: string): Promise<TokenPayload> {
     const { id, tokens } = user;
+
+    const refreshTokenID = randomUUID();
 
     // For every sign in protocol, generate a new access and refresh token pair
     const accessToken = this.jwtService.sign(
@@ -41,21 +44,22 @@ export class AuthDatabaseService implements AuthService {
         subject: id,
         privateKey: this.config.get<string>('JWT_REFRESH_PRIVATE_KEY'),
         expiresIn: this.config.get<string>('JWT_REFRESH_EXPIRES_IN'),
+        jwtid: refreshTokenID,
       },
     );
 
     // If the token already exists in the array, it means that the sign in protocol
     // got called while already signed in. In this case, just remove revoke the
     // old refresh token because a new one got created.
-    let filteredTokens = removeIfExists(tokens, refreshCookie);
+    let filteredTokens = removeIfExists(tokens, refreshId);
 
     // If a refresh token exists / was provided in the sign in process, check for the
     // token in the database. If the token was not found in the database, which means
     // the token got invalidated but still provided by the client, revoke all tokens
     // of the user because a token reuse was detected.
     let reuseDetected = false;
-    if (refreshCookie) {
-      await this.usersService.findByToken(refreshCookie).catch(() => {
+    if (refreshId) {
+      await this.usersService.findByToken(refreshId).catch(() => {
         filteredTokens = [];
         reuseDetected = true;
       });
@@ -66,7 +70,7 @@ export class AuthDatabaseService implements AuthService {
     // remove it from the list (invalidate it, because a new one got created).
     await this.usersService.persistTokens(id, [
       ...filteredTokens,
-      refreshToken,
+      refreshTokenID,
     ]);
 
     return { accessToken, refreshToken, reuseDetected };
