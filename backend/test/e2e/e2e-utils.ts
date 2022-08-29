@@ -12,7 +12,7 @@ import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 
 /**
  * Setup the fastify application for the e2e testing environment.
- * @returns The testing module, the fastify app and the database service.
+ * @returns The testing module, the fastify app, the database and config service.
  */
 export const setupE2eTest = async () => {
   const module = await Test.createTestingModule({
@@ -30,7 +30,7 @@ export const setupE2eTest = async () => {
   await initializeApp(app, config);
   await app.getHttpAdapter().getInstance().ready();
 
-  return { module, app, db };
+  return { module, app, db, config };
 };
 
 /**

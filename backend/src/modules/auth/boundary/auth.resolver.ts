@@ -12,6 +12,7 @@ import { secureCookieOptions } from '@trophoria/libs/core';
 import { CurrentUser } from '@trophoria/modules/auth/boundary/decorators/user.decorator';
 import { AuthenticationInput } from '@trophoria/modules/auth/boundary/dto/authentication-input.model';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
+import { JwtRefreshGuard } from '@trophoria/modules/auth/boundary/guards/jwt-refresh.guard';
 import { LocalAuthenticationGuard } from '@trophoria/modules/auth/boundary/guards/local-authentication.guard';
 import {
   AuthService,
@@ -45,5 +46,16 @@ export class AuthResolver {
     reply.setCookie('REFRESH', refreshToken, secureCookieOptions);
 
     return { accessToken, refreshToken, reuseDetected };
+  }
+
+  @Mutation((_returns) => TokenPayload, { name: 'refresh_tokens' })
+  @UseGuards(JwtRefreshGuard)
+  async refresh(
+    @CurrentUser() user: User,
+    @Context() { reply }: GraphQLContext,
+  ) {
+    const tokenPayload = await this.authService.refreshToken(user);
+    reply.setCookie('REFRESH', tokenPayload.refreshToken, secureCookieOptions);
+    return tokenPayload;
   }
 }

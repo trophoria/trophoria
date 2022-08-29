@@ -5,7 +5,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@trophoria/app.module';
 import { User } from '@trophoria/graphql';
 import { JwtPayload } from '@trophoria/libs/common';
+import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
+import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import {
   AuthService,
   AuthServiceSymbol,
@@ -18,6 +20,7 @@ describe('AuthService', () => {
   let userService: UserService;
   let db: PrismaService;
   let jwt: JwtService;
+  let config: ApiConfigService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,6 +31,7 @@ describe('AuthService', () => {
     userService = module.get<UserService>(UserServiceSymbol);
     db = module.get<PrismaService>(PrismaService);
     jwt = module.get<JwtService>(JwtService);
+    config = module.get<ApiConfigService>(ApiConfigService);
   });
 
   it('services should be defined', () => {
@@ -41,6 +45,26 @@ describe('AuthService', () => {
     it('should hash the users password', async () => {
       const createdUser = await service.signUp(UserMock.mockUsers[0]);
       expect(createdUser.password).not.toBe(UserMock.mockUsers[0].password);
+    });
+  });
+
+  describe('should sign jwt key pairs', () => {
+    let createdUser: User;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      createdUser = await service.signUp(UserMock.mockUsers[0]);
+    });
+
+    it('should sign a jwt key pair', async () => {
+      const { refreshToken, accessToken, refreshTokenId } =
+        service.generateTokenPair(createdUser.id);
+
+      const { jti } = jwt.decode(refreshToken) as JwtPayload;
+
+      expect(refreshTokenId).toContain(jti);
+      expect(accessToken).toMatch(/^[^.]*\.[^.]*\.[^.]*$/);
+      expect(refreshToken).toMatch(/^[^.]*\.[^.]*\.[^.]*$/);
     });
   });
 
@@ -122,15 +146,95 @@ describe('AuthService', () => {
     });
 
     it('should detect token reuse', async () => {
-      const { reuseDetected, refreshToken } = await service.signIn(
-        createdUser,
-        '42.42.42',
+      const reusedToken = jwt.sign(
+        { id: createdUser.id },
+        {
+          subject: createdUser.id,
+          privateKey: config.get<string>('JWT_REFRESH_PRIVATE_KEY'),
+          expiresIn: config.get<string>('JWT_REFRESH_EXPIRES_IN'),
+          jwtid: '42',
+        },
       );
+
+      const { reuseDetected, refreshToken } = await service.signIn(
+        await userService.findById(createdUser.id),
+        reusedToken,
+      );
+
       const updatedUser = await userService.findById(createdUser.id);
-      const { jti } = jwt.decode(refreshToken, { json: true }) as JwtPayload;
+      const { jti } = jwt.decode(refreshToken) as JwtPayload;
 
       expect(reuseDetected).toBeTrue();
       expect(updatedUser.tokens).toStrictEqual([jti]);
+    });
+  });
+
+  describe('should validate and refresh tokens', () => {
+    let createdUser: User;
+    let tokenPayload: TokenPayload;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      createdUser = await service.signUp(UserMock.mockUsers[0]);
+      tokenPayload = await service.signIn(createdUser);
+    });
+
+    it('should return the user from valid refresh token', async () => {
+      const foundUser = await service.verifyRefreshToken(
+        tokenPayload.refreshToken,
+      );
+
+      expect(foundUser).toStrictEqual(createdUser);
+    });
+
+    it('should throw an error if no jwt is provided', async () => {
+      try {
+        await service.verifyRefreshToken('123');
+      } catch (err) {
+        expect(err).toBeInstanceOf(HttpException);
+        expect(err.getStatus()).toBe(403);
+      }
+    });
+
+    it('should throw an error if provided jwt is expired', async () => {
+      const expiredToken = jwt.sign(
+        { id: createdUser.id },
+        {
+          subject: createdUser.id,
+          privateKey: config.get<string>('JWT_REFRESH_PRIVATE_KEY'),
+          expiresIn: '1s',
+          jwtid: '42',
+        },
+      );
+
+      await userService.persistTokens(createdUser.id, ['42']);
+
+      try {
+        await new Promise((f) => setTimeout(f, 1100));
+        await service.verifyRefreshToken(expiredToken);
+      } catch (err) {
+        expect(err).toBeInstanceOf(HttpException);
+        expect(err.getStatus()).toBe(403);
+      }
+    });
+
+    it('should throw an error if reuse was detected', async () => {
+      const expiredToken = jwt.sign(
+        { id: createdUser.id },
+        {
+          subject: createdUser.id,
+          privateKey: config.get<string>('JWT_REFRESH_PRIVATE_KEY'),
+          expiresIn: '1s',
+          jwtid: '42',
+        },
+      );
+
+      try {
+        await service.verifyRefreshToken(expiredToken);
+      } catch (err) {
+        expect(err).toBeInstanceOf(HttpException);
+        expect(err.getStatus()).toBe(403);
+      }
     });
   });
 });

@@ -22,3 +22,12 @@ export const signInQuery = gql`
     }
   }
 `;
+
+export const refreshQuery = gql`
+  mutation RefreshTokens {
+    refresh_tokens {
+      accessToken
+      refreshToken
+    }
+  }
+`;
