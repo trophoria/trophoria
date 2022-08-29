@@ -31,3 +31,16 @@ export const refreshQuery = gql`
     }
   }
 `;
+
+export const meQuery = gql`
+  query me {
+    me {
+      createdAt
+      email
+      isVerified
+      payload
+      updatedAt
+      username
+    }
+  }
+`;

@@ -1,11 +1,11 @@
 _type: export
 __export_format: 4
-__export_date: 2022-08-26T19:38:29.691Z
-__export_source: insomnia.desktop.app:v2022.5.0
+__export_date: 2022-08-29T15:31:30.044Z
+__export_source: insomnia.desktop.app:v2022.5.1
 resources:
   - _id: req_e32e147cfcc1447a986219e47f866046
     parentId: fld_3f2faa60cd6e433bb7d43922516d2566
-    modified: 1661542678579
+    modified: 1661787068483
     created: 1660420298115
     url: "{{ _.base_url }}/graphql"
     name: SignUp
@@ -15,7 +15,7 @@ resources:
       mimeType: application/graphql
       text: '{"query":"mutation SignUp($user_input: UserCreateInput!)
         {\n\tsign_up(user_input: $user_input)
-        {\n\t\tcreatedAt\n\t\temail\n\t\tpayload\n\t\tupdatedAt\n\t\tusername\n\t}\n}\n","variables":{"user_input":{"email":"test-user@trophoria.de","password":"0123456789"}},"operationName":"SignUp"}'
+        {\n\t\tcreatedAt\n\t\temail\n\t\tpayload\n\t\tupdatedAt\n\t\tusername\n\t}\n}\n","variables":{"user_input":{"email":"test-user1@trophoria.de","password":"0123456789"}},"operationName":"SignUp"}'
     parameters: []
     headers:
       - name: Content-Type
@@ -54,9 +54,94 @@ resources:
       Open source playstation trophy platform with modern design wich aims to fit the needs of every passionate trophy hunter.
     scope: design
     _type: workspace
+  - _id: req_e70eef24a31f482b95f1a34186645494
+    parentId: fld_3f2faa60cd6e433bb7d43922516d2566
+    modified: 1661787069207
+    created: 1661619114377
+    url: "{{ _.base_url }}/graphql"
+    name: SignIn
+    description: ""
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"mutation SignUp($credentials: AuthenticationInput!)
+        {\n\tsign_in(credentials: $credentials)
+        {\n\t\taccessToken\n\t\trefreshToken\n\t\treuseDetected\n\t}\n}\n","variables":{"credentials":{"email":"test-user1@trophoria.de","password":"0123456789"}},"operationName":"SignUp"}'
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_b3b9f8a2ec0b49e5a373497dd522a940
+    authentication: {}
+    metaSortKey: -1660419548795
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_7f9c4bd8865441269b06da51606ef3eb
+    parentId: fld_3f2faa60cd6e433bb7d43922516d2566
+    modified: 1661787070940
+    created: 1661766502142
+    url: "{{ _.base_url }}/graphql"
+    name: Refresh
+    description: ""
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"mutation RefreshTokens {\n\trefresh_tokens
+        {\n\t\taccessToken\n\t\trefreshToken\n\t}\n}\n","operationName":"RefreshTokens"}'
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_f9268c0f80f24d83b366309e10a61f2a
+    authentication: {}
+    metaSortKey: -1660419548745
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_12326ab44c524650b7f5762d9690ac60
+    parentId: fld_3f2faa60cd6e433bb7d43922516d2566
+    modified: 1661787071333
+    created: 1661786408291
+    url: "{{ _.base_url }}/graphql"
+    name: Me
+    description: ""
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"query me {\n\tme
+        {\n\t\tcreatedAt\n\t\temail\n\t\tisVerified\n\t\tpayload\n\t\tupdatedAt\n\t\tusername\n\t}\n}\n","operationName":"me"}'
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_6d35d55c406e4ced90ad913d18e4b503
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyNzliNzZmLTZlZTUtNDE3Zi1hYjBiLThiMWFlMmMwMGJlNiIsImlhdCI6MTY2MTc4NjU0MCwiZXhwIjoxNjYxNzg4MzQwLCJpc3MiOiJodHRwczovL3Ryb3Bob3JpYS5jb20iLCJzdWIiOiIyMjc5Yjc2Zi02ZWU1LTQxN2YtYWIwYi04YjFhZTJjMDBiZTYifQ.0V5n3j5yOqFNkfMkXzBrx6Z-33fEmuIPlTNkZpIr0s14tvfck_cZkzwpYJ89YLdLmwhe-tGWUYvucdIJxbUnAg
+      prefix: Bearer
+    metaSortKey: -1660419548695
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
   - _id: req_f6712a3928224fbd82f75df37e614666
     parentId: fld_b6bcc3c547914f679ca330546e1b0d58
-    modified: 1660429239922
+    modified: 1661608076405
     created: 1660159725696
     url: "{{ _.base_url }}/graphql"
     name: Ping (GQL)
@@ -149,10 +234,24 @@ resources:
     _type: environment
   - _id: jar_d93aaf3f520905f45b459ec26da158089591b813
     parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
-    modified: 1654989373406
+    modified: 1661786541037
     created: 1654989373406
     name: Default Jar
-    cookies: []
+    cookies:
+      - key: REFRESH
+        value: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyNzliNzZmLTZlZTUtNDE3Zi1hYjBiLThiMWFlMmMwMGJlNiIsImlhdCI6MTY2MTc4NjU0MCwiZXhwIjoxNjY0Mzc4NTQwLCJpc3MiOiJodHRwczovL3Ryb3Bob3JpYS5jb20iLCJzdWIiOiIyMjc5Yjc2Zi02ZWU1LTQxN2YtYWIwYi04YjFhZTJjMDBiZTYiLCJqdGkiOiIzZDA2ZmRhMi0zNjcxLTQ0MjAtYmEzOC1mN2U0ZDdmZTNiZjEifQ.M5n1h0RD6nyDKITB7Xxf2vh6VJRozMfDCqceE-gmKEuHrbotkrE3f5GhSrJ9ce-MMS5DRJ_15d1_njq7OSXvqw
+        maxAge: 2592000
+        domain: localhost
+        path: /
+        secure: true
+        httpOnly: true
+        extensions:
+          - SameSite=Strict
+        hostOnly: true
+        pathIsDefault: true
+        creation: 2022-08-29T13:20:32.162Z
+        lastAccessed: 2022-08-29T15:22:21.037Z
+        id: "24335155933735675"
     _type: cookie_jar
   - _id: spc_a89e9f48531345869be5e81c814fed63
     parentId: wrk_e7db9950d6ac4aca97f8149caaffe534

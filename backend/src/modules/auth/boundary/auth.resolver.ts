@@ -1,5 +1,5 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User, UserCreateInput } from '@trophoria/graphql';
 
 import {
@@ -13,17 +13,20 @@ import { CurrentUser } from '@trophoria/modules/auth/boundary/decorators/user.de
 import { AuthenticationInput } from '@trophoria/modules/auth/boundary/dto/authentication-input.model';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import { JwtRefreshGuard } from '@trophoria/modules/auth/boundary/guards/jwt-refresh.guard';
+import { JwtAuthGuard } from '@trophoria/modules/auth/boundary/guards/jwt.guard';
 import { LocalAuthenticationGuard } from '@trophoria/modules/auth/boundary/guards/local-authentication.guard';
 import {
   AuthService,
   AuthServiceSymbol,
 } from '@trophoria/modules/auth/business/auth.service';
+import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
 
 @Resolver()
 @UseGuards(GraphQLThrottlerGuard)
 export class AuthResolver {
   constructor(
     @Inject(AuthServiceSymbol) private readonly authService: AuthService,
+    @Inject(UserServiceSymbol) private readonly userService: UserService,
   ) {}
 
   @Mutation((_returns) => User, { name: 'sign_up' })
@@ -57,5 +60,11 @@ export class AuthResolver {
     const tokenPayload = await this.authService.refreshToken(user);
     reply.setCookie('REFRESH', tokenPayload.refreshToken, secureCookieOptions);
     return tokenPayload;
+  }
+
+  @Query((_returns) => User, { name: 'me' })
+  @UseGuards(JwtAuthGuard)
+  async me(@CurrentUser() user: User) {
+    return user;
   }
 }

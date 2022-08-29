@@ -6,6 +6,7 @@ import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.se
 
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import {
+  meQuery,
   refreshQuery,
   signInQuery,
   signUpQuery,
@@ -150,6 +151,44 @@ describe('AuthResolver (e2e)', () => {
     it('should throw error if no refresh token cookie provided', async () => {
       const errors = gqlErrors(await graphql(app, refreshQuery).expect(401));
       expect(errors[0].message).toBe('invalid refresh token');
+    });
+  });
+
+  describe('gql me (query)', () => {
+    let accessToken: string;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      const variables = { user_input: UserMock.userWithoutUsername };
+      await graphql(app, signUpQuery, variables);
+      accessToken = gqlData(
+        await graphql(app, signInQuery, {
+          credentials: UserMock.userWithoutUsername,
+        }),
+        'sign_in',
+      ).accessToken;
+    });
+
+    it('should return user object if access token is valid', async () => {
+      const { createdAt, email, payload, updatedAt, username, isVerified } =
+        gqlData(
+          await graphql(app, meQuery)
+            .set('authorization', `Bearer ${accessToken}`)
+            .expect(200),
+          'me',
+        );
+
+      expect(new Date(createdAt)).toBeValidDate();
+      expect(new Date(updatedAt)).toBeValidDate();
+      expect(username).toMatch(/unameduser\d{5}/);
+      expect(email).toBe(UserMock.userWithoutUsername.email);
+      expect(payload).toBeNull();
+      expect(isVerified).toBeFalse();
+    });
+
+    it('should return an error if access token is invalid', async () => {
+      const errors = gqlErrors(await graphql(app, meQuery).expect(401));
+      expect(errors[0].message).toBe('Unauthorized');
     });
   });
 });
