@@ -5,8 +5,8 @@ import { ConfigService } from '@nestjs/config';
 export class ApiConfigService {
   constructor(private configService: ConfigService) {}
 
-  get(key: string) {
-    return this.configService.get(key);
+  get<T>(key: string) {
+    return this.configService.get<T>(key);
   }
 
   get isProduction() {

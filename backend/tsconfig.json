@@ -19,6 +19,7 @@
       "@trophoria/libs/common": ["libs/common/src"],
       "@trophoria/libs/core": ["libs/core/src"],
       "@trophoria/test/*": ["test/*"],
+      "@trophoria/graphql": ["config/graphql/@generated"],
       "@trophoria/config/*": ["config/*"]
     }
   },

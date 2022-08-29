@@ -1,13 +1,16 @@
 {
-  "extends": "backend/tsconfig.json",
-  "baseUrl": "./",
-  "paths": {
-    "@trophoria/*": ["backend/src/*"],
-    "@trophoria/modules": ["backend/src/modules"],
-    "@trophoria/modules/*": ["backend/src/modules/*"],
-    "@trophoria/libs/common": ["backend/libs/common/src"],
-    "@trophoria/libs/core": ["backend/libs/core/src"],
-    "@trophoria/test/*": ["backend/test/*"],
-    "@trophoria/config/*": ["backend/config/*"]
+  "extends": "./backend/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@trophoria/*": ["backend/src/*"],
+      "@trophoria/modules": ["backend/src/modules"],
+      "@trophoria/modules/*": ["backend/src/modules/*"],
+      "@trophoria/libs/common": ["backend/libs/common/src"],
+      "@trophoria/libs/core": ["backend/libs/core/src"],
+      "@trophoria/test/*": ["backend/test/*"],
+      "@trophoria/config/*": ["backend/config/*"],
+      "@trophoria/graphql": ["backend/config/graphql/@generated"]
+    }
   }
 }

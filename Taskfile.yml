@@ -11,3 +11,6 @@ tasks:
 
   deploy-backend:
     deps: [backend:deploy-service]
+
+  generate-keys-backend:
+    deps: [backend:generate-key-pair]

@@ -1,5 +1,16 @@
 import { Cache } from 'cache-manager';
 
+/**
+ * Decorator that marks the function as cached. This means, that the returned value
+ * gets saved to the cache with the provided key.
+ *
+ * The options are useful to define an dynamic key. This is needed if the key should depend
+ * on the function inputs. Look at the {@link ICacheUtilsOptions} interface for more
+ * information.
+ *
+ * @param key       The base of the key to cache the value to
+ * @param options   Options to add dynamically generate the key.
+ */
 export function ToCache(key: string, options?: ICacheUtilsOptions) {
   return function (_: unknown, __: string, descriptor: PropertyDescriptor) {
     const { value } = descriptor;

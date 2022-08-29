@@ -23,7 +23,7 @@ const bootstrapApp = async () => {
   app.listen(config.get('API_PORT'), config.get('API_HOST'));
 };
 
-const initializeApp = async (app: App, config: ApiConfigService) => {
+export const initializeApp = async (app: App, config: ApiConfigService) => {
   app.useLogger(app.get(Logger));
 
   await app.register(helmet as never, {
@@ -39,4 +39,4 @@ const initializeApp = async (app: App, config: ApiConfigService) => {
   app.useGlobalFilters(new ThrottlerExceptionFilter(config));
 };
 
-bootstrapApp();
+if (process.env.NODE_ENV !== 'test') bootstrapApp();

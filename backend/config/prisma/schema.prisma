@@ -9,6 +9,7 @@ generator nestgraphql {
   output                 = "../graphql/@generated"
   fields_Validator_from  = "class-validator"
   fields_Validator_input = true
+  reExport               = "Single"
 }
 
 datasource db {

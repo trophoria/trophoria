@@ -3,9 +3,11 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import request, { Response } from 'supertest';
 
 import { AppModule } from '@trophoria/app.module';
+import { initializeApp } from '@trophoria/main';
+import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 
 /**
@@ -22,8 +24,10 @@ export const setupE2eTest = async () => {
   );
 
   const db = module.get<PrismaService>(PrismaService);
+  const config = module.get<ApiConfigService>(ApiConfigService);
 
   await app.init();
+  await initializeApp(app, config);
   await app.getHttpAdapter().getInstance().ready();
 
   return { module, app, db };
@@ -43,10 +47,12 @@ export const graphql = (
   app: NestFastifyApplication,
   query?: unknown,
   variables?: unknown,
+  cookies?: string[],
 ) => {
   return request(app.getHttpServer())
     .post('/graphql')
     .set('content-type', 'application/json')
+    .set('Cookie', cookies ?? [])
     .send({ query, variables });
 };
 
@@ -71,3 +77,20 @@ export const gqlData = (res: request.Response, name: string) =>
  * @returns     The returned errors.
  */
 export const gqlErrors = (res: request.Response) => res.body.errors;
+
+/**
+ *
+ * @param res
+ * @returns
+ */
+export const parseCookies = (res: Response) => {
+  const cookies = {};
+
+  const cookieHeader: string[] = res.headers['set-cookie'];
+  cookieHeader.forEach((cookie) => {
+    const cookieKeyVal = cookie.split(';')[0].split('=');
+    cookies[cookieKeyVal[0]] = cookieKeyVal[1];
+  });
+
+  return cookies;
+};

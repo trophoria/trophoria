@@ -23,6 +23,13 @@ export class TrophoriaConfig {
     API_PORT: z.preprocess(parseInt, z.number()).default(3000),
     API_HOST: z.string().default('0.0.0.0'),
     COOKIE_SECRET: z.string(),
+
+    JWT_PRIVATE_KEY: z.string(),
+    JWT_PUBLIC_KEY: z.string(),
+    JWT_EXPIRES_IN: z.string().default('30m'),
+    JWT_REFRESH_PRIVATE_KEY: z.string(),
+    JWT_REFRESH_PUBLIC_KEY: z.string(),
+    JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
   });
 
   static envFilePath = 'config/env/.env';

@@ -60,6 +60,7 @@
     "@types/jest": "^28.1.7",
     "@types/node": "18.7.11",
     "@types/passport-jwt": "^3.0.6",
+    "@types/passport-local": "^1.0.34",
     "@types/supertest": "^2.0.12",
     "jest": "^28.1.3",
     "jest-extended": "^3.0.2",
@@ -101,6 +102,7 @@
       "@trophoria/libs/core": "<rootDir>/libs/core/src",
       "@trophoria/modules/(.*)": "<rootDir>/src/modules/$1",
       "@trophoria/test/(.*)": "<rootDir>/test/$1",
+      "@trophoria/graphql": "<rootDir>/config/graphql/@generated",
       "@trophoria/config/(.*)": "<rootDir>/config/$1",
       "@trophoria/(.*)": "<rootDir>/src/$1"
     }

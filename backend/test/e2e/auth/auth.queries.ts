@@ -12,3 +12,13 @@ export const signUpQuery = gql`
     }
   }
 `;
+
+export const signInQuery = gql`
+  mutation SignUp($credentials: AuthenticationInput!) {
+    sign_in(credentials: $credentials) {
+      accessToken
+      refreshToken
+      reuseDetected
+    }
+  }
+`;

@@ -1,6 +1,6 @@
-import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
-import { User } from '@trophoria/config/graphql/@generated/user/user.model';
+import { User, UserCreateInput } from '@trophoria/graphql';
 
+/** Symbol to inject the user service. */
 export const UserServiceSymbol = Symbol('UserService');
 
 export interface UserService {
@@ -20,6 +20,16 @@ export interface UserService {
    * @returns   The user with the provided id
    */
   findById(id: string): Promise<User>;
+
+  /**
+   * Find an {@link User} by it's email or username. If no user with
+   * the provided identifier was found, a {@link HttpException} gets thrown.
+   *
+   * @param identifier  The email or username of the searched user
+   * @throws            {@link HttpException} if no user was found
+   * @returns           The user with the provided identifier
+   */
+  findByEmailOrUsername(identifier: string): Promise<User>;
 
   /**
    * Finds all instances of {@link User} matching the search term.

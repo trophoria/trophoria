@@ -1,32 +1,22 @@
-import {
-  CACHE_MANAGER,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
-import { Cache } from 'cache-manager';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { StringNullableFilter } from '@trophoria/config/graphql/@generated/prisma/string-nullable-filter.input';
-import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
-import { User } from '@trophoria/config/graphql/@generated/user/user.model';
-import { Cached, generateNameFromEmail, ToCache } from '@trophoria/libs/common';
+import {
+  StringNullableFilter,
+  UserCreateInput,
+  User,
+} from '@trophoria/graphql';
+import { generateNameFromEmail } from '@trophoria/libs/common';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import { UserService } from '@trophoria/modules/user/business/user.service';
 
 @Injectable()
 export class UserDatabaseService implements UserService {
-  constructor(
-    private db: PrismaService,
-    @Inject(CACHE_MANAGER) private cache: Cache,
-  ) {}
+  constructor(private db: PrismaService) {}
 
-  @Cached('user-all')
   async findAll(): Promise<User[]> {
     return this.db.user.findMany();
   }
 
-  @Cached('user', { withAttribute: 0 })
   async findById(id: string): Promise<User> {
     return this.db.user.findUniqueOrThrow({ where: { id } }).catch(() => {
       throw new HttpException(
@@ -36,7 +26,19 @@ export class UserDatabaseService implements UserService {
     });
   }
 
-  @Cached('users-term', { withAttribute: 0 })
+  async findByEmailOrUsername(identifier: string): Promise<User> {
+    return this.db.user
+      .findFirstOrThrow({
+        where: { OR: [{ email: identifier }, { username: identifier }] },
+      })
+      .catch(() => {
+        throw new HttpException(
+          'user with this username or email does not exist',
+          HttpStatus.NOT_FOUND,
+        );
+      });
+  }
+
   async findByTerm(searchTerm: string): Promise<User[]> {
     const containsQuery: StringNullableFilter = {
       contains: searchTerm,
@@ -60,7 +62,6 @@ export class UserDatabaseService implements UserService {
       });
   }
 
-  @ToCache('user', { withReturnField: 'id' })
   async create(user: UserCreateInput): Promise<User> {
     const usernameExists = async (name: string) =>
       (await this.db.user.count({ where: { username: name } })) > 0;
@@ -84,7 +85,6 @@ export class UserDatabaseService implements UserService {
       });
   }
 
-  @ToCache('user', { withReturnField: 'id' })
   async markAsVerified(email: string): Promise<User> {
     return this.db.user.update({
       where: { email },
@@ -92,10 +92,9 @@ export class UserDatabaseService implements UserService {
     });
   }
 
-  @ToCache('user', { withAttribute: 0 })
   async persistTokens(id: string, tokens: string[]): Promise<User> {
     const alreadyAssigned = await this.db.user.findFirst({
-      where: { tokens: { hasSome: tokens } },
+      where: { AND: [{ tokens: { hasSome: tokens } }, { id: { not: id } }] },
     });
 
     if (alreadyAssigned) {

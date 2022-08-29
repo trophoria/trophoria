@@ -1,20 +1,15 @@
-import { CACHE_MANAGER, HttpException } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Cache } from 'cache-manager';
 
 import { AppModule } from '@trophoria/app.module';
+import { User } from '@trophoria/graphql';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
-import {
-  UserService,
-  UserServiceSymbol,
-} from '@trophoria/modules/user/user.module';
+import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
-import { User } from 'config/graphql/@generated/user/user.model';
 
 describe('UsersService', () => {
   let service: UserService;
   let db: PrismaService;
-  let cache: Cache;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,13 +18,11 @@ describe('UsersService', () => {
 
     service = module.get<UserService>(UserServiceSymbol);
     db = module.get<PrismaService>(PrismaService);
-    cache = module.get<Cache>(CACHE_MANAGER);
   });
 
   it('services should be defined', () => {
     expect(service).toBeDefined();
     expect(db).toBeDefined();
-    expect(cache).toBeDefined();
   });
 
   describe('should create new users', () => {
@@ -40,9 +33,6 @@ describe('UsersService', () => {
     it('should create a new user', async () => {
       createdUser = await service.create(UserMock.mockUsers[0]);
       expect(createdUser.email).toBe(UserMock.mockUsers[0].email);
-      expect(await cache.get(`user-${createdUser.id}`)).toStrictEqual(
-        createdUser,
-      );
     });
 
     it('should throw on duplicated email/username', async () => {
@@ -68,17 +58,11 @@ describe('UsersService', () => {
     it('should be set on false by default', async () => {
       createdUser = await service.create(UserMock.mockUsers[0]);
       expect(createdUser.isVerified).toBeFalsy();
-      expect(await cache.get(`user-${createdUser.id}`)).toStrictEqual(
-        createdUser,
-      );
     });
 
     it('should be able to set to true', async () => {
       const verifiedUser = await service.markAsVerified(createdUser.email);
       expect(verifiedUser.isVerified).toBeTruthy();
-      expect(await cache.get(`user-${createdUser.id}`)).toStrictEqual(
-        verifiedUser,
-      );
     });
   });
 
@@ -97,13 +81,11 @@ describe('UsersService', () => {
     it('should find all users', async () => {
       const allUsers = await service.findAll();
       expect(allUsers.length).toBe(3);
-      expect(await cache.get('user-all')).toStrictEqual(allUsers);
     });
 
     it('should find a user by its unique id', async () => {
       const userById = await service.findById(createdUsers[0].id);
       expect(userById).toStrictEqual(createdUsers[0]);
-      expect(await cache.get(`user-${userById.id}`)).toStrictEqual(userById);
     });
 
     it('should throw error if wrong id was provided', async () => {
@@ -115,16 +97,37 @@ describe('UsersService', () => {
       }
     });
 
+    it('should find a user by its email', async () => {
+      const userByEmail = await service.findByEmailOrUsername(
+        createdUsers[0].email,
+      );
+      expect(userByEmail).toStrictEqual(createdUsers[0]);
+    });
+
+    it('should find a user by its username', async () => {
+      const userByUsername = await service.findByEmailOrUsername(
+        createdUsers[0].username,
+      );
+      expect(userByUsername).toStrictEqual(createdUsers[0]);
+    });
+
+    it('should throw error if wrong email/username was provided', async () => {
+      try {
+        await service.findByEmailOrUsername('404');
+      } catch (err) {
+        expect(err).toBeInstanceOf(HttpException);
+        expect(err.getStatus()).toBe(404);
+      }
+    });
+
     it('should find a user by term in username (insensitive)', async () => {
       const users = await service.findByTerm('user');
       expect(users.length).toBe(2);
-      expect(await cache.get(`users-term-user`)).toStrictEqual(users);
     });
 
     it('should find a user by term in email (insensitive)', async () => {
       const users = await service.findByTerm('world');
       expect(users.length).toBe(1);
-      expect(await cache.get(`users-term-world`)).toStrictEqual(users);
     });
   });
 
@@ -144,9 +147,9 @@ describe('UsersService', () => {
         UserMock.mockTokens,
       );
       expect(changedUser.tokens).toStrictEqual(UserMock.mockTokens);
-      expect(await cache.get(`user-${changedUser.id}`)).toStrictEqual(
-        changedUser,
-      );
+
+      // should not throw error if persisted again (because only this user contains the secrets)
+      await service.persistTokens(createdUser.id, UserMock.mockTokens);
     });
 
     it('should throw an error if an token was assigned to multiple user', async () => {

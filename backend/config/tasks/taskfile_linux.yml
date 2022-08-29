@@ -9,7 +9,14 @@ tasks:
       - docker compose -f deploy/docker-compose.dev.yml --env-file config/env/.env -p trophy-api-dev up -d
 
   deploy-service:
-    deps: [lib:validate-deploy-tools]
     desc: Deploys the service including setting up the .env file
     cmds:
       - docker compose -f deploy/docker-compose.yml --env-file config/env/.production.env -p trophy-api up --build --force-recreate
+
+  generate-key-pair:
+    desc: Generates a ES256 private and public key pair for the backend
+    cmds:
+      - openssl ecparam -name prime256v1 -genkey -noout -out private.ec.key
+      - openssl ec -in private.ec.key -pubout -out public.pem
+      - cat private.ec.key && cat public.pem
+      - rm private.ec.key public.pem

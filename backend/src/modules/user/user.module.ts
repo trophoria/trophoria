@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { UserDatabaseService } from '@trophoria/modules/user/business/user.database.service';
+import { UserDatabaseService } from '@trophoria/modules/user/business/user-database.service';
 import { UserServiceSymbol } from '@trophoria/modules/user/business/user.service';
 
 /**
@@ -12,7 +12,3 @@ import { UserServiceSymbol } from '@trophoria/modules/user/business/user.service
   exports: [UserServiceSymbol],
 })
 export class UserModule {}
-
-//* Global module exports */
-export * from './business/user.database.service';
-export * from './business/user.service';
