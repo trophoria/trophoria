@@ -9,6 +9,7 @@ import {
   meQuery,
   refreshQuery,
   signInQuery,
+  signOutQuery,
   signUpQuery,
 } from '@trophoria/test/e2e/auth/auth.queries';
 import {
@@ -189,6 +190,41 @@ describe('AuthResolver (e2e)', () => {
     it('should return an error if access token is invalid', async () => {
       const errors = gqlErrors(await graphql(app, meQuery).expect(401));
       expect(errors[0].message).toBe('Unauthorized');
+    });
+  });
+
+  describe('gql sign_out (mutation)', () => {
+    let accessToken: string;
+    let refreshToken: string;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      const variables = { user_input: UserMock.userWithoutUsername };
+      await graphql(app, signUpQuery, variables), 'sign_up';
+      ({ accessToken, refreshToken } = gqlData(
+        await graphql(app, signInQuery, {
+          credentials: UserMock.userWithoutUsername,
+        }),
+        'sign_in',
+      ));
+    });
+
+    it('should return success message', async () => {
+      const { statusCode, message } = gqlData(
+        await graphql(app, signOutQuery)
+          .set('authorization', `Bearer ${accessToken}`)
+          .expect(200),
+        'sign_out',
+      );
+
+      expect(statusCode).toBe(200);
+      expect(message).toBe('successfully signed out');
+    });
+
+    it('should detect token reuse if refresh token is used again', async () => {
+      await graphql(app, refreshQuery, null, [
+        `REFRESH=${refreshToken}`,
+      ]).expect(403);
     });
   });
 });

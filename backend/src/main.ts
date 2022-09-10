@@ -1,5 +1,4 @@
 import { fastifyCookie } from '@fastify/cookie';
-import fastifyCsrf from '@fastify/csrf-protection';
 import helmet from '@fastify/helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -32,7 +31,6 @@ export const initializeApp = async (app: App, config: ApiConfigService) => {
   await app.register(fastifyCookie as never, {
     secret: config.get('COOKIE_SECRET'),
   });
-  await app.register(fastifyCsrf as never, { cookieOpts: { signed: true } });
 
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
 

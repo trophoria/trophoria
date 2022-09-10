@@ -44,3 +44,12 @@ export const meQuery = gql`
     }
   }
 `;
+
+export const signOutQuery = gql`
+  mutation SignOut {
+    sign_out {
+      statusCode
+      message
+    }
+  }
+`;

@@ -1,4 +1,5 @@
 import { User, UserCreateInput } from '@trophoria/graphql';
+import { SignOutResponse } from '@trophoria/modules/auth/boundary/dto/sign-out-response.model';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import { TokenPair } from '@trophoria/modules/auth/entity/models/token-pair.model';
 
@@ -28,6 +29,14 @@ export interface AuthService {
    * @returns               The generated token pair and a reuse detection flag
    */
   signIn(user: User, refreshCookie?: string): Promise<TokenPayload>;
+
+  /**
+   * Signs out the user in all active sessions by invalidating all active
+   * refresh tokens.
+   *
+   * @param id  The id of the user to sign out
+   */
+  signOut(id: string): Promise<SignOutResponse>;
 
   /**
    * Returns the user in database with the provided email if the plain password
@@ -65,7 +74,7 @@ export interface AuthService {
   verifyRefreshToken(refreshToken: string): Promise<User>;
 
   /**
-   * Generates a new token pair and updating the current session token in the
+   * Generates a new token pair and updating updates current session token in the
    * database. This method does not validate the refresh token! For this, use
    * the {@link verifyRefreshToken} method before or use the {@link JwtRefreshGuard}
    * decorator.

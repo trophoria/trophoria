@@ -169,7 +169,7 @@ describe('AuthService', () => {
     });
   });
 
-  describe('should validate and refresh tokens', () => {
+  describe('should validate refresh tokens', () => {
     let createdUser: User;
     let tokenPayload: TokenPayload;
 
@@ -231,6 +231,28 @@ describe('AuthService', () => {
 
       try {
         await service.verifyRefreshToken(expiredToken);
+      } catch (err) {
+        expect(err).toBeInstanceOf(HttpException);
+        expect(err.getStatus()).toBe(403);
+      }
+    });
+  });
+
+  describe('should sign out a user', () => {
+    let createdUser: User;
+    let tokenPayload: TokenPayload;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      createdUser = await service.signUp(UserMock.mockUsers[0]);
+      tokenPayload = await service.signIn(createdUser);
+    });
+
+    it('should invalidate refresh token', async () => {
+      service.signOut(createdUser.id);
+
+      try {
+        await service.verifyRefreshToken(tokenPayload.refreshToken);
       } catch (err) {
         expect(err).toBeInstanceOf(HttpException);
         expect(err.getStatus()).toBe(403);
