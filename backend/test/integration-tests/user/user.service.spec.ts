@@ -61,7 +61,7 @@ describe('UsersService', () => {
     });
 
     it('should be able to set to true', async () => {
-      const verifiedUser = await service.markAsVerified(createdUser.email);
+      const verifiedUser = await service.markAsVerified(createdUser.id);
       expect(verifiedUser.isVerified).toBeTruthy();
     });
   });

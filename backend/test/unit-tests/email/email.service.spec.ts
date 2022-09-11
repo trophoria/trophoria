@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import sgMail from '@sendgrid/mail';
 
 import { ApiConfigModule } from '@trophoria/modules/_setup/config/api-config.module';
+import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import {
   EmailService,
   EmailServiceSymbol,
@@ -17,6 +18,7 @@ jest.mock('@sendgrid/mail', () => {
 
 describe('EmailService', () => {
   let service: EmailService;
+  let config: ApiConfigService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -25,6 +27,7 @@ describe('EmailService', () => {
     }).compile();
 
     service = moduleRef.get<EmailService>(EmailServiceSymbol);
+    config = moduleRef.get<ApiConfigService>(ApiConfigService);
   });
 
   it('should be defined', () => {
@@ -40,6 +43,7 @@ describe('EmailService', () => {
 
     expect(sgMail.send).toBeCalledWith({
       to: 'receiver@mail.com',
+      from: config.get('SEND_GRID_SENDER'),
       subject: 'This is a unit test',
       html: '<h1>Hello World!</h1>',
     });

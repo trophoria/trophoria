@@ -24,6 +24,9 @@ export class TrophoriaConfig {
     API_HOST: z.string().default('0.0.0.0'),
     COOKIE_SECRET: z.string(),
 
+    SEND_GRID_KEY: z.string(),
+    SEND_GRID_SENDER: z.string().default('support@trophoria.de'),
+
     JWT_PRIVATE_KEY: z.string(),
     JWT_PUBLIC_KEY: z.string(),
     JWT_EXPIRES_IN: z.string().default('30m'),

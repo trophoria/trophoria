@@ -65,14 +65,14 @@ export interface UserService {
   create(user: UserCreateInput): Promise<User>;
 
   /**
-   * Mark the {@link User} with the provided email as verified. If the
+   * Mark the {@link User} with the provided id as verified. If the
    * user with email does not exists or the user was already verified,
    * nothing changes.
    *
-   * @param email The email of the user to set the verified flag
+   * @param id    The id of the user to set the verified flag
    * @returns     The updated user instance
    */
-  markAsVerified(email: string): Promise<User>;
+  markAsVerified(id: string): Promise<User>;
 
   /**
    * Override all active refresh tokens associated with a {@link User}.

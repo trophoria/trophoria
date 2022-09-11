@@ -85,9 +85,9 @@ export class UserDatabaseService implements UserService {
       });
   }
 
-  async markAsVerified(email: string): Promise<User> {
+  async markAsVerified(id: string): Promise<User> {
     return this.db.user.update({
-      where: { email },
+      where: { id },
       data: { isVerified: true },
     });
   }

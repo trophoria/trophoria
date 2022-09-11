@@ -13,7 +13,7 @@ export class SendgridService implements EmailService {
   }
 
   async send(mail: Mail): Promise<EmailResponse> {
-    return await sgMail.send({
+    return sgMail.send({
       ...mail,
       from: this.configService.get('SEND_GRID_SENDER'),
     })[0];
