@@ -3,10 +3,14 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync, hash } from 'bcrypt';
 
-import { UserCreateInput, User } from '@trophoria/graphql';
-import { JwtPayload, removeIfExists } from '@trophoria/libs/common';
+import { UserCreateInput } from '@trophoria/graphql/user/user-create.input';
+import { User } from '@trophoria/graphql/user/user.model';
+import {
+  BasicResponse,
+  JwtPayload,
+  removeIfExists,
+} from '@trophoria/libs/common';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
-import { SignOutResponse } from '@trophoria/modules/auth/boundary/dto/sign-out-response.model';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import { AuthService } from '@trophoria/modules/auth/business/auth.service';
 import { TokenPair } from '@trophoria/modules/auth/entity/models/token-pair.model';
@@ -74,7 +78,7 @@ export class AuthDatabaseService implements AuthService {
     return { accessToken, refreshToken, reuseDetected };
   }
 
-  async signOut(id: string): Promise<SignOutResponse> {
+  async signOut(id: string): Promise<BasicResponse> {
     await this.userService.persistTokens(id, []);
     return { message: 'successfully signed out', statusCode: HttpStatus.OK };
   }

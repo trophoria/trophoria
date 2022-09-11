@@ -1,7 +1,7 @@
 import { HttpStatus, Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { User } from '@trophoria/graphql/user/user.model';
 
-import { User } from '@trophoria/graphql';
 import { BasicResponse, GraphQLThrottlerGuard } from '@trophoria/libs/common';
 import { CurrentUser } from '@trophoria/modules/auth/boundary/decorators/user.decorator';
 import { JwtAuthGuard } from '@trophoria/modules/auth/boundary/guards/jwt.guard';

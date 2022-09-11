@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { FastifyRequest } from 'fastify';
 import { Strategy } from 'passport-custom';
 
-import { User } from '@trophoria/graphql';
+import { User } from '@trophoria/graphql/user/user.model';
 import {
   AuthService,
   AuthServiceSymbol,

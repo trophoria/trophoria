@@ -1,8 +1,11 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User, UserCreateInput } from '@trophoria/graphql';
+
+import { UserCreateInput } from '@trophoria/graphql/user/user-create.input';
+import { User } from '@trophoria/graphql/user/user.model';
 
 import {
+  BasicResponse,
   CookieMap,
   Cookies,
   GraphQLContext,
@@ -11,7 +14,6 @@ import {
 import { secureCookieOptions } from '@trophoria/libs/core';
 import { CurrentUser } from '@trophoria/modules/auth/boundary/decorators/user.decorator';
 import { AuthenticationInput } from '@trophoria/modules/auth/boundary/dto/authentication-input.model';
-import { SignOutResponse } from '@trophoria/modules/auth/boundary/dto/sign-out-response.model';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import { JwtRefreshGuard } from '@trophoria/modules/auth/boundary/guards/jwt-refresh.guard';
 import { JwtAuthGuard } from '@trophoria/modules/auth/boundary/guards/jwt.guard';
@@ -50,7 +52,7 @@ export class AuthResolver {
     return { accessToken, refreshToken, reuseDetected };
   }
 
-  @Mutation((_returns) => SignOutResponse, { name: 'signOut' })
+  @Mutation((_returns) => BasicResponse, { name: 'signOut' })
   @UseGuards(JwtAuthGuard)
   async signOut(
     @CurrentUser() user: User,

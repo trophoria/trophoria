@@ -1,4 +1,4 @@
-import { User } from '@trophoria/graphql';
+import { User } from '@trophoria/graphql/user/user.model';
 import { VerificationTokenPayload } from '@trophoria/modules/auth/modules/emailConfirmation/entity/model/verification-token-payload.model';
 import { EmailResponse } from '@trophoria/modules/email/entity/model/email-response.model';
 

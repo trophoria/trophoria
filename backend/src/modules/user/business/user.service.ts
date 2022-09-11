@@ -1,4 +1,5 @@
-import { User, UserCreateInput } from '@trophoria/graphql';
+import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
+import { User } from '@trophoria/config/graphql/@generated/user/user.model';
 
 /** Symbol to inject the user service. */
 export const UserServiceSymbol = Symbol('UserService');

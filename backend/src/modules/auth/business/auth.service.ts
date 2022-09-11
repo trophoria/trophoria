@@ -1,5 +1,6 @@
-import { User, UserCreateInput } from '@trophoria/graphql';
-import { SignOutResponse } from '@trophoria/modules/auth/boundary/dto/sign-out-response.model';
+import { UserCreateInput } from '@trophoria/graphql/user/user-create.input';
+import { User } from '@trophoria/graphql/user/user.model';
+import { BasicResponse } from '@trophoria/libs/common';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import { TokenPair } from '@trophoria/modules/auth/entity/models/token-pair.model';
 
@@ -36,7 +37,7 @@ export interface AuthService {
    *
    * @param id  The id of the user to sign out
    */
-  signOut(id: string): Promise<SignOutResponse>;
+  signOut(id: string): Promise<BasicResponse>;
 
   /**
    * Returns the user in database with the provided email if the plain password
