@@ -1,32 +1,25 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Inject,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { HttpStatus, Inject, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+
 import { User } from '@trophoria/graphql';
+import { BasicResponse, GraphQLThrottlerGuard } from '@trophoria/libs/common';
 import { CurrentUser } from '@trophoria/modules/auth/boundary/decorators/user.decorator';
 import { JwtAuthGuard } from '@trophoria/modules/auth/boundary/guards/jwt.guard';
-
 import {
   EmailConfirmationService,
   EmailConfirmationSymbol,
 } from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
 
-@UseGuards(ThrottlerGuard)
-@Controller('email-confirmation')
-export class EmailConfirmationController {
+@Resolver()
+@UseGuards(GraphQLThrottlerGuard)
+export class EmailConfirmationResolver {
   constructor(
     @Inject(EmailConfirmationSymbol)
     private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
-  @Get('confirm')
-  async confirm(@Query('token') token: string) {
+  @Mutation((_returns) => BasicResponse, { name: 'confirm' })
+  async confirm(@Args('token') token: string) {
     const { id } = await this.emailConfirmationService.decodeVerificationToken(
       token,
     );
@@ -39,7 +32,7 @@ export class EmailConfirmationController {
     };
   }
 
-  @Post('resend-confirmation-link')
+  @Mutation((_returns) => User, { name: 'resendConfirmationLink' })
   @UseGuards(JwtAuthGuard)
   async resendConfirmationLink(@CurrentUser() user: User) {
     await this.emailConfirmationService.resendConfirmationLink(user.id);

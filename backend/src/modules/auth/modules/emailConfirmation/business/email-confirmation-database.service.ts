@@ -1,13 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@trophoria/graphql';
 
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import { EmailConfirmationService } from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
 import { VerificationTokenPayload } from '@trophoria/modules/auth/modules/emailConfirmation/entity/model/verification-token-payload.model';
-import { EmailService } from '@trophoria/modules/email';
+import { EmailService, EmailServiceSymbol } from '@trophoria/modules/email';
 import { EmailResponse } from '@trophoria/modules/email/entity/model/email-response.model';
-import { UserService } from '@trophoria/modules/user';
+import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
 
 @Injectable()
 export class EmailConfirmationDatabaseService
@@ -16,8 +16,8 @@ export class EmailConfirmationDatabaseService
   constructor(
     private readonly jwtService: JwtService,
     private readonly config: ApiConfigService,
-    private readonly emailService: EmailService,
-    private readonly userService: UserService,
+    @Inject(EmailServiceSymbol) private readonly emailService: EmailService,
+    @Inject(UserServiceSymbol) private readonly userService: UserService,
   ) {}
 
   sendVerificationLink(id: string, email: string): Promise<EmailResponse> {
@@ -34,7 +34,7 @@ export class EmailConfirmationDatabaseService
       'EMAIL_CONFIRMATION_URL',
     )}?token=${verificationToken}`;
 
-    const content = `To confirm the email address, click here: ${url}`;
+    const content = `To confirm the email address, <a href="${url}">click here</a>!`;
 
     return this.emailService.send({
       to: email,

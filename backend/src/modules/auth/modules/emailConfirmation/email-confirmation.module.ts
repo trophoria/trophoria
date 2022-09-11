@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { EmailConfirmationResolver } from '@trophoria/modules/auth/modules/emailConfirmation/boundary/email-confirmation.resolver';
 
 import { EmailConfirmationDatabaseService } from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation-database.service';
 import { EmailConfirmationSymbol } from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
@@ -19,6 +20,7 @@ import { UserModule } from '@trophoria/modules/user/user.module';
       provide: EmailConfirmationSymbol,
       useClass: EmailConfirmationDatabaseService,
     },
+    EmailConfirmationResolver,
   ],
   exports: [EmailConfirmationSymbol],
 })

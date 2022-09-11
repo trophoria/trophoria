@@ -8,14 +8,17 @@ import { Mail } from '@trophoria/modules/email/entity/model/mail.model';
 
 @Injectable()
 export class SendgridService implements EmailService {
-  constructor(private readonly configService: ApiConfigService) {
-    sgMail.setApiKey(configService.get('SEND_GRID_KEY'));
+  constructor(private readonly config: ApiConfigService) {
+    sgMail.setApiKey(config.get('SEND_GRID_KEY'));
   }
 
   async send(mail: Mail): Promise<EmailResponse> {
     return sgMail.send({
       ...mail,
-      from: this.configService.get('SEND_GRID_SENDER'),
+      from: {
+        email: this.config.get('SEND_GRID_SENDER_MAIL'),
+        name: this.config.get('SEND_GRID_SENDER_NAME'),
+      },
     })[0];
   }
 }

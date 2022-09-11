@@ -15,6 +15,13 @@ import {
 import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
 
+jest.mock('@sendgrid/mail', () => {
+  return {
+    setApiKey: jest.fn(),
+    send: jest.fn(() => ({ statusCode: 200, message: 'email sent' })),
+  };
+});
+
 describe('AuthService', () => {
   let service: AuthService;
   let userService: UserService;

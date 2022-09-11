@@ -42,7 +42,7 @@ model User {
 
   //? User Metadata
 
-  /// @HideField({ input: true, output: true })
+  /// @HideField({ input: true })
   id        String   @id @default(uuid())
   /// @HideField({ input: true })
   createdAt DateTime @default(now())

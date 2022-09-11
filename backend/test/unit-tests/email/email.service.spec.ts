@@ -43,7 +43,10 @@ describe('EmailService', () => {
 
     expect(sgMail.send).toBeCalledWith({
       to: 'receiver@mail.com',
-      from: config.get('SEND_GRID_SENDER'),
+      from: {
+        name: config.get('SEND_GRID_SENDER_NAME'),
+        email: config.get('SEND_GRID_SENDER_MAIL'),
+      },
       subject: 'This is a unit test',
       html: '<h1>Hello World!</h1>',
     });

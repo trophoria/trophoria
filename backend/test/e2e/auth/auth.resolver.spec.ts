@@ -21,6 +21,13 @@ import {
 } from '@trophoria/test/e2e/e2e-utils';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
 
+jest.mock('@sendgrid/mail', () => {
+  return {
+    setApiKey: jest.fn(),
+    send: jest.fn(() => ({ statusCode: 200, message: 'email sent' })),
+  };
+});
+
 describe('AuthResolver (e2e)', () => {
   let app: NestFastifyApplication;
   let db: PrismaService;
@@ -35,28 +42,28 @@ describe('AuthResolver (e2e)', () => {
 
   afterAll(() => app.close());
 
-  describe('qql sign_up (mutation)', () => {
+  describe('qql signUp (mutation)', () => {
     beforeAll(() => db.cleanDatabase());
 
     it('should sign up without username', async () => {
-      const variables = { user_input: UserMock.userWithoutUsername };
+      const variables = { userInput: UserMock.userWithoutUsername };
 
       const { createdAt, email, payload, updatedAt, username, isVerified } =
         gqlData(
           await graphql(app, signUpQuery, variables).expect(200),
-          'sign_up',
+          'signUp',
         );
 
       expect(new Date(createdAt)).toBeValidDate();
       expect(new Date(updatedAt)).toBeValidDate();
       expect(username).toMatch(/unameduser\d{5}/);
-      expect(email).toBe(variables.user_input.email);
+      expect(email).toBe(variables.userInput.email);
       expect(payload).toBeNull();
       expect(isVerified).toBeFalse();
     });
 
     it('should return an error if email exists', async () => {
-      const variables = { user_input: UserMock.userWithoutUsername };
+      const variables = { userInput: UserMock.userWithoutUsername };
 
       const errors = gqlErrors(
         await graphql(app, signUpQuery, variables).expect(409),
@@ -66,12 +73,12 @@ describe('AuthResolver (e2e)', () => {
     });
   });
 
-  describe('gql sign_in (mutation)', () => {
+  describe('gql signIn (mutation)', () => {
     let payload: JwtPayload;
 
     beforeAll(async () => {
       await db.cleanDatabase();
-      const variables = { user_input: UserMock.userWithoutUsername };
+      const variables = { userInput: UserMock.userWithoutUsername };
       await graphql(app, signUpQuery, variables);
     });
 
@@ -79,7 +86,7 @@ describe('AuthResolver (e2e)', () => {
       const variables = { credentials: UserMock.userWithoutUsername };
 
       const res = await graphql(app, signInQuery, variables).expect(200);
-      const { accessToken, refreshToken } = gqlData(res, 'sign_in');
+      const { accessToken, refreshToken } = gqlData(res, 'signIn');
       const cookies = parseCookies(res);
 
       payload = jwt.decode(accessToken) as JwtPayload;
@@ -115,24 +122,24 @@ describe('AuthResolver (e2e)', () => {
       const res = await graphql(app, signInQuery, variables, [
         `REFRESH=${reusedToken}`,
       ]).expect(200);
-      const { reuseDetected } = gqlData(res, 'sign_in');
+      const { reuseDetected } = gqlData(res, 'signIn');
 
       expect(reuseDetected).toBeTrue();
     });
   });
 
-  describe('gql refresh_tokens (mutation)', () => {
+  describe('gql refreshTokens (mutation)', () => {
     let signRefreshToken: string;
 
     beforeAll(async () => {
       await db.cleanDatabase();
-      const variables = { user_input: UserMock.userWithoutUsername };
+      const variables = { userInput: UserMock.userWithoutUsername };
       await graphql(app, signUpQuery, variables);
       signRefreshToken = gqlData(
         await graphql(app, signInQuery, {
           credentials: UserMock.userWithoutUsername,
         }),
-        'sign_in',
+        'signIn',
       ).refreshToken;
     });
 
@@ -141,7 +148,7 @@ describe('AuthResolver (e2e)', () => {
         `REFRESH=${signRefreshToken}`,
       ]).expect(200);
 
-      const { accessToken, refreshToken } = gqlData(res, 'refresh_tokens');
+      const { accessToken, refreshToken } = gqlData(res, 'refreshTokens');
       const cookies = parseCookies(res);
 
       expect(cookies['REFRESH']).toMatch(refreshToken);
@@ -160,13 +167,13 @@ describe('AuthResolver (e2e)', () => {
 
     beforeAll(async () => {
       await db.cleanDatabase();
-      const variables = { user_input: UserMock.userWithoutUsername };
+      const variables = { userInput: UserMock.userWithoutUsername };
       await graphql(app, signUpQuery, variables);
       accessToken = gqlData(
         await graphql(app, signInQuery, {
           credentials: UserMock.userWithoutUsername,
         }),
-        'sign_in',
+        'signIn',
       ).accessToken;
     });
 
@@ -193,19 +200,19 @@ describe('AuthResolver (e2e)', () => {
     });
   });
 
-  describe('gql sign_out (mutation)', () => {
+  describe('gql signOut (mutation)', () => {
     let accessToken: string;
     let refreshToken: string;
 
     beforeAll(async () => {
       await db.cleanDatabase();
-      const variables = { user_input: UserMock.userWithoutUsername };
-      await graphql(app, signUpQuery, variables), 'sign_up';
+      const variables = { userInput: UserMock.userWithoutUsername };
+      await graphql(app, signUpQuery, variables), 'signUp';
       ({ accessToken, refreshToken } = gqlData(
         await graphql(app, signInQuery, {
           credentials: UserMock.userWithoutUsername,
         }),
-        'sign_in',
+        'signIn',
       ));
     });
 
@@ -214,7 +221,7 @@ describe('AuthResolver (e2e)', () => {
         await graphql(app, signOutQuery)
           .set('authorization', `Bearer ${accessToken}`)
           .expect(200),
-        'sign_out',
+        'signOut',
       );
 
       expect(statusCode).toBe(200);

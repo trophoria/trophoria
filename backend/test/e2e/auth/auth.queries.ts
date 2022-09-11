@@ -1,8 +1,8 @@
 import { gql } from '@trophoria/test/e2e/e2e-utils';
 
 export const signUpQuery = gql`
-  mutation SignUp($user_input: UserCreateInput!) {
-    sign_up(user_input: $user_input) {
+  mutation SignUp($userInput: UserCreateInput!) {
+    signUp(userInput: $userInput) {
       createdAt
       email
       payload
@@ -15,7 +15,7 @@ export const signUpQuery = gql`
 
 export const signInQuery = gql`
   mutation SignUp($credentials: AuthenticationInput!) {
-    sign_in(credentials: $credentials) {
+    signIn(credentials: $credentials) {
       accessToken
       refreshToken
       reuseDetected
@@ -25,7 +25,7 @@ export const signInQuery = gql`
 
 export const refreshQuery = gql`
   mutation RefreshTokens {
-    refresh_tokens {
+    refreshTokens {
       accessToken
       refreshToken
     }
@@ -47,7 +47,7 @@ export const meQuery = gql`
 
 export const signOutQuery = gql`
   mutation SignOut {
-    sign_out {
+    signOut {
       statusCode
       message
     }

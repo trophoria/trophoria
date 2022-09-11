@@ -4,3 +4,4 @@ export * from './filters/_index';
 export * from './guards/_index';
 export * from './decorators/_index';
 export * from './types/_index';
+export * from './dto/_index';

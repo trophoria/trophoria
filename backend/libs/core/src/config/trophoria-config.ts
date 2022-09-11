@@ -25,14 +25,23 @@ export class TrophoriaConfig {
     COOKIE_SECRET: z.string(),
 
     SEND_GRID_KEY: z.string(),
-    SEND_GRID_SENDER: z.string().default('support@trophoria.de'),
+    SEND_GRID_SENDER_MAIL: z.string().default('support@trophoria.de'),
+    SEND_GRID_SENDER_NAME: z.string().default('Trophoria'),
 
     JWT_PRIVATE_KEY: z.string(),
     JWT_PUBLIC_KEY: z.string(),
     JWT_EXPIRES_IN: z.string().default('30m'),
+
     JWT_REFRESH_PRIVATE_KEY: z.string(),
     JWT_REFRESH_PUBLIC_KEY: z.string(),
     JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
+
+    EMAIL_CONFIRMATION_URL: z
+      .string()
+      .default('http:localhost:3000/email-confirmation/confirm'),
+    JWT_VERIFICATION_PRIVATE_KEY: z.string(),
+    JWT_VERIFICATION_PUBLIC_KEY: z.string(),
+    JWT_VERIFICATION_EXPIRES_IN: z.string().default('1h'),
   });
 
   static envFilePath = 'config/env/.env';

@@ -10,19 +10,30 @@ import { SignOutResponse } from '@trophoria/modules/auth/boundary/dto/sign-out-r
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import { AuthService } from '@trophoria/modules/auth/business/auth.service';
 import { TokenPair } from '@trophoria/modules/auth/entity/models/token-pair.model';
+import {
+  EmailConfirmationService,
+  EmailConfirmationSymbol,
+} from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
 import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
 
 @Injectable()
 export class AuthDatabaseService implements AuthService {
   constructor(
     @Inject(UserServiceSymbol) private readonly userService: UserService,
+    @Inject(EmailConfirmationSymbol)
+    private readonly emailConfirmationService: EmailConfirmationService,
     private readonly jwtService: JwtService,
     private readonly config: ApiConfigService,
   ) {}
 
   async signUp(user: UserCreateInput): Promise<User> {
     const password = await hash(user.password, 10);
-    return this.userService.create({ ...user, password });
+    const created = await this.userService.create({ ...user, password });
+    await this.emailConfirmationService.sendVerificationLink(
+      created.id,
+      created.email,
+    );
+    return created;
   }
 
   async signIn(user: User, refreshCookie?: string): Promise<TokenPayload> {

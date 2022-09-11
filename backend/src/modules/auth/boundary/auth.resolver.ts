@@ -20,22 +20,20 @@ import {
   AuthService,
   AuthServiceSymbol,
 } from '@trophoria/modules/auth/business/auth.service';
-import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
 
 @Resolver()
 @UseGuards(GraphQLThrottlerGuard)
 export class AuthResolver {
   constructor(
     @Inject(AuthServiceSymbol) private readonly authService: AuthService,
-    @Inject(UserServiceSymbol) private readonly userService: UserService,
   ) {}
 
-  @Mutation((_returns) => User, { name: 'sign_up' })
-  async signUp(@Args('user_input') user: UserCreateInput) {
+  @Mutation((_returns) => User, { name: 'signUp' })
+  async signUp(@Args('userInput') user: UserCreateInput) {
     return this.authService.signUp(user);
   }
 
-  @Mutation((_returns) => TokenPayload, { name: 'sign_in' })
+  @Mutation((_returns) => TokenPayload, { name: 'signIn' })
   @UseGuards(LocalAuthenticationGuard)
   async signIn(
     @CurrentUser() user: User,
@@ -52,7 +50,7 @@ export class AuthResolver {
     return { accessToken, refreshToken, reuseDetected };
   }
 
-  @Mutation((_returns) => SignOutResponse, { name: 'sign_out' })
+  @Mutation((_returns) => SignOutResponse, { name: 'signOut' })
   @UseGuards(JwtAuthGuard)
   async signOut(
     @CurrentUser() user: User,
@@ -62,7 +60,7 @@ export class AuthResolver {
     return this.authService.signOut(user.id);
   }
 
-  @Mutation((_returns) => TokenPayload, { name: 'refresh_tokens' })
+  @Mutation((_returns) => TokenPayload, { name: 'refreshTokens' })
   @UseGuards(JwtRefreshGuard)
   async refresh(
     @CurrentUser() user: User,
