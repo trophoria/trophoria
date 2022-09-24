@@ -2,7 +2,7 @@ import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppModule } from '@trophoria/app.module';
-import { User } from '@trophoria/graphql';
+import { User } from '@trophoria/graphql/user/user.model';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
 import { UserMock } from '@trophoria/test/mocks/user.mock';

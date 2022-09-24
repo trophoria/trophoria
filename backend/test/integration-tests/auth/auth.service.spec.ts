@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppModule } from '@trophoria/app.module';
-import { User } from '@trophoria/graphql';
+import { User } from '@trophoria/graphql/user/user.model';
 import { JwtPayload } from '@trophoria/libs/common';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';

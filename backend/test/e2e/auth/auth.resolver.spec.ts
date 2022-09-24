@@ -207,7 +207,7 @@ describe('AuthResolver (e2e)', () => {
     beforeAll(async () => {
       await db.cleanDatabase();
       const variables = { userInput: UserMock.userWithoutUsername };
-      await graphql(app, signUpQuery, variables), 'signUp';
+      await graphql(app, signUpQuery, variables);
       ({ accessToken, refreshToken } = gqlData(
         await graphql(app, signInQuery, {
           credentials: UserMock.userWithoutUsername,

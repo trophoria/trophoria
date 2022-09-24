@@ -18,7 +18,7 @@ export class EmailConfirmationResolver {
     private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
-  @Mutation((_returns) => BasicResponse, { name: 'confirm' })
+  @Mutation((_returns) => BasicResponse, { name: 'confirmEmail' })
   async confirm(@Args('token') token: string) {
     const { id } = await this.emailConfirmationService.decodeVerificationToken(
       token,
@@ -32,9 +32,14 @@ export class EmailConfirmationResolver {
     };
   }
 
-  @Mutation((_returns) => User, { name: 'resendConfirmationLink' })
+  @Mutation((_returns) => BasicResponse, { name: 'resendConfirmationLink' })
   @UseGuards(JwtAuthGuard)
   async resendConfirmationLink(@CurrentUser() user: User) {
     await this.emailConfirmationService.resendConfirmationLink(user.id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'successfully resend email',
+    };
   }
 }
