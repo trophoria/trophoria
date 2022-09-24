@@ -1,8 +1,6 @@
-import { join } from 'path';
 import { fastifyCookie } from '@fastify/cookie';
 import helmet from '@fastify/helmet';
 import fastifyMultipart from '@fastify/multipart';
-import { fastifyStatic } from '@fastify/static';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -42,9 +40,6 @@ export const initializeApp = async (app: App, config: ApiConfigService) => {
       fileSize: 10000,
       files: 1,
     },
-  });
-  await app.register(fastifyStatic as never, {
-    root: join(__dirname, '..', '..', 'public'),
   });
 
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
