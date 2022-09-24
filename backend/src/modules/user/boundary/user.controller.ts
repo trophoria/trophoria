@@ -8,8 +8,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { User } from '@trophoria/graphql/user/user.model';
 
-import { User } from '@trophoria/graphql/index';
 import { CurrentRestUser } from '@trophoria/modules/auth/boundary/decorators/user.decorator';
 import { JwtRestAuthGuard } from '@trophoria/modules/auth/boundary/guards/jwt.guard';
 import { File } from '@trophoria/modules/file/entity/file.model';
