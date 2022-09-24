@@ -2,7 +2,7 @@ import { UserCreateInput } from '@trophoria/graphql/user/user-create.input';
 import { User } from '@trophoria/graphql/user/user.model';
 import { BasicResponse } from '@trophoria/libs/common';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
-import { TokenPair } from '@trophoria/modules/auth/entity/models/token-pair.model';
+import { TokenPair } from '@trophoria/modules/auth/entity/token-pair.model';
 
 /** Symbol to inject the user service. */
 export const AuthServiceSymbol = Symbol('AuthService');

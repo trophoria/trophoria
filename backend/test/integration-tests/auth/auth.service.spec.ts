@@ -12,7 +12,10 @@ import {
   AuthService,
   AuthServiceSymbol,
 } from '@trophoria/modules/auth/business/auth.service';
-import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
+import {
+  UserService,
+  UserServiceSymbol,
+} from '@trophoria/modules/user/business/user.service';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
 
 jest.mock('@sendgrid/mail', () => {

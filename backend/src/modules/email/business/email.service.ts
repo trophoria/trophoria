@@ -1,5 +1,5 @@
-import { EmailResponse } from '@trophoria/modules/email/entity/model/email-response.model';
-import { Mail } from '@trophoria/modules/email/entity/model/mail.model';
+import { EmailResponse } from '@trophoria/modules/email/entity/email-response.model';
+import { Mail } from '@trophoria/modules/email/entity/mail.model';
 
 /** Symbol to inject the email service. */
 export const EmailServiceSymbol = Symbol('EmailService');

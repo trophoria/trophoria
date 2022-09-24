@@ -1,6 +1,6 @@
 import sgMail from '@sendgrid/mail';
 
-import { Mail } from '@trophoria/modules/email/entity/model/mail.model';
+import { Mail } from '@trophoria/modules/email/entity/mail.model';
 
 export const extractTokenFromSendArguments = () => {
   const tokenRegex = /\?token=([^"]*)/gm;

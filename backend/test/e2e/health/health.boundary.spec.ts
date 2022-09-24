@@ -1,8 +1,12 @@
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
 
-import { gqlData, graphql, setupE2eTest } from '@trophoria/test/e2e/e2e-utils';
 import { pingQuery } from '@trophoria/test/e2e/health/health.queries';
+import {
+  gqlData,
+  graphql,
+  setupE2eTest,
+} from '@trophoria/test/utils/e2e-utils';
 
 describe('HealthBoundary (e2e)', () => {
   let app: NestFastifyApplication;

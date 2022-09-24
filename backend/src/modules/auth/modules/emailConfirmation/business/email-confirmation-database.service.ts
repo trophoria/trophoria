@@ -4,10 +4,16 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '@trophoria/graphql/user/user.model';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import { EmailConfirmationService } from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
-import { VerificationTokenPayload } from '@trophoria/modules/auth/modules/emailConfirmation/entity/model/verification-token-payload.model';
-import { EmailService, EmailServiceSymbol } from '@trophoria/modules/email';
-import { EmailResponse } from '@trophoria/modules/email/entity/model/email-response.model';
-import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
+import { VerificationTokenPayload } from '@trophoria/modules/auth/modules/emailConfirmation/entity/verification-token-payload.model';
+import {
+  EmailService,
+  EmailServiceSymbol,
+} from '@trophoria/modules/email/business/email.service';
+import { EmailResponse } from '@trophoria/modules/email/entity/email-response.model';
+import {
+  UserService,
+  UserServiceSymbol,
+} from '@trophoria/modules/user/business/user.service';
 
 @Injectable()
 export class EmailConfirmationDatabaseService

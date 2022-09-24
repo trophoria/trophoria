@@ -7,16 +7,16 @@ import {
   signUpQuery,
 } from '@trophoria/test/e2e/auth/auth.queries';
 import {
-  gqlData,
-  gqlErrors,
-  graphql,
-  setupE2eTest,
-} from '@trophoria/test/e2e/e2e-utils';
-import {
   confirmEmailQuery,
   resendLinkQuery,
 } from '@trophoria/test/e2e/emailConfirmation/emailConfirmation.queries';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
+import {
+  gqlData,
+  gqlErrors,
+  graphql,
+  setupE2eTest,
+} from '@trophoria/test/utils/e2e-utils';
 import { extractTokenFromSendArguments } from '@trophoria/test/utils/extract-token';
 
 jest.mock('@sendgrid/mail', () => {

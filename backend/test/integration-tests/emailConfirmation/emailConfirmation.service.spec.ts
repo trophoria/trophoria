@@ -8,7 +8,10 @@ import {
   EmailConfirmationService,
   EmailConfirmationSymbol,
 } from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
-import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
+import {
+  UserService,
+  UserServiceSymbol,
+} from '@trophoria/modules/user/business/user.service';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
 import { extractTokenFromSendArguments } from '@trophoria/test/utils/extract-token';
 

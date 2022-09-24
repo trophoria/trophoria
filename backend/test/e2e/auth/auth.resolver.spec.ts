@@ -12,14 +12,14 @@ import {
   signOutQuery,
   signUpQuery,
 } from '@trophoria/test/e2e/auth/auth.queries';
+import { UserMock } from '@trophoria/test/mocks/user.mock';
 import {
   gqlData,
   gqlErrors,
   graphql,
   parseCookies,
   setupE2eTest,
-} from '@trophoria/test/e2e/e2e-utils';
-import { UserMock } from '@trophoria/test/mocks/user.mock';
+} from '@trophoria/test/utils/e2e-utils';
 
 jest.mock('@sendgrid/mail', () => {
   return {

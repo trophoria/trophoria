@@ -5,7 +5,11 @@ import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
 import { generateNameFromEmail } from '@trophoria/libs/common';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
-import { File, FileService, FileServiceSymbol } from '@trophoria/modules/file';
+import {
+  FileService,
+  FileServiceSymbol,
+} from '@trophoria/modules/file/business/file.service';
+import { File } from '@trophoria/modules/file/entity/file.model';
 import { UserService } from '@trophoria/modules/user/business/user.service';
 
 @Injectable()

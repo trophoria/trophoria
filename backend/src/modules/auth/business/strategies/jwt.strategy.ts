@@ -4,12 +4,15 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { JwtPayload } from '@trophoria/libs/common';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
-import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
+import {
+  UserService,
+  UserServiceSymbol,
+} from '@trophoria/modules/user/business/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private readonly configService: ApiConfigService,
+    readonly configService: ApiConfigService,
     @Inject(UserServiceSymbol) private userService: UserService,
   ) {
     super({

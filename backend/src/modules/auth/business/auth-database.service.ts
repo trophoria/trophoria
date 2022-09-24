@@ -13,12 +13,15 @@ import {
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import { TokenPayload } from '@trophoria/modules/auth/boundary/dto/token-payload.model';
 import { AuthService } from '@trophoria/modules/auth/business/auth.service';
-import { TokenPair } from '@trophoria/modules/auth/entity/models/token-pair.model';
+import { TokenPair } from '@trophoria/modules/auth/entity/token-pair.model';
 import {
   EmailConfirmationService,
   EmailConfirmationSymbol,
 } from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
-import { UserService, UserServiceSymbol } from '@trophoria/modules/user';
+import {
+  UserService,
+  UserServiceSymbol,
+} from '@trophoria/modules/user/business/user.service';
 
 @Injectable()
 export class AuthDatabaseService implements AuthService {

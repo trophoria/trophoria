@@ -45,9 +45,24 @@ services:
       - cache
       - postgres
 
+  object-storage:
+    image: minio/minio
+    restart: unless-stopped
+    ports:
+      - '${MINIO_PORT}:${MINIO_PORT}'
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    command: server /data
+    networks:
+      - trophy-service
+    volumes:
+      - minio:/data/minio
+
 volumes:
   postgres:
   redis:
+  minio:
 
 networks:
   trophy-service:

@@ -3,8 +3,8 @@ import sgMail from '@sendgrid/mail';
 
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import { EmailService } from '@trophoria/modules/email/business/email.service';
-import { EmailResponse } from '@trophoria/modules/email/entity/model/email-response.model';
-import { Mail } from '@trophoria/modules/email/entity/model/mail.model';
+import { EmailResponse } from '@trophoria/modules/email/entity/email-response.model';
+import { Mail } from '@trophoria/modules/email/entity/mail.model';
 
 @Injectable()
 export class SendgridService implements EmailService {

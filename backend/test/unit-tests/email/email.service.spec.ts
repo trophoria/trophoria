@@ -1,13 +1,12 @@
 import { Test } from '@nestjs/testing';
 import sgMail from '@sendgrid/mail';
-
 import { ApiConfigModule } from '@trophoria/modules/_setup/config/api-config.module';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import {
   EmailService,
   EmailServiceSymbol,
-  SendgridService,
-} from '@trophoria/modules/email';
+} from '@trophoria/modules/email/business/email.service';
+import { SendgridService } from '@trophoria/modules/email/business/sendgrid.service';
 
 jest.mock('@sendgrid/mail', () => {
   return {
