@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { FileModule } from '@trophoria/modules/file/file.module';
 import { UserController } from '@trophoria/modules/user/boundary/user.controller';
 
 import { UserDatabaseService } from '@trophoria/modules/user/business/user-database.service';
@@ -9,6 +10,7 @@ import { UserServiceSymbol } from '@trophoria/modules/user/business/user.service
  * utilities to handle active refresh tokens.
  */
 @Module({
+  imports: [FileModule],
   providers: [{ provide: UserServiceSymbol, useClass: UserDatabaseService }],
   exports: [UserServiceSymbol],
   controllers: [UserController],

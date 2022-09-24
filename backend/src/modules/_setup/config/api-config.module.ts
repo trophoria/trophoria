@@ -16,7 +16,7 @@ import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.se
         }
         return TrophoriaConfig.envFilePath;
       })(),
-      validate: TrophoriaConfig.envValidationSchema.parse,
+      validate: (config) => TrophoriaConfig.envValidationSchema.parse(config),
     }),
   ],
   providers: [ApiConfigService],

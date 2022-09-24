@@ -1,5 +1,6 @@
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
+import { File } from '@trophoria/modules/file';
 
 /** Symbol to inject the user service. */
 export const UserServiceSymbol = Symbol('UserService');
@@ -88,4 +89,16 @@ export interface UserService {
    * @returns       The user instance with no refresh tokens
    */
   persistTokens(id: string, tokens: string[]): Promise<User>;
+
+  /**
+   * Persists the provided avatar image and associates the user with
+   * the public link of the avatar. If something went wrong while saving
+   * the file, a {@link HttpException} gets thrown.
+   *
+   * @param id      The unique identifier of the user
+   * @param file    The file data as buffer with meta information
+   * @throws        {@link HttpException} if saving the image did not succeed
+   * @returns       The public url of saved avatar
+   */
+  saveAvatar(id: string, file: File): Promise<string>;
 }

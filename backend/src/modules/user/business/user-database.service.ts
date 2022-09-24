@@ -1,15 +1,19 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { StringNullableFilter } from '@trophoria/config/graphql/@generated/prisma/string-nullable-filter.input';
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
 import { generateNameFromEmail } from '@trophoria/libs/common';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
+import { File, FileService, FileServiceSymbol } from '@trophoria/modules/file';
 import { UserService } from '@trophoria/modules/user/business/user.service';
 
 @Injectable()
 export class UserDatabaseService implements UserService {
-  constructor(private db: PrismaService) {}
+  constructor(
+    private db: PrismaService,
+    @Inject(FileServiceSymbol) private readonly fileService: FileService,
+  ) {}
 
   async findAll(): Promise<User[]> {
     return this.db.user.findMany();
@@ -100,5 +104,15 @@ export class UserDatabaseService implements UserService {
     }
 
     return this.db.user.update({ where: { id }, data: { tokens } });
+  }
+
+  async saveAvatar(id: string, file: File): Promise<string> {
+    const avatar = await this.fileService.save({
+      file,
+      bucket: 'avatars',
+      name: id,
+    });
+    await this.db.user.update({ where: { id }, data: { avatar } });
+    return avatar;
   }
 }

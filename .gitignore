@@ -11,6 +11,7 @@ backend/config/graphql/schema.gql
 backend/coverage/
 backend/**/@generated
 backend/coverage
+backend/public/avatars
 
 # environment files
 backend/**/.env

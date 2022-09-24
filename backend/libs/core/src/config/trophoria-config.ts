@@ -42,6 +42,11 @@ export class TrophoriaConfig {
     JWT_VERIFICATION_PRIVATE_KEY: z.string(),
     JWT_VERIFICATION_PUBLIC_KEY: z.string(),
     JWT_VERIFICATION_EXPIRES_IN: z.string().default('1h'),
+
+    MINIO_HOST: z.string().default('localhost'),
+    MINIO_PORT: z.preprocess(parseInt, z.number()).default(9000),
+    MINIO_ACCESS_KEY: z.string(),
+    MINIO_SECRET_KEY: z.string(),
   });
 
   static envFilePath = 'config/env/.env';

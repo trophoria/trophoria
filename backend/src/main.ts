@@ -39,7 +39,7 @@ export const initializeApp = async (app: App, config: ApiConfigService) => {
       fieldNameSize: 10,
       fieldSize: 10,
       fields: 1,
-      fileSize: 500,
+      fileSize: 10000,
       files: 1,
     },
   });

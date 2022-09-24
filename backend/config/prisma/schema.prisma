@@ -30,6 +30,9 @@ model User {
   /// @Validator.Length(3, 50)
   /// @Validator.IsOptional()
   username   String?  @unique
+  /// @Validator.IsOptional()
+  /// @HideField({ input: true })
+  avatar     String?
   /// @Validator.IsJSON()
   /// @Validator.MaxLength(500)
   /// @Validator.IsOptional()

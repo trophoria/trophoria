@@ -8,3 +8,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return GqlExecutionContext.create(context).getContext().req;
   }
 }
+
+@Injectable()
+export class JwtRestAuthGuard extends AuthGuard('jwt') {
+  getRequest(context: ExecutionContext) {
+    return context.switchToHttp().getRequest();
+  }
+}
