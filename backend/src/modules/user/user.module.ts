@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { UserController } from '@trophoria/modules/user/boundary/user.controller';
 
 import { UserDatabaseService } from '@trophoria/modules/user/business/user-database.service';
 import { UserServiceSymbol } from '@trophoria/modules/user/business/user.service';
@@ -10,5 +11,6 @@ import { UserServiceSymbol } from '@trophoria/modules/user/business/user.service
 @Module({
   providers: [{ provide: UserServiceSymbol, useClass: UserDatabaseService }],
   exports: [UserServiceSymbol],
+  controllers: [UserController],
 })
 export class UserModule {}

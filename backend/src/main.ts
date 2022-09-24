@@ -1,13 +1,16 @@
+import { join } from 'path';
 import { fastifyCookie } from '@fastify/cookie';
 import helmet from '@fastify/helmet';
+import fastifyMultipart from '@fastify/multipart';
+import { fastifyStatic } from '@fastify/static';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication as App,
 } from '@nestjs/platform-fastify';
-
 import { Logger } from 'nestjs-pino';
+
 import { AppModule } from '@trophoria/app.module';
 import { ThrottlerExceptionFilter } from '@trophoria/libs/common';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
@@ -30,6 +33,18 @@ export const initializeApp = async (app: App, config: ApiConfigService) => {
   });
   await app.register(fastifyCookie as never, {
     secret: config.get('COOKIE_SECRET'),
+  });
+  await app.register(fastifyMultipart as never, {
+    limits: {
+      fieldNameSize: 10,
+      fieldSize: 10,
+      fields: 1,
+      fileSize: 500,
+      files: 1,
+    },
+  });
+  await app.register(fastifyStatic as never, {
+    root: join(__dirname, '..', '..', 'public'),
   });
 
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
