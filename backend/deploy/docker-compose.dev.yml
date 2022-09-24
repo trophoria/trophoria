@@ -28,10 +28,11 @@ services:
     restart: unless-stopped
     ports:
       - '${MINIO_PORT}:${MINIO_PORT}'
+      - '9001:9001'
     environment:
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
-    command: server /data
+    command: server /data --console-address ":9001"
 
 networks:
   trophy-service:
