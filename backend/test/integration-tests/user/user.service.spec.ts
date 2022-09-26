@@ -5,14 +5,20 @@ import { AppModule } from '@trophoria/app.module';
 import { User } from '@trophoria/graphql/user/user.model';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import {
+  FileService,
+  FileServiceSymbol,
+} from '@trophoria/modules/file/business/file.service';
+import {
   UserService,
   UserServiceSymbol,
 } from '@trophoria/modules/user/business/user.service';
+import { FileMock } from '@trophoria/test/mocks/file.mock';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
 
 describe('UsersService', () => {
   let service: UserService;
   let db: PrismaService;
+  let fileService: FileService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,11 +27,15 @@ describe('UsersService', () => {
 
     service = module.get<UserService>(UserServiceSymbol);
     db = module.get<PrismaService>(PrismaService);
+    fileService = module.get<FileService>(FileServiceSymbol);
   });
+
+  afterEach(jest.clearAllMocks);
 
   it('services should be defined', () => {
     expect(service).toBeDefined();
     expect(db).toBeDefined();
+    expect(fileService).toBeDefined();
   });
 
   describe('should create new users', () => {
@@ -178,6 +188,34 @@ describe('UsersService', () => {
         expect(err).toBeInstanceOf(HttpException);
         expect(err.getStatus()).toBe(400);
       }
+    });
+  });
+
+  describe('should save the users avatar', () => {
+    let createdUser: User;
+    let clientMock: jest.SpyInstance;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      createdUser = await service.create(UserMock.mockUsers[0]);
+      clientMock = jest
+        .spyOn(fileService, 'save')
+        .mockImplementation(async () => FileMock.saveMockResponse);
+    });
+
+    it('should correctly call the file module and save url to database', async () => {
+      await service.saveAvatar(createdUser.id, FileMock.testFile);
+
+      const updatedUser = await service.findById(createdUser.id);
+
+      expect(updatedUser.avatar).toBe(FileMock.saveMockResponse);
+      expect(clientMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          file: FileMock.testFile,
+          bucket: 'avatars',
+          name: createdUser.id,
+        }),
+      );
     });
   });
 });

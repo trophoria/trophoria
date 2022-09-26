@@ -5,36 +5,30 @@ import { Test } from '@nestjs/testing';
 import { Client } from 'minio';
 import { MinioService } from 'nestjs-minio-client';
 import { ApiConfigModule } from '@trophoria/modules/_setup/config/api-config.module';
-import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import {
   FileService,
   FileServiceSymbol,
 } from '@trophoria/modules/file/business/file.service';
 import { FileModule } from '@trophoria/modules/file/file.module';
+import { FileMock } from '@trophoria/test/mocks/file.mock';
+
+const throwIfInvalidBucket = async (bucket: string) =>
+  bucket === FileMock.invalidBucketName ? Promise.reject('invalid') : null;
 
 const minioClient = {
-  bucketExists: jest.fn(async (name) => name === 'existing'),
+  bucketExists: jest.fn(async (name) => name === FileMock.existingBucketName),
   makeBucket: jest.fn(),
   setBucketPolicy: jest.fn(),
-  putObject: jest.fn(async (bucket) => {
-    if (bucket === 'error') return Promise.reject('invalid');
-    return null;
-  }),
-  removeObject: jest.fn(async (bucket, name) => {
-    if (bucket === 'invalid' || name === 'invalid') {
-      return Promise.reject('invalid');
-    }
-    return null;
-  }),
+  putObject: jest.fn(throwIfInvalidBucket),
+  removeObject: jest.fn(throwIfInvalidBucket),
 };
 
-const clientMock = jest
+jest
   .spyOn(MinioService.prototype, 'client', 'get')
   .mockImplementation(() => createMock<Client>(minioClient));
 
 describe('MinioFileService', () => {
   let service: FileService;
-  let config: ApiConfigService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -42,38 +36,35 @@ describe('MinioFileService', () => {
     }).compile();
 
     service = moduleRef.get<FileService>(FileServiceSymbol);
-    config = moduleRef.get<ApiConfigService>(ApiConfigService);
-    clientMock.mockClear();
   });
 
   afterEach(jest.clearAllMocks);
 
   it('should be defined', async () => {
     expect(service).toBeDefined();
-    expect(config).toBeDefined();
   });
 
   describe('should create public buckets', () => {
     it('should create public bucket if not exist', async () => {
-      await service.createReadOnlyBucket('not_existing');
+      await service.createReadOnlyBucket(FileMock.newBucketName);
 
       expect(minioClient.bucketExists).toBeCalledTimes(1);
       expect(minioClient.makeBucket).toBeCalledTimes(1);
       expect(minioClient.setBucketPolicy).toBeCalledTimes(1);
 
       expect(minioClient.makeBucket).toHaveBeenCalledWith(
-        'not_existing',
+        FileMock.newBucketName,
         expect.any(String),
       );
 
       expect(minioClient.setBucketPolicy).toHaveBeenCalledWith(
-        'not_existing',
+        FileMock.newBucketName,
         expect.stringContaining('GetObject'),
       );
     });
 
     it('should not create bucket if it already exists', async () => {
-      await service.createReadOnlyBucket('existing');
+      await service.createReadOnlyBucket(FileMock.existingBucketName);
 
       expect(minioClient.bucketExists).toBeCalledTimes(1);
       expect(minioClient.makeBucket).toBeCalledTimes(0);
@@ -83,58 +74,52 @@ describe('MinioFileService', () => {
 
   describe('should save files to bucket', () => {
     it('should save the file under provided name', async () => {
-      const mockFile = {
-        mimetype: 'image/png',
-        buffer: Buffer.from('test image'),
-      };
-
       const url = await service.save({
-        bucket: 'test',
-        file: mockFile,
-        name: 'test-file',
+        bucket: FileMock.newBucketName,
+        file: FileMock.testFile,
+        name: FileMock.testFileName,
       });
 
       expect(minioClient.putObject).toHaveBeenCalledWith(
-        'test',
-        'test-file.png',
+        FileMock.newBucketName,
+        `${FileMock.testFileName}.png`,
         expect.any(Buffer),
-        expect.objectContaining({ 'Content-Type': 'image/png' }),
-      );
-
-      expect(url).toMatch(/.*:\d*\/test\/test-file\.png/);
-    });
-
-    it('should generate uuid if not name provided', async () => {
-      const mockFile = {
-        mimetype: 'image/png',
-        buffer: Buffer.from('test image'),
-      };
-
-      const url = await service.save({
-        bucket: 'test',
-        file: mockFile,
-      });
-
-      expect(minioClient.putObject).toHaveBeenCalledWith(
-        'test',
-        expect.not.stringContaining('test image'),
-        expect.any(Buffer),
-        expect.objectContaining({ 'Content-Type': 'image/png' }),
+        expect.objectContaining({ 'Content-Type': FileMock.testFile.mimetype }),
       );
 
       expect(url).toMatch(
-        /.*:\d*\/test\/[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\.png/,
+        new RegExp(
+          `.*:\\d*/${FileMock.newBucketName}/${FileMock.testFileName}\\.png`,
+        ),
+      );
+    });
+
+    it('should generate uuid if not name provided', async () => {
+      const url = await service.save({
+        bucket: FileMock.existingBucketName,
+        file: FileMock.testFile,
+      });
+
+      expect(minioClient.putObject).toHaveBeenCalledWith(
+        FileMock.existingBucketName,
+        expect.not.stringContaining(FileMock.testFileName),
+        expect.any(Buffer),
+        expect.objectContaining({ 'Content-Type': FileMock.testFile.mimetype }),
+      );
+
+      expect(url).toMatch(
+        new RegExp(
+          `.*:\\d*\\/${FileMock.existingBucketName}\\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\.png`,
+        ),
       );
     });
 
     it('should throw error if bucket does not exist', async () => {
-      const mockFile = {
-        mimetype: 'image/png',
-        buffer: Buffer.from('test image'),
-      };
-
       try {
-        await service.save({ bucket: 'error', file: mockFile });
+        await service.save({
+          bucket: FileMock.invalidBucketName,
+          file: FileMock.testFile,
+        });
       } catch (err) {
         expect(err).toBeInstanceOf(HttpException);
         expect(err.getStatus()).toBe(400);
@@ -144,17 +129,23 @@ describe('MinioFileService', () => {
 
   describe('should delete files from bucket', () => {
     it('should delete the named file inside the bucket', async () => {
-      await service.delete('test-file.png', 'test-bucket');
+      await service.delete(
+        FileMock.testFileNameWithExtension,
+        FileMock.existingBucketName,
+      );
 
       expect(minioClient.removeObject).toHaveBeenCalledWith(
-        'test-bucket',
-        'test-file.png',
+        FileMock.existingBucketName,
+        FileMock.testFileNameWithExtension,
       );
     });
 
     it('should throw error if bucket / file name is invalid', async () => {
       try {
-        await service.delete('test-file.png', 'invalid');
+        await service.delete(
+          FileMock.testFileNameWithExtension,
+          FileMock.newBucketName,
+        );
       } catch (err) {
         expect(err).toBeInstanceOf(HttpException);
         expect(err.getStatus()).toBe(400);
