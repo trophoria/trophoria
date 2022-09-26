@@ -1,5 +1,6 @@
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
+import { UserUpdateInput } from '@trophoria/graphql/user/user-update.input';
 import { File } from '@trophoria/modules/file/entity/file.model';
 
 /** Symbol to inject the user service. */
@@ -65,6 +66,29 @@ export interface UserService {
    * @returns             The freshly created user
    */
   create(user: UserCreateInput): Promise<User>;
+
+  /**
+   * Deletes the {@link User} with the provided id in the database. If the
+   * id does not exist, nothing happens. This also deletes the file persisted
+   * with the id of the user. Use this to remove all user associated data from the
+   * database.
+   *
+   * @param id  The id of the user
+   * @returns   The deleted user instance
+   */
+  delete(id: string): Promise<User>;
+
+  /**
+   * Updates the {@link User} values in the database for all provided values.
+   * If the id does not exist, nothing gets updated. If the email gets changed,
+   * the verified flag is set to false again and an verification mail gets
+   * automatically sent.
+   *
+   * @param id    The id of the user
+   * @param user  The user update data
+   * @returns     The updated user instance
+   */
+  update(id: string, user: UserUpdateInput): Promise<User>;
 
   /**
    * Mark the {@link User} with the provided id as verified. If the

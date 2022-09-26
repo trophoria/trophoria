@@ -1,10 +1,21 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 
 import { StringNullableFilter } from '@trophoria/config/graphql/@generated/prisma/string-nullable-filter.input';
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
+import { UserUpdateInput } from '@trophoria/graphql/user/user-update.input';
 import { generateNameFromEmail } from '@trophoria/libs/common';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
+import {
+  EmailConfirmationService,
+  EmailConfirmationSymbol,
+} from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
 import {
   FileService,
   FileServiceSymbol,
@@ -17,6 +28,8 @@ export class UserDatabaseService implements UserService {
   constructor(
     private db: PrismaService,
     @Inject(FileServiceSymbol) private readonly fileService: FileService,
+    @Inject(forwardRef(() => EmailConfirmationSymbol))
+    private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -89,6 +102,28 @@ export class UserDatabaseService implements UserService {
       .catch(() => {
         throw new HttpException('user already exists', HttpStatus.CONFLICT);
       });
+  }
+
+  async delete(id: string): Promise<User> {
+    const deletedUser = await this.db.user.delete({ where: { id } });
+    await this.fileService.delete(deletedUser.id + '.png', 'avatars');
+    return deletedUser;
+  }
+
+  async update(id: string, user: UserUpdateInput): Promise<User> {
+    const updatedUser = await this.db.user.update({
+      where: { id },
+      data: { ...user, isVerified: user.email ? false : undefined },
+    });
+
+    if (user.email) {
+      await this.emailConfirmationService.sendVerificationLink(
+        id,
+        updatedUser.email,
+      );
+    }
+
+    return updatedUser;
   }
 
   async markAsVerified(id: string): Promise<User> {

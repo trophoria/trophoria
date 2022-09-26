@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
+import { EmailConfirmationModule } from '@trophoria/modules/auth/modules/emailConfirmation/email-confirmation.module';
 import { FileModule } from '@trophoria/modules/file/file.module';
 import { UserController } from '@trophoria/modules/user/boundary/user.controller';
 import { UserResolver } from '@trophoria/modules/user/boundary/user.resolver';
@@ -11,7 +12,7 @@ import { UserServiceSymbol } from '@trophoria/modules/user/business/user.service
  * utilities to handle active refresh tokens.
  */
 @Module({
-  imports: [FileModule],
+  imports: [FileModule, forwardRef(() => EmailConfirmationModule)],
   providers: [
     { provide: UserServiceSymbol, useClass: UserDatabaseService },
     UserResolver,

@@ -44,7 +44,7 @@ export class UserController {
     @CurrentRestUser() user: User,
     @Res() reply: FastifyReply,
   ) {
-    if (!['image/png', 'image/jpeg'].includes(file.mimetype)) {
+    if (!['image/png'].includes(file.mimetype)) {
       return reply.status(HttpStatus.BAD_REQUEST).send({
         statusCode: HttpStatus.BAD_REQUEST,
         message: 'invalid file type - only png and jpeg files can be uploaded',
@@ -56,9 +56,9 @@ export class UserController {
       mimetype: file.mimetype,
     });
 
-    return {
+    return reply.status(HttpStatus.CREATED).send({
       statusCode: HttpStatus.CREATED,
       avatarUrl: avatar,
-    };
+    });
   }
 }

@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { User } from '@trophoria/graphql/user/user.model';
@@ -23,7 +29,8 @@ export class EmailConfirmationDatabaseService
     private readonly jwtService: JwtService,
     private readonly config: ApiConfigService,
     @Inject(EmailServiceSymbol) private readonly emailService: EmailService,
-    @Inject(UserServiceSymbol) private readonly userService: UserService,
+    @Inject(forwardRef(() => UserServiceSymbol))
+    private readonly userService: UserService,
   ) {}
 
   sendVerificationLink(id: string, email: string): Promise<EmailResponse> {
