@@ -12,6 +12,10 @@ import { Logger } from 'nestjs-pino';
 import { AppModule } from '@trophoria/app.module';
 import { ThrottlerExceptionFilter } from '@trophoria/libs/common';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
+import {
+  FileService,
+  FileServiceSymbol,
+} from '@trophoria/modules/file/business/file.service';
 
 const bootstrapApp = async () => {
   const app: App = await NestFactory.create(AppModule, new FastifyAdapter(), {
@@ -41,6 +45,9 @@ export const initializeApp = async (app: App, config: ApiConfigService) => {
       files: 1,
     },
   });
+
+  const fileService = app.get<FileService>(FileServiceSymbol);
+  await fileService.createReadOnlyBucket('avatars');
 
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
 

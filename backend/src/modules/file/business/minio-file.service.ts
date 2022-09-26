@@ -11,9 +11,7 @@ export class MinioClientService implements FileService {
   constructor(
     private readonly minioService: MinioService,
     private readonly config: ApiConfigService,
-  ) {
-    this.createReadOnlyBucket('avatars');
-  }
+  ) {}
 
   async save({ bucket, file, name }: SaveInput): Promise<string> {
     const extension = file.mimetype.split('/')[1];
@@ -37,11 +35,7 @@ export class MinioClientService implements FileService {
     });
   }
 
-  private get storage() {
-    return this.minioService.client;
-  }
-
-  private async createReadOnlyBucket(bucketName: string): Promise<void> {
+  async createReadOnlyBucket(bucketName: string): Promise<void> {
     const publicPolicy = {
       Version: '2012-10-17',
       Statement: [
@@ -50,17 +44,21 @@ export class MinioClientService implements FileService {
           Effect: 'Allow',
           Principal: { AWS: ['*'] },
           Action: ['s3:GetObject', 's3:GetObjectVersion'],
-          Resource: ['arn:aws:s3:::avatars/*'],
+          Resource: [`arn:aws:s3:::${bucketName}/*`],
         },
       ],
     };
 
-    if (!(await this.storage.bucketExists('avatars'))) {
-      await this.storage.makeBucket('avatars', 'eu-west-1');
+    if (!(await this.storage.bucketExists(bucketName))) {
+      await this.storage.makeBucket(bucketName, 'eu-west-1');
       await this.storage.setBucketPolicy(
-        'avatars',
+        bucketName,
         JSON.stringify(publicPolicy),
       );
     }
+  }
+
+  private get storage() {
+    return this.minioService.client;
   }
 }

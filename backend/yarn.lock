@@ -356,11 +356,6 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fastify/accept-negotiator@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@fastify/accept-negotiator/-/accept-negotiator-1.0.0.tgz#f0e73a3f8c6ba739d66a629b386c838889ec7a23"
-  integrity sha512-4R/N2KfYeld7A5LGkai+iUFMahXcxxYbDp+XS2B1yuL3cdmZLJ9TlCnNzT3q5xFTqsYm0GPpinLUwfSwjcVjyA==
-
 "@fastify/ajv-compiler@^3.1.1":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@fastify/ajv-compiler/-/ajv-compiler-3.1.2.tgz#9b3c4ae0f5feeb2a90ee797cff6dc26e1831795b"
@@ -475,19 +470,6 @@
     readable-stream "^3.4.0"
     send "^0.18.0"
 
-"@fastify/static@^6.5.0":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@fastify/static/-/static-6.5.0.tgz#004fdb487ddf0ee5fdf7541e56bfcb493d7a1060"
-  integrity sha512-WEk6iqgejA6ivjkvbJ47A+uMci225z5lZwLXCXZS3ZYR/kYje1gzzarkKKGL6TWpBw6smkOzxA7dfEoY0347Nw==
-  dependencies:
-    "@fastify/accept-negotiator" "^1.0.0"
-    content-disposition "^0.5.3"
-    fastify-plugin "^4.0.0"
-    glob "^8.0.1"
-    p-limit "^3.1.0"
-    readable-stream "^4.0.0"
-    send "^0.18.0"
-
 "@fastify/websocket@^6.0.0":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@fastify/websocket/-/websocket-6.0.1.tgz#fbbcf49878b2bde54e13ba1087900fb3fff51548"
@@ -495,6 +477,11 @@
   dependencies:
     fastify-plugin "^3.0.0"
     ws "^8.0.0"
+
+"@golevelup/ts-jest@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@golevelup/ts-jest/-/ts-jest-0.3.3.tgz#f9901f3eaaa7fd366d97538d2fc859ffc3052693"
+  integrity sha512-gut5EhD2S7W1p+C/IsUS1o0P5SHgxsN9TqHyRTjG+rfycniLNBfvIWZPEizpsTev/lR10/XOTpE0YicxPme2+Q==
 
 "@graphql-tools/merge@8.3.0":
   version "8.3.0"

@@ -29,4 +29,15 @@ export interface FileService {
    * @throws            {@link HttpException} if file does not exist
    */
   delete(objectName: string, bucketName: string): Promise<void>;
+
+  /**
+   * Creates a bucket / folder with the provided name with public read privileges.
+   * This means, that the content of the folder is accessible by public if they
+   * have the link to the file. This can be useful to access image files from any
+   * frontend (like avatars or other static images which are not included into the frontend
+   * build). If the bucket / folder does already exist, nothing happens.
+   *
+   * @param bucketName  The name of the bucket to create.
+   */
+  createReadOnlyBucket(bucketName: string): Promise<void>;
 }
