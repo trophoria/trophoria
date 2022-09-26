@@ -1,5 +1,5 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 
 import { UserCreateInput } from '@trophoria/graphql/user/user-create.input';
 import { User } from '@trophoria/graphql/user/user.model';
@@ -71,11 +71,5 @@ export class AuthResolver {
     const tokenPayload = await this.authService.refreshToken(user);
     reply.setCookie('REFRESH', tokenPayload.refreshToken, secureCookieOptions);
     return tokenPayload;
-  }
-
-  @Query((_returns) => User, { name: 'me' })
-  @UseGuards(JwtAuthGuard)
-  async me(@CurrentUser() user: User) {
-    return user;
   }
 }
