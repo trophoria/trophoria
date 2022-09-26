@@ -3,6 +3,7 @@ import { gql } from '@trophoria/test/utils/e2e-utils';
 export const signUpQuery = gql`
   mutation SignUp($userInput: UserCreateInput!) {
     signUp(userInput: $userInput) {
+      id
       createdAt
       email
       payload

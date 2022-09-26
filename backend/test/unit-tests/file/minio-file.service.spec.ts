@@ -143,8 +143,8 @@ describe('MinioFileService', () => {
     it('should throw error if bucket / file name is invalid', async () => {
       try {
         await service.delete(
-          FileMock.testFileNameWithExtension,
-          FileMock.newBucketName,
+          FileMock.invalidFileName,
+          FileMock.invalidBucketName,
         );
       } catch (err) {
         expect(err).toBeInstanceOf(HttpException);

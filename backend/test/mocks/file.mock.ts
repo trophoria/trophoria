@@ -5,6 +5,7 @@ export class FileMock {
   };
   static testFileName = 'test-file';
   static testFileNameWithExtension = `${FileMock.testFileName}.png`;
+  static invalidFileName = 'invalid';
 
   static saveMockResponse = 'https://trophoria.com:9000/avatars/1234.png';
 
