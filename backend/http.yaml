@@ -1,11 +1,11 @@
 _type: export
 __export_format: 4
-__export_date: 2022-09-24T22:53:20.628Z
+__export_date: 2022-09-26T23:12:52.935Z
 __export_source: insomnia.desktop.app:v2022.5.1
 resources:
   - _id: req_12326ab44c524650b7f5762d9690ac60
     parentId: fld_35a3814838e44f2d975eec30021d0adc
-    modified: 1664059790262
+    modified: 1664233958685
     created: 1661786408291
     url: "{{ _.base_url }}/graphql"
     name: 🔒 Me
@@ -13,8 +13,9 @@ resources:
     method: POST
     body:
       mimeType: application/graphql
-      text: '{"query":"query me {\n\tme
-        {\n\t\tcreatedAt\n\t\temail\n\t\tisVerified\n\t\tpayload\n\t\tupdatedAt\n\t\tusername\n\t}\n}\n","operationName":"me"}'
+      text: '{"query":"query me {\n\tme {\n\t\t...User\n\t}\n}\n\nfragment User on
+        User
+        {\n\tcreatedAt\n\temail\n\tpayload\n\tupdatedAt\n\tusername\n\tisVerified\n\tavatar\n\tid\n}","operationName":"me"}'
     parameters: []
     headers:
       - name: Content-Type
@@ -56,9 +57,72 @@ resources:
       Open source playstation trophy platform with modern design wich aims to fit the needs of every passionate trophy hunter.
     scope: design
     _type: workspace
+  - _id: req_530967b8de7c4facb6765c7c61a83449
+    parentId: fld_35a3814838e44f2d975eec30021d0adc
+    modified: 1664233957546
+    created: 1664231561117
+    url: "{{ _.base_url }}/graphql"
+    name: 🔒 Delete User
+    description: ""
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"mutation deleteUser {\n\tdeleteUser
+        {\n\t\t...User\n\t}\n}\n\nfragment User on User
+        {\n\tcreatedAt\n\temail\n\tpayload\n\tupdatedAt\n\tusername\n\tisVerified\n\tavatar\n\tid\n}\n","operationName":"deleteUser"}'
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_2bda8522f2654f668424071108ff1610
+    authentication:
+      type: bearer
+      token: "{{ _.access_token }}"
+      prefix: Bearer
+    metaSortKey: -1660419548670
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a6726f2095334549b1f0d4a250c1b0b7
+    parentId: fld_35a3814838e44f2d975eec30021d0adc
+    modified: 1664233958165
+    created: 1664232371504
+    url: "{{ _.base_url }}/graphql"
+    name: 🔒 Update User
+    description: ""
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"mutation deleteUser($userInput: UserUpdateInput!)
+        {\n\tupdateUser(userInput: $userInput)
+        {\n\t\t...User\n\t}\n}\n\nfragment User on User
+        {\n\tcreatedAt\n\temail\n\tpayload\n\tupdatedAt\n\tusername\n\tisVerified\n\tavatar\n\tid\n}\n","variables":{"userInput":{"email":{"set":"kroonix@gmx.de"}}},"operationName":"deleteUser"}'
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_2bda8522f2654f668424071108ff1610
+    authentication:
+      type: bearer
+      token: "{{ _.access_token }}"
+      prefix: Bearer
+    metaSortKey: -1660419548657.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
   - _id: req_181d22469b624ed6806a4ddf40abb6db
     parentId: fld_35a3814838e44f2d975eec30021d0adc
-    modified: 1664059791992
+    modified: 1664233894136
     created: 1664023548217
     url: "{{ _.base_url }}/user/avatar"
     name: 🔒 Upload Avatar
@@ -93,7 +157,7 @@ resources:
     _type: request
   - _id: req_a7862480f1cc4bb496012d486c6d5cec
     parentId: fld_e2967d1655424cc8a72480448af3f2a0
-    modified: 1664022328216
+    modified: 1664233898582
     created: 1663925547942
     url: "{{ _.base_url }}/graphql"
     name: Confirm Email
@@ -104,7 +168,7 @@ resources:
       text: '{"query":"mutation ConfirmEmail($token: String!) {\n\tconfirmEmail(token:
         $token) {\n\t\t...BasicResponse\n\t}\n}\n\nfragment BasicResponse on
         BasicResponse
-        {\n\tmessage\n\tstatusCode\n}\n","variables":{"token":""},"operationName":"ConfirmEmail"}'
+        {\n\tmessage\n\tstatusCode\n}\n","variables":{"token":"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRiMTIyODUwLTc3OGYtNDA3NS05MjllLWM1OGZhM2ZkZjQwNCIsImlhdCI6MTY2NDIzMzUyNSwiZXhwIjoxNjY0MjM3MTI1LCJpc3MiOiJodHRwczovL3Ryb3Bob3JpYS5jb20iLCJzdWIiOiJkYjEyMjg1MC03NzhmLTQwNzUtOTI5ZS1jNThmYTNmZGY0MDQifQ.3CMUvWz-V2WTMkihlOMDZVfIqVH9IBt7LhKosE3LZLS1aQEK6tQcoJWX940V66r4IoPDBvKJQ6-Utq3orUtNDQ"}}'
     parameters: []
     headers:
       - name: Content-Type
@@ -142,7 +206,7 @@ resources:
     _type: request_group
   - _id: req_3edc979c90e141588aba0a3252c4348b
     parentId: fld_e2967d1655424cc8a72480448af3f2a0
-    modified: 1664021835128
+    modified: 1664233899558
     created: 1663925571401
     url: "{{ _.base_url }}/graphql"
     name: 🔒 Resend Link
@@ -159,7 +223,10 @@ resources:
       - name: Content-Type
         value: application/json
         id: pair_ee53c17007934ff2829e1b9e8cf6ed3d
-    authentication: {}
+    authentication:
+      type: bearer
+      token: "{{ _.access_token }}"
+      prefix: Bearer
     metaSortKey: -1663925547892
     isPrivate: false
     settingStoreCookies: true
@@ -171,7 +238,7 @@ resources:
     _type: request
   - _id: req_e32e147cfcc1447a986219e47f866046
     parentId: fld_3f2faa60cd6e433bb7d43922516d2566
-    modified: 1664054298765
+    modified: 1664233905981
     created: 1660420298115
     url: "{{ _.base_url }}/graphql"
     name: Sign up
@@ -182,7 +249,7 @@ resources:
       text: '{"query":"mutation SignUp($userInput: UserCreateInput!)
         {\n\tsignUp(userInput: $userInput) {\n\t\t...User\n\t}\n}\n\nfragment
         User on User
-        {\n\tcreatedAt\n\temail\n\tpayload\n\tupdatedAt\n\tusername\n\tisVerified\n}","variables":{"userInput":{"email":"{{
+        {\n\tcreatedAt\n\temail\n\tpayload\n\tupdatedAt\n\tusername\n\tisVerified\n\tavatar\n\tid\n}","variables":{"userInput":{"email":"{{
         _.user_email }}","password":"{{ _.user_password
         }}"}},"operationName":"SignUp"}'
     parameters: []
@@ -202,7 +269,7 @@ resources:
     _type: request
   - _id: req_e70eef24a31f482b95f1a34186645494
     parentId: fld_3f2faa60cd6e433bb7d43922516d2566
-    modified: 1664058908321
+    modified: 1664233933660
     created: 1661619114377
     url: "{{ _.base_url }}/graphql"
     name: Sign in
@@ -212,7 +279,8 @@ resources:
       mimeType: application/graphql
       text: '{"query":"mutation SignIn($credentials: AuthenticationInput!)
         {\n\tsignIn(credentials: $credentials)
-        {\n\t\taccessToken\n\t\trefreshToken\n\t\treuseDetected\n\t}\n}\n","variables":{"credentials":{"email":"{{
+        {\n\t\t...TokenPayload\n\t}\n}\n\nfragment TokenPayload on TokenPayload
+        {\n\taccessToken\n\trefreshToken\n\treuseDetected\n}","variables":{"credentials":{"email":"{{
         _.user_email }}","password":"{{ _.user_password
         }}"}},"operationName":"SignIn"}'
     parameters: []
@@ -232,7 +300,7 @@ resources:
     _type: request
   - _id: req_02f2de10b14e4ddda7911723d72b7808
     parentId: fld_3f2faa60cd6e433bb7d43922516d2566
-    modified: 1664059789602
+    modified: 1664233935620
     created: 1662821866419
     url: "{{ _.base_url }}/graphql"
     name: 🔒 Sign out
@@ -264,7 +332,7 @@ resources:
     _type: request
   - _id: req_7f9c4bd8865441269b06da51606ef3eb
     parentId: fld_3f2faa60cd6e433bb7d43922516d2566
-    modified: 1664059789055
+    modified: 1664233942187
     created: 1661766502142
     url: "{{ _.base_url }}/graphql"
     name: 🔒 Refresh tokens
@@ -273,7 +341,8 @@ resources:
     body:
       mimeType: application/graphql
       text: '{"query":"mutation Refresh {\n\trefreshTokens
-        {\n\t\taccessToken\n\t\trefreshToken\n\t}\n}\n","operationName":"Refresh"}'
+        {\n\t\t...TokenPayload\n\t}\n}\n\nfragment TokenPayload on TokenPayload
+        {\n\taccessToken\n\trefreshToken\n\treuseDetected\n}","operationName":"Refresh"}'
     parameters: []
     headers:
       - name: Content-Type
@@ -291,7 +360,7 @@ resources:
     _type: request
   - _id: req_f6712a3928224fbd82f75df37e614666
     parentId: fld_b6bcc3c547914f679ca330546e1b0d58
-    modified: 1662902811291
+    modified: 1664233950612
     created: 1660159725696
     url: "{{ _.base_url }}/graphql"
     name: Ping (GQL)
@@ -384,12 +453,12 @@ resources:
     _type: environment
   - _id: jar_d93aaf3f520905f45b459ec26da158089591b813
     parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
-    modified: 1664058899477
+    modified: 1664233496126
     created: 1654989373406
     name: Default Jar
     cookies:
       - key: REFRESH
-        value: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ3ZmJmZGQxLWI3OGEtNDU4Mi05MDdjLTI4M2Y1OWNjOWQ2NCIsImlhdCI6MTY2NDA1ODg5OSwiZXhwIjoxNjY2NjUwODk5LCJpc3MiOiJodHRwczovL3Ryb3Bob3JpYS5jb20iLCJzdWIiOiI0N2ZiZmRkMS1iNzhhLTQ1ODItOTA3Yy0yODNmNTljYzlkNjQiLCJqdGkiOiIxY2U0M2M5OS1jMzk2LTQwY2MtOWRmMC1mMWYyMjJiMjg4MjgifQ.u-Ils_w3XXnJ-1XuUSiTQCrIgAUJvvC_4xgivrIEIZ8tqk44nU1d-s00ZpKZCgsXwy1QuZ70IRIdljPd5KS59w
+        value: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRiMTIyODUwLTc3OGYtNDA3NS05MjllLWM1OGZhM2ZkZjQwNCIsImlhdCI6MTY2NDIzMzQ5NiwiZXhwIjoxNjY2ODI1NDk2LCJpc3MiOiJodHRwczovL3Ryb3Bob3JpYS5jb20iLCJzdWIiOiJkYjEyMjg1MC03NzhmLTQwNzUtOTI5ZS1jNThmYTNmZGY0MDQiLCJqdGkiOiI1NTJlNTIwMi1iOWMzLTQyNDEtODM0NC0zNDY5MzkyN2ViOTQifQ.2xO_AaxgRFmUrbHaSazHRvhIlVMmuvKH5XfX65E6nfOeetk3Fu331wLGsfQ0bl-BCtT9hgfDhbJ1Jl25GHB4mA
         maxAge: 2592000
         domain: localhost
         path: /
@@ -400,8 +469,8 @@ resources:
         hostOnly: true
         pathIsDefault: true
         creation: 2022-08-29T13:20:32.162Z
-        lastAccessed: 2022-09-24T22:34:59.476Z
-        id: "4862985302723155"
+        lastAccessed: 2022-09-26T23:04:56.126Z
+        id: "9264743540234857"
     _type: cookie_jar
   - _id: spc_a89e9f48531345869be5e81c814fed63
     parentId: wrk_e7db9950d6ac4aca97f8149caaffe534
@@ -419,12 +488,12 @@ resources:
     _type: unit_test_suite
   - _id: env_44133e0b33b448178bacef9bd5b1bd25
     parentId: env_d93aaf3f520905f45b459ec26da158089591b813
-    modified: 1664058907818
+    modified: 1664233503988
     created: 1662902347031
     name: Trophoria Environment
     data:
       base_url: http://localhost:3000
-      access_token: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ3ZmJmZGQxLWI3OGEtNDU4Mi05MDdjLTI4M2Y1OWNjOWQ2NCIsImlhdCI6MTY2NDA1ODg5OSwiZXhwIjoxNjY0MDYwNjk5LCJpc3MiOiJodHRwczovL3Ryb3Bob3JpYS5jb20iLCJzdWIiOiI0N2ZiZmRkMS1iNzhhLTQ1ODItOTA3Yy0yODNmNTljYzlkNjQifQ.GPoiF-6QB2SM6mM5xY0Xd3SsOIcl2WTQ1Lxhh8qHW2mKRFXoDXn9eC1JxuoeEmlmC4r1Rhat4BoFXLP5DONGPQ
+      access_token: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRiMTIyODUwLTc3OGYtNDA3NS05MjllLWM1OGZhM2ZkZjQwNCIsImlhdCI6MTY2NDIzMzQ5NiwiZXhwIjoxNjY0MjM1Mjk2LCJpc3MiOiJodHRwczovL3Ryb3Bob3JpYS5jb20iLCJzdWIiOiJkYjEyMjg1MC03NzhmLTQwNzUtOTI5ZS1jNThmYTNmZGY0MDQifQ.MMUhyUkbs9S8zuJdZC_LxEzIhB1lQTmj2Mx5JHeYEdKNgymfifah9sWun4JjVB9I4Q8EMz7hCCj57TlINmF8cQ
       user_email: tobi.kaerst@gmx.de
       user_password: "0123456789"
     dataPropertyOrder:
