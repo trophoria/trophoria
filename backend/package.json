@@ -89,7 +89,8 @@
       "ts"
     ],
     "setupFilesAfterEnv": [
-      "jest-extended/all"
+      "jest-extended/all",
+      "./test/utils/matchers/all.ts"
     ],
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",

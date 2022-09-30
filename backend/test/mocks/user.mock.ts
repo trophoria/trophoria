@@ -22,6 +22,18 @@ export class UserMock {
     password: 'password123',
   };
 
+  static updateUsernameInput = {
+    username: 'ChangedUser',
+  };
+
+  static updateEmailInput = {
+    email: 'updated.user@trophoria.de',
+  };
+
+  static updatePasswordInput = {
+    password: 'Update1234',
+  };
+
   static mockTokens = ['42', '31'];
   static mockToken = '42';
   static realisticMockToken =

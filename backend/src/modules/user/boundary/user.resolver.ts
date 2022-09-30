@@ -1,9 +1,10 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { UserUpdateInput } from '@trophoria/graphql/user/user-update.input';
 
 import { User } from '@trophoria/graphql/user/user.model';
-import { GraphQLThrottlerGuard } from '@trophoria/libs/common';
+import { GraphQLContext, GraphQLThrottlerGuard } from '@trophoria/libs/common';
+import { secureCookieOptions } from '@trophoria/libs/core';
 import { CurrentUser } from '@trophoria/modules/auth/boundary/decorators/user.decorator';
 import { JwtAuthGuard } from '@trophoria/modules/auth/boundary/guards/jwt.guard';
 import {
@@ -26,7 +27,11 @@ export class UserResolver {
 
   @Mutation((_returns) => User, { name: 'deleteUser' })
   @UseGuards(JwtAuthGuard)
-  async deleteUser(@CurrentUser() user: User) {
+  async deleteUser(
+    @CurrentUser() user: User,
+    @Context() { reply }: GraphQLContext,
+  ) {
+    reply.clearCookie('REFRESH', secureCookieOptions);
     return this.userService.delete(user.id);
   }
 

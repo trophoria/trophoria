@@ -68,24 +68,26 @@ export interface UserService {
   create(user: UserCreateInput): Promise<User>;
 
   /**
-   * Deletes the {@link User} with the provided id in the database. If the
-   * id does not exist, nothing happens. This also deletes the file persisted
-   * with the id of the user. Use this to remove all user associated data from the
-   * database.
+   * Deletes the {@link User} with the provided id in the database. This also
+   * deletes the file persisted with the id of the user. Use this to remove all
+   * user associated data from the database. If the id does not exist in the database
+   * a {@link HttpException} gets thrown.
    *
    * @param id  The id of the user
+   * @throws    {@link HttpException} if a user with this id doesn't exist
    * @returns   The deleted user instance
    */
   delete(id: string): Promise<User>;
 
   /**
    * Updates the {@link User} values in the database for all provided values.
-   * If the id does not exist, nothing gets updated. If the email gets changed,
-   * the verified flag is set to false again and an verification mail gets
-   * automatically sent.
+   * If the email gets changed, the verified flag is set to false again and
+   * an verification mail gets automatically sent. If the id does not exist
+   * in the database a {@link HttpException} gets thrown.
    *
    * @param id    The id of the user
    * @param user  The user update data
+   * @throws      {@link HttpException} if a user with this id doesn't exist
    * @returns     The updated user instance
    */
   update(id: string, user: UserUpdateInput): Promise<User>;

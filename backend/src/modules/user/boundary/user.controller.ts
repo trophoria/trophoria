@@ -1,9 +1,4 @@
-import {
-  FileInterceptor,
-  StorageFile,
-  UploadedFile,
-} from '@blazity/nest-file-fastify';
-import { UploadField } from '@blazity/nest-file-fastify/build/src/multipart/handlers/file-fields';
+import { FileInterceptor, UploadedFile } from '@blazity/nest-file-fastify';
 import {
   Controller,
   HttpStatus,
@@ -17,17 +12,13 @@ import { ThrottlerGuard } from '@nestjs/throttler';
 import { FastifyReply } from 'fastify';
 import { User } from '@trophoria/graphql/user/user.model';
 
+import { UploadFile } from '@trophoria/libs/common';
 import { CurrentRestUser } from '@trophoria/modules/auth/boundary/decorators/user.decorator';
 import { JwtRestAuthGuard } from '@trophoria/modules/auth/boundary/guards/jwt.guard';
-import { File } from '@trophoria/modules/file/entity/file.model';
 import {
   UserService,
   UserServiceSymbol,
 } from '@trophoria/modules/user/business/user.service';
-
-interface UploadedFile extends StorageFile {
-  buffer: Buffer;
-}
 
 @UseGuards(ThrottlerGuard)
 @Controller('user')
@@ -40,7 +31,7 @@ export class UserController {
   @UseInterceptors(FileInterceptor('avatar'))
   @UseGuards(JwtRestAuthGuard)
   async uploadFile(
-    @UploadedFile() file: UploadedFile,
+    @UploadedFile() file: UploadFile,
     @CurrentRestUser() user: User,
     @Res() reply: FastifyReply,
   ) {

@@ -1,7 +1,12 @@
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { User } from '@trophoria/graphql/user/user.model';
 
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import { meQuery } from '@trophoria/test/e2e/auth/auth.queries';
+import {
+  deleteUserQuery,
+  updateUserQuery,
+} from '@trophoria/test/e2e/user/user.queries';
 import { UserMock } from '@trophoria/test/mocks/user.mock';
 import {
   gqlData,
@@ -45,6 +50,42 @@ describe('AuthResolver (e2e)', () => {
     it('should return an error if access token is invalid', async () => {
       const errors = gqlErrors(await graphql(app, meQuery).expect(401));
       expect(errors[0].message).toBe('Unauthorized');
+    });
+  });
+
+  describe('gql deleteUser (mutation)', () => {
+    let accessToken: string;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      ({ accessToken } = await authenticate(app, UserMock.userWithoutUsername));
+    });
+
+    it('should delete the authenticated user', async () => {
+      await graphql(app, deleteUserQuery)
+        .set('authorization', `Bearer ${accessToken}`)
+        .expect(200);
+    });
+  });
+
+  describe('gql updateUser (mutation)', () => {
+    let accessToken: string;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      ({ accessToken } = await authenticate(app, UserMock.userWithoutUsername));
+    });
+
+    it('should update the authenticated user', async () => {
+      const vars = { userInput: UserMock.updateUsernameInput };
+
+      const res = await graphql(app, updateUserQuery, vars)
+        .set('authorization', `Bearer ${accessToken}`)
+        .expect(200);
+
+      const user: User = gqlData(res, 'updateUser');
+
+      expect(user.username).toBe(UserMock.updateUsernameInput.username);
     });
   });
 });

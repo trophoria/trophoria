@@ -1,0 +1,1 @@
+export { toThrowCaptured } from './toThrowCaptured';

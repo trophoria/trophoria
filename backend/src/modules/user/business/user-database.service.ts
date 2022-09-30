@@ -6,6 +6,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 
+import { hash } from 'bcrypt';
 import { StringNullableFilter } from '@trophoria/config/graphql/@generated/prisma/string-nullable-filter.input';
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
@@ -105,16 +106,29 @@ export class UserDatabaseService implements UserService {
   }
 
   async delete(id: string): Promise<User> {
-    const deletedUser = await this.db.user.delete({ where: { id } });
+    const deletedUser = await this.db.user
+      .delete({ where: { id } })
+      .catch(() => {
+        throw new HttpException('invalid id', HttpStatus.NOT_FOUND);
+      });
+
     await this.fileService.delete(deletedUser.id + '.png', 'avatars');
+
     return deletedUser;
   }
 
   async update(id: string, user: UserUpdateInput): Promise<User> {
-    const updatedUser = await this.db.user.update({
-      where: { id },
-      data: { ...user, isVerified: user.email ? false : undefined },
-    });
+    const password = user.password ? await hash(user.password, 10) : undefined;
+    const isVerified = user.email ? false : undefined;
+
+    const updatedUser = await this.db.user
+      .update({
+        where: { id },
+        data: { ...user, password, isVerified },
+      })
+      .catch(() => {
+        throw new HttpException('invalid id', HttpStatus.NOT_FOUND);
+      });
 
     if (user.email) {
       await this.emailConfirmationService.sendVerificationLink(

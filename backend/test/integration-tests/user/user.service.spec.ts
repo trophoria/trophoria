@@ -5,6 +5,10 @@ import { AppModule } from '@trophoria/app.module';
 import { User } from '@trophoria/graphql/user/user.model';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import {
+  EmailConfirmationService,
+  EmailConfirmationSymbol,
+} from '@trophoria/modules/auth/modules/emailConfirmation/business/email-confirmation.service';
+import {
   FileService,
   FileServiceSymbol,
 } from '@trophoria/modules/file/business/file.service';
@@ -19,6 +23,7 @@ describe('UsersService', () => {
   let service: UserService;
   let db: PrismaService;
   let fileService: FileService;
+  let emailConfirmationService: EmailConfirmationService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,6 +33,9 @@ describe('UsersService', () => {
     service = module.get<UserService>(UserServiceSymbol);
     db = module.get<PrismaService>(PrismaService);
     fileService = module.get<FileService>(FileServiceSymbol);
+    emailConfirmationService = module.get<EmailConfirmationService>(
+      EmailConfirmationSymbol,
+    );
   });
 
   afterEach(jest.clearAllMocks);
@@ -60,6 +68,92 @@ describe('UsersService', () => {
     it('should create unique username if not provided', async () => {
       const user = await service.create(UserMock.userWithoutUsername);
       expect(user.username).toBeTruthy();
+    });
+  });
+
+  describe('completely delete a user', () => {
+    let createdUser: User;
+    let clientMock: jest.SpyInstance;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      createdUser = await service.create(UserMock.mockUsers[0]);
+
+      clientMock = jest.spyOn(fileService, 'delete').mockImplementation();
+    });
+
+    it('should remove the user with corresponding file', async () => {
+      await service.delete(createdUser.id);
+
+      await expect(() => service.findById(createdUser.id)).toThrowCaptured(
+        HttpException,
+      );
+
+      expect(clientMock).toHaveBeenCalledWith(
+        expect.stringMatching(createdUser.id + '.png'),
+        expect.stringMatching('avatars'),
+      );
+    });
+
+    it('should throw an error if user does not exist', async () => {
+      await expect(() => service.delete('-1')).toThrowCaptured(HttpException);
+    });
+  });
+
+  describe('should update user data', () => {
+    let createdUser: User;
+    let clientMock: jest.SpyInstance;
+
+    beforeAll(async () => {
+      await db.cleanDatabase();
+      createdUser = await service.create(UserMock.mockUsers[0]);
+
+      clientMock = jest
+        .spyOn(emailConfirmationService, 'sendVerificationLink')
+        .mockImplementation();
+    });
+
+    it('should update only provided values', async () => {
+      const updatedUser = await service.update(
+        createdUser.id,
+        UserMock.updateUsernameInput,
+      );
+
+      expect(clientMock).toBeCalledTimes(0);
+
+      expect({
+        ...createdUser,
+        ...UserMock.updateUsernameInput,
+      }).toStrictEqual(updatedUser);
+    });
+
+    it('should hash the password if updated', async () => {
+      const updatedUser = await service.update(
+        createdUser.id,
+        UserMock.updatePasswordInput,
+      );
+
+      expect(clientMock).toBeCalledTimes(0);
+      expect(updatedUser.password).not.toBe(
+        UserMock.updatePasswordInput.password,
+      );
+    });
+
+    it('should resend verification link if email updated', async () => {
+      const updatedUser = await service.update(
+        createdUser.id,
+        UserMock.updateEmailInput,
+      );
+
+      expect(clientMock).toBeCalledTimes(1);
+
+      expect(updatedUser.isVerified).toBe(false);
+    });
+
+    it('should throw an error if user does not exist', async () => {
+      await expect(() =>
+        service.update('-1', UserMock.updateUsernameInput),
+      ).toThrowCaptured(HttpException);
     });
   });
 
