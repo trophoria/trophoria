@@ -31,12 +31,12 @@ export class HealthController {
   @Get('check')
   @HealthCheck()
   check() {
+    const pingUrl = `http://${this.config.get('API_HOST')}:${this.config.get(
+      'API_PORT',
+    )}/${this.config.get('API_PREFIX')}/health/ping`;
+
     return this.health.check([
-      () =>
-        this.http.pingCheck(
-          'endpoint',
-          `http://127.0.0.1:${this.config.get('API_PORT')}/health/ping`,
-        ),
+      () => this.http.pingCheck('endpoint', pingUrl),
       () => this.db.isHealthy('database'),
       () => this.memory.checkHeap('backend_memory', 150 * 1024 * 1024),
       () =>

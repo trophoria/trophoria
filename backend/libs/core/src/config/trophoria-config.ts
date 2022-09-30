@@ -22,6 +22,7 @@ export class TrophoriaConfig {
 
     API_PORT: z.preprocess(parseInt, z.number()).default(3000),
     API_HOST: z.string().default('0.0.0.0'),
+    API_PREFIX: z.string().default('api/v1'),
     COOKIE_SECRET: z.string(),
 
     SEND_GRID_KEY: z.string(),
@@ -47,6 +48,10 @@ export class TrophoriaConfig {
     MINIO_PORT: z.preprocess(parseInt, z.number()).default(9000),
     MINIO_ACCESS_KEY: z.string(),
     MINIO_SECRET_KEY: z.string(),
+
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+    GOOGLE_REDIRECT_URL: z.string(),
   });
 
   static envFilePath = 'config/env/.env';

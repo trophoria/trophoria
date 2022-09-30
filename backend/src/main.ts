@@ -49,6 +49,8 @@ export const initializeApp = async (app: App, config: ApiConfigService) => {
   const fileService = app.get<FileService>(FileServiceSymbol);
   await fileService.createReadOnlyBucket('avatars');
 
+  app.setGlobalPrefix(config.get('API_PREFIX'));
+
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
 
   app.useGlobalFilters(new ThrottlerExceptionFilter(config));
