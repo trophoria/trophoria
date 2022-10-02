@@ -12,6 +12,7 @@ import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
 import { UserUpdateInput } from '@trophoria/graphql/user/user-update.input';
 import { generateNameFromEmail } from '@trophoria/libs/common';
+import { SocialProvider } from '@trophoria/libs/core';
 import { PrismaService } from '@trophoria/modules/_setup/prisma/prisma.service';
 import {
   EmailConfirmationService,
@@ -80,6 +81,12 @@ export class UserDatabaseService implements UserService {
       .catch(() => {
         throw new HttpException('invalid token', HttpStatus.BAD_REQUEST);
       });
+  }
+
+  async findByProvider(provider: SocialProvider, id: string): Promise<User> {
+    return this.db.user.findFirst({
+      where: { payload: { equals: { provider, providerId: id } } },
+    });
   }
 
   async create(user: UserCreateInput): Promise<User> {

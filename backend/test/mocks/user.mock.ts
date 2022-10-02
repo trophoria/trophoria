@@ -1,3 +1,5 @@
+import { SocialProvider } from '@trophoria/libs/core';
+
 export class UserMock {
   static mockUsers = [
     {
@@ -9,6 +11,10 @@ export class UserMock {
       email: 'mock@trophoria.de',
       password: '12345678',
       username: 'MockUser',
+      payload: {
+        provider: 'google',
+        providerId: 'provider-test-id',
+      },
     },
     {
       email: 'hello.world@trophoria.de',
@@ -16,6 +22,9 @@ export class UserMock {
       username: 'IAmTrophoria',
     },
   ];
+
+  static mockSocialProvider: SocialProvider = 'google';
+  static mockSocialProviderId = 'provider-test-id';
 
   static userWithoutUsername = {
     email: 'unamed.user@trophoria.de',

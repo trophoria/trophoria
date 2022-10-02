@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -9,6 +9,7 @@ import { JwtStrategy } from '@trophoria/modules/auth/business/strategies/jwt.str
 import { LocalStrategy } from '@trophoria/modules/auth/business/strategies/local.strategy';
 import { JwtRefreshTokenStrategy } from '@trophoria/modules/auth/business/strategies/refresh.strategy';
 import { EmailConfirmationModule } from '@trophoria/modules/auth/modules/emailConfirmation/email-confirmation.module';
+import { GoogleAuthModule } from '@trophoria/modules/auth/modules/googleAuth/google-auth.module';
 import { UserModule } from '@trophoria/modules/user/user.module';
 
 /**
@@ -20,6 +21,7 @@ import { UserModule } from '@trophoria/modules/user/user.module';
     UserModule,
     PassportModule,
     EmailConfirmationModule,
+    forwardRef(() => GoogleAuthModule),
     JwtModule.register({
       signOptions: { algorithm: 'ES256', issuer: 'https://trophoria.com' },
     }),

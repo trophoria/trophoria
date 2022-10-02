@@ -39,7 +39,7 @@ model User {
   payload    Json?
   /// @HideField()
   /// @Validator.Length(10, 50)
-  password   String
+  password   String?
   /// @HideField({ input: true, output: true })
   tokens     String[] @default([])
 

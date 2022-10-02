@@ -7,10 +7,14 @@ import {
   FastifyAdapter,
   NestFastifyApplication as App,
 } from '@nestjs/platform-fastify';
+import { FastifyInstance } from 'fastify';
 import { Logger } from 'nestjs-pino';
 
 import { AppModule } from '@trophoria/app.module';
-import { ThrottlerExceptionFilter } from '@trophoria/libs/common';
+import {
+  fastifyExpressCompatibleHook,
+  ThrottlerExceptionFilter,
+} from '@trophoria/libs/common';
 import { ApiConfigService } from '@trophoria/modules/_setup/config/api-config.service';
 import {
   FileService,
@@ -28,6 +32,10 @@ const bootstrapApp = async () => {
 };
 
 export const initializeApp = async (app: App, config: ApiConfigService) => {
+  const instance = app.getHttpAdapter().getInstance() as FastifyInstance;
+
+  instance.addHook('onRequest', fastifyExpressCompatibleHook);
+
   app.useLogger(app.get(Logger));
 
   await app.register(helmet as never, {

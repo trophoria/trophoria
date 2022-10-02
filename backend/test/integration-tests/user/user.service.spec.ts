@@ -236,6 +236,15 @@ describe('UsersService', () => {
       const users = await service.findByTerm('world');
       expect(users.length).toBe(1);
     });
+
+    it('should find a user by provider id', async () => {
+      const providerUser = await service.findByProvider(
+        UserMock.mockSocialProvider,
+        UserMock.mockSocialProviderId,
+      );
+
+      expect(providerUser).toStrictEqual(createdUsers[1]);
+    });
   });
 
   describe('should correctly handle tokens', () => {

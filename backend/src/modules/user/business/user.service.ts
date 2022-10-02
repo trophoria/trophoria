@@ -1,6 +1,7 @@
 import { UserCreateInput } from '@trophoria/config/graphql/@generated/user/user-create.input';
 import { User } from '@trophoria/config/graphql/@generated/user/user.model';
 import { UserUpdateInput } from '@trophoria/graphql/user/user-update.input';
+import { SocialProvider } from '@trophoria/libs/core';
 import { File } from '@trophoria/modules/file/entity/file.model';
 
 /** Symbol to inject the user service. */
@@ -54,6 +55,19 @@ export interface UserService {
    * @returns             The user with the provided refresh token
    */
   findByToken(refreshToken: string): Promise<User>;
+
+  /**
+   * Fins a {@link User} user based on the provider and its given id. The provider
+   * information are stored in the payload field. This contains the provider type
+   * and the id. This method queries for this. This is needed for social logins,
+   * to check if the social login is fired for the first time, or if the user is
+   * already persisted in the System. If no user is found, null is returned.
+   *
+   * @param provider  The name of the provider the id is associated to
+   * @param id        The unique user id given by the provider
+   * @returns         The user persisted from provider, null if not found
+   */
+  findByProvider(provider: SocialProvider, id: string): Promise<User>;
 
   /**
    * Saves a new {@link User} in the database. If no username was
