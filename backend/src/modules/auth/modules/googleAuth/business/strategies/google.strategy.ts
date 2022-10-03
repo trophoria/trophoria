@@ -36,10 +36,8 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
       username: username,
       avatar: profileUrl,
       isVerified: verifiedMails.length > 0,
-      payload: {
-        provider: 'google',
-        providerId: id,
-      },
+      provider: 'google',
+      providerId: id,
     });
   }
 }

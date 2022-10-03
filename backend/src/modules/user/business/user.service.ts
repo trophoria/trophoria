@@ -57,11 +57,10 @@ export interface UserService {
   findByToken(refreshToken: string): Promise<User>;
 
   /**
-   * Fins a {@link User} user based on the provider and its given id. The provider
-   * information are stored in the payload field. This contains the provider type
-   * and the id. This method queries for this. This is needed for social logins,
-   * to check if the social login is fired for the first time, or if the user is
-   * already persisted in the System. If no user is found, null is returned.
+   * Fins a {@link User} user based on the provider and its given id. This is
+   * needed for social logins, to check if the social login is fired for the first
+   * time, or if the user is already persisted in the System. If no user is found,
+   * null is returned.
    *
    * @param provider  The name of the provider the id is associated to
    * @param id        The unique user id given by the provider

@@ -11,10 +11,8 @@ export class UserMock {
       email: 'mock@trophoria.de',
       password: '12345678',
       username: 'MockUser',
-      payload: {
-        provider: 'google',
-        providerId: 'provider-test-id',
-      },
+      provider: 'google',
+      providerId: 'provider-test-id',
     },
     {
       email: 'hello.world@trophoria.de',

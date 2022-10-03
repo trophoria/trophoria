@@ -85,7 +85,7 @@ export class UserDatabaseService implements UserService {
 
   async findByProvider(provider: SocialProvider, id: string): Promise<User> {
     return this.db.user.findFirst({
-      where: { payload: { equals: { provider, providerId: id } } },
+      where: { AND: [{ provider }, { providerId: id }] },
     });
   }
 

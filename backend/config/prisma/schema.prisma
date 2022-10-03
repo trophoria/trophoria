@@ -42,6 +42,10 @@ model User {
   password   String?
   /// @HideField({ input: true, output: true })
   tokens     String[] @default([])
+  /// @HideField({ input: true, output: true })
+  provider   String?
+  /// @HideField({ input: true, output: true })
+  providerId String?  @unique
 
   //? User Metadata
 
