@@ -41,6 +41,6 @@ export class UserResolver {
     @CurrentUser() user: User,
     @Args('userInput') userUpdate: UserUpdateInput,
   ) {
-    return this.userService.update(user.id, userUpdate);
+    return this.userService.update({ id: user.id }, userUpdate);
   }
 }

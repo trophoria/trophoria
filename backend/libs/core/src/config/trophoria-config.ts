@@ -37,9 +37,13 @@ export class TrophoriaConfig {
     JWT_REFRESH_PUBLIC_KEY: z.string(),
     JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
 
-    EMAIL_CONFIRMATION_URL: z
-      .string()
-      .default('http:localhost:3000/email-confirmation/confirm'),
+    EMAIL_CONFIRMATION_URL: z.string(),
+    PASSWORD_RESET_URL: z.string(),
+
+    JWT_PASSWORD_RESET_PRIVATE_KEY: z.string(),
+    JWT_PASSWORD_RESET_PUBLIC_KEY: z.string(),
+    JWT_PASSWORD_RESET_EXPIRES_IN: z.string().default('5m'),
+
     JWT_VERIFICATION_PRIVATE_KEY: z.string(),
     JWT_VERIFICATION_PUBLIC_KEY: z.string(),
     JWT_VERIFICATION_EXPIRES_IN: z.string().default('1h'),

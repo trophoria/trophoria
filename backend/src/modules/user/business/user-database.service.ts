@@ -23,7 +23,10 @@ import {
   FileServiceSymbol,
 } from '@trophoria/modules/file/business/file.service';
 import { File } from '@trophoria/modules/file/entity/file.model';
-import { UserService } from '@trophoria/modules/user/business/user.service';
+import {
+  UniqueIdentifier,
+  UserService,
+} from '@trophoria/modules/user/business/user.service';
 
 @Injectable()
 export class UserDatabaseService implements UserService {
@@ -124,13 +127,21 @@ export class UserDatabaseService implements UserService {
     return deletedUser;
   }
 
-  async update(id: string, user: UserUpdateInput): Promise<User> {
+  async update(
+    { email, id }: UniqueIdentifier,
+    user: UserUpdateInput,
+  ): Promise<User> {
+    if (!email && !id) {
+      throw new HttpException('unique id required', HttpStatus.BAD_REQUEST);
+    }
+
     const password = user.password ? await hash(user.password, 10) : undefined;
     const isVerified = user.email ? false : undefined;
+    const updateCondition = email ? { email } : { id };
 
     const updatedUser = await this.db.user
       .update({
-        where: { id },
+        where: updateCondition,
         data: { ...user, password, isVerified },
       })
       .catch(() => {

@@ -115,7 +115,7 @@ describe('UsersService', () => {
 
     it('should update only provided values', async () => {
       const updatedUser = await service.update(
-        createdUser.id,
+        { id: createdUser.id },
         UserMock.updateUsernameInput,
       );
 
@@ -129,7 +129,7 @@ describe('UsersService', () => {
 
     it('should hash the password if updated', async () => {
       const updatedUser = await service.update(
-        createdUser.id,
+        { email: createdUser.email },
         UserMock.updatePasswordInput,
       );
 
@@ -141,7 +141,7 @@ describe('UsersService', () => {
 
     it('should resend verification link if email updated', async () => {
       const updatedUser = await service.update(
-        createdUser.id,
+        { id: createdUser.id },
         UserMock.updateEmailInput,
       );
 
@@ -152,7 +152,13 @@ describe('UsersService', () => {
 
     it('should throw an error if user does not exist', async () => {
       await expect(() =>
-        service.update('-1', UserMock.updateUsernameInput),
+        service.update({ id: '-1' }, UserMock.updateUsernameInput),
+      ).toThrowCaptured(HttpException);
+    });
+
+    it('should throw an error if no identifier provided', async () => {
+      await expect(() =>
+        service.update({}, UserMock.updateUsernameInput),
       ).toThrowCaptured(HttpException);
     });
   });

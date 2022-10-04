@@ -7,6 +7,11 @@ import { File } from '@trophoria/modules/file/entity/file.model';
 /** Symbol to inject the user service. */
 export const UserServiceSymbol = Symbol('UserService');
 
+export type UniqueIdentifier = {
+  id?: string;
+  email?: string;
+};
+
 export interface UserService {
   /**
    * Find all persisted {@link User} instances.
@@ -95,15 +100,15 @@ export interface UserService {
   /**
    * Updates the {@link User} values in the database for all provided values.
    * If the email gets changed, the verified flag is set to false again and
-   * an verification mail gets automatically sent. If the id does not exist
-   * in the database a {@link HttpException} gets thrown.
+   * an verification mail gets automatically sent. If the identifier does not
+   * exist in the database a {@link HttpException} gets thrown.
    *
-   * @param id    The id of the user
-   * @param user  The user update data
-   * @throws      {@link HttpException} if a user with this id doesn't exist
-   * @returns     The updated user instance
+   * @param identifier    A unique identifier of the user
+   * @param user          The user update data
+   * @throws              {@link HttpException} if a user with this id doesn't exist
+   * @returns             The updated user instance
    */
-  update(id: string, user: UserUpdateInput): Promise<User>;
+  update(identifier: UniqueIdentifier, user: UserUpdateInput): Promise<User>;
 
   /**
    * Mark the {@link User} with the provided id as verified. If the

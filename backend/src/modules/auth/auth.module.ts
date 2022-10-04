@@ -10,6 +10,7 @@ import { LocalStrategy } from '@trophoria/modules/auth/business/strategies/local
 import { JwtRefreshTokenStrategy } from '@trophoria/modules/auth/business/strategies/refresh.strategy';
 import { EmailConfirmationModule } from '@trophoria/modules/auth/modules/emailConfirmation/email-confirmation.module';
 import { GoogleAuthModule } from '@trophoria/modules/auth/modules/googleAuth/google-auth.module';
+import { PasswordResetModule } from '@trophoria/modules/auth/modules/passwordReset/password-reset.module';
 import { UserModule } from '@trophoria/modules/user/user.module';
 
 /**
@@ -22,6 +23,7 @@ import { UserModule } from '@trophoria/modules/user/user.module';
     PassportModule,
     EmailConfirmationModule,
     forwardRef(() => GoogleAuthModule),
+    PasswordResetModule,
     JwtModule.register({
       signOptions: { algorithm: 'ES256', issuer: 'https://trophoria.com' },
     }),
